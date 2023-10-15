@@ -8,7 +8,7 @@ const fetchAllTask = async (id)=>{
     if (!ObjectId.isValid(id)) throw `Valid ObjectId required for daily tasks`;
     const userCollection = await users();
     let dailyTask = await userCollection.findOne({ _id: new ObjectId(id) },{ projection: { tasks: 1, _id:0 } });
-    return dailyTask.tasks;
+    return {tasks: dailyTask.tasks};
 }
 
 export {fetchAllTask};
