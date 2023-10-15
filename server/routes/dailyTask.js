@@ -3,6 +3,6 @@ import { getDailyTask } from "../controllers/dailyTask.js";
 
 const router = Router();
 
-router.route('/daily-task').get(getDailyTask);
+router.route('/').get(getDailyTask);
 
 export default router;
