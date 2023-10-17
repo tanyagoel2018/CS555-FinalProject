@@ -3,6 +3,9 @@ import { restAPI } from "../service/api";
 import { useFormik } from "formik";
 import { userSchema } from "../validations/userValidation";
 import { useState } from "react";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 import {
   Button,
   Container,
@@ -16,12 +19,18 @@ import {
   Snackbar,
   Alert,
   Link,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 
 const Signup = () => {
   const [loader, setLoader] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Something went wrong");
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -31,11 +40,16 @@ const Signup = () => {
     setSuccess(false);
   };
 
+  const comparePasswords = () => {
+    return formik.values.retypePassword !== formik.values.password;
+  };
+
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
       password: "",
+      retypePassword: "",
       age: "",
     },
     validationSchema: userSchema,
@@ -50,6 +64,9 @@ const Signup = () => {
         .catch((error) => {
           setLoader(false);
           setError(true);
+          if (error && error.response && error.response.data) {
+            setErrorMsg(error.response.data);
+          }
         });
     },
   });
@@ -63,7 +80,7 @@ const Signup = () => {
       </Snackbar>
       <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          Something went wrong!
+          {errorMsg}!
         </Alert>
       </Snackbar>
       <CssBaseline />
@@ -124,7 +141,7 @@ const Signup = () => {
                   id="password"
                   name="password"
                   label="Password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   fullWidth
                   value={formik.values.password}
                   onChange={formik.handleChange}
@@ -133,6 +150,42 @@ const Signup = () => {
                     formik.touched.password && Boolean(formik.errors.password)
                   }
                   helperText={formik.touched.password && formik.errors.password}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {showPassword ? (
+                            <VisibilityIcon />
+                          ) : (
+                            <VisibilityOffIcon />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  id="retypePassword"
+                  name="retypePassword"
+                  label="Retype-Password"
+                  type="password"
+                  fullWidth
+                  value={formik.values.retypePassword}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.retypePassword && comparePasswords()}
+                  helperText={
+                    formik.touched.retypePassword && comparePasswords()
+                      ? "passwords do not match"
+                      : ""
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -151,7 +204,7 @@ const Signup = () => {
               </Grid>
             </Grid>
             <Button
-              type="submit"
+              type={comparePasswords() ? "button" : "submit"}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
