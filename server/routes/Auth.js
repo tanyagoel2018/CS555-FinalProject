@@ -8,7 +8,7 @@ import { userSchema, loginSchema } from "../validations/userValidation.js";
 router.route("/login").post(async (req, res) => {
   try {
     let input = req.body;
-    await loginSchema.validate(input, { abortEarly: false });
+    await loginSchema.validate(input);
     let email = xss(input.email);
     let password = xss(input.password);
 
@@ -24,7 +24,7 @@ router.route("/login").post(async (req, res) => {
 router.route("/sign-up").post(async (req, res) => {
   try {
     let input = req.body;
-    await userSchema.validate(input, { abortEarly: false });
+    await userSchema.validate(input);
     let email = xss(input.email);
     let password = xss(input.password);
     let name = xss(input.name);
