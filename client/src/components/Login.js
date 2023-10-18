@@ -22,6 +22,7 @@ const Login = () => {
   const [loader, setLoader] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("Something went wrong");
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -44,10 +45,17 @@ const Login = () => {
         .then((response) => {
           setLoader(false);
           setSuccess(true);
+          console.log(response);
+          window.sessionStorage.setItem("email", response.data.email);
+          window.sessionStorage.setItem("id", response.data.id);
+          window.sessionStorage.setItem("name", response.data.name);
         })
         .catch((error) => {
           setLoader(false);
           setError(true);
+          if (error && error.response && error.response.data) {
+            setErrorMsg(error.response.data);
+          }
         });
     },
   });
@@ -56,12 +64,12 @@ const Login = () => {
     <Container component="main" maxWidth="xs">
       <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          You are all set!
+          Login successful!
         </Alert>
       </Snackbar>
       <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          Something went wrong!
+          {errorMsg}
         </Alert>
       </Snackbar>
       <CssBaseline />
