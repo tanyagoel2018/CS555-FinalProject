@@ -1,27 +1,17 @@
-import './App.css';
-import React, {useEffect, useState} from "react";
-import { restAPI } from './service/api';
-import Signup from './components/Signup';
+import "./App.css";
+import React, { useEffect, useState } from "react";
+import { restAPI } from "./service/api";
+// import Signup from "./components/Signup";
+import Login from "./components/Login";
 function App() {
   const [welcomeMsg, setWelcomeMsg] = useState("Not welcome");
 
-  const fetchMsg = async()=>{
-      try {
-        let res = await restAPI.get();
-        setWelcomeMsg(res.data.msg);
-      } catch (error) {
-        
-      }
-  }
-  
-  useEffect(()=>{
-    fetchMsg();
-  }, [])
   return (
     <div>
-      <Signup></Signup>
+      {/* <Signup></Signup> */}
+      <Login></Login>
     </div>
-  )
+  );
 }
 
 export default App;

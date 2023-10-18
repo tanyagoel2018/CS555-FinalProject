@@ -6,10 +6,9 @@ import helmet from "helmet";
 import cors from "cors";
 import { connectDB } from "./config/dbConnection.js";
 
-
 const app = express();
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 app.use(cors(corsConfig));
