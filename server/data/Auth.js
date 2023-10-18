@@ -41,7 +41,7 @@ const createUser = async(email,password,name,age)=>{
       if (!insertInfo.acknowledged || !insertInfo.insertedId){
         throw 'Error : Could not add user';
       }
-    return newUser;
+    return 'Registration successful';
 }
 
 // Add new code from here

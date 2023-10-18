@@ -7,7 +7,9 @@ const userSchema = yup.object({
     password: yup.string().required().password()
                 .min(6,"Password must have atleast 6 characters"),
     name: yup.string().required().max(50).min(1).matches(/^[A-Za-z ]*$/, 'Please enter valid name'),
-    age: yup.number("Age must be a number").required().min(1).max(130)
+    age: yup.number("Age must be a number").required()
+            .typeError('Age must be a number')
+            .min(1).max(130)
 })
 
 export {userSchema};

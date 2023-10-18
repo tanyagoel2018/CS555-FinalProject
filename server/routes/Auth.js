@@ -25,7 +25,7 @@ router.route('/sign-up')
 .post(async (req,res)=>{
     try {
         let input = req.body;
-        await userSchema.validate(input,{ abortEarly: false });
+        await userSchema.validate(input);
         let email = xss(input.email);
         let password = xss(input.password);
         let name = xss(input.name);
