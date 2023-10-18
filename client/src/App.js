@@ -1,7 +1,7 @@
 import './App.css';
 import React, {useEffect, useState} from "react";
 import { restAPI } from './service/api';
-
+import Signup from './components/Signup';
 function App() {
   const [welcomeMsg, setWelcomeMsg] = useState("Not welcome");
 
@@ -17,7 +17,11 @@ function App() {
   useEffect(()=>{
     fetchMsg();
   }, [])
-  return <h1>{welcomeMsg}</h1>;
+  return (
+    <div>
+      <Signup></Signup>
+    </div>
+  )
 }
 
 export default App;
