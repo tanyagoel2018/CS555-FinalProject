@@ -159,6 +159,7 @@ const UserData = () => {
     return (
       <>
         <div className="home">
+          <span>
           <h1>Welcome {userData.name}!</h1>
           <br></br>
           <h2>Your pet name is: {userData.pet.petName}!</h2>
@@ -167,7 +168,10 @@ const UserData = () => {
           <Link to="/petRename" className="links">
             Rename Pet
           </Link>
+          </span>
+          <span>
           <DailyTask/>
+          </span>
         </div>
         <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
           <Alert
