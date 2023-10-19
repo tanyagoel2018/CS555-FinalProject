@@ -5,6 +5,7 @@ import { corsConfig } from "./config/settings.js";
 import helmet from "helmet";
 import cors from "cors";
 import { connectDB } from "./config/dbConnection.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 app.use(cors(corsConfig));
 app.use(helmet());
 configRoutes(app);
-
+app.use(cookieParser());
 const start = async () => {
     try {
       await connectDB(process.env.MONGO_URI);

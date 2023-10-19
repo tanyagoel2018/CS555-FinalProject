@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from "react";
-import { restAPI } from "../service/api";
+import { credentialsToggle, restAPI } from "../service/api";
 import { useFormik } from "formik";
 import { userSchema } from "../validations/userValidation";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -64,7 +64,9 @@ const Signup = () => {
     },
     validationSchema: userSchema,
     onSubmit: (values) => {
+
       setLoader(true);
+      credentialsToggle(false);
       restAPI
         .post("/sign-up", values)
         .then((response) => {
@@ -78,6 +80,7 @@ const Signup = () => {
             setErrorMsg(error.response.data);
           }
         });
+      credentialsToggle(true);
     },
   });
 

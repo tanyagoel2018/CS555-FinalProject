@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { restAPI } from "../service/api";
+import { credentialsToggle, restAPI } from "../service/api";
 import { useFormik } from "formik";
 import { loginSchema } from "../validations/userValidation";
 import {useNavigate, Link} from 'react-router-dom';
@@ -48,12 +48,16 @@ const Login = () => {
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
+      console.log(values);
       setLoader(true);
+      credentialsToggle(false);
+      
       restAPI
         .post("/login", values)
         .then((response) => {
           setLoader(false);
           setSuccess(true);
+          // console.log(response.data.token);
           localStorage.setItem("email", response.data.email);
           localStorage.setItem("id", response.data.id);
           localStorage.setItem("name", response.data.name);
@@ -66,7 +70,8 @@ const Login = () => {
             setErrorMsg(error.response.data);
           }
         });
-    },
+      credentialsToggle(true);
+      },
   });
 
   return (
