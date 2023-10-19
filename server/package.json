@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "npx mocha 'test/signup.js'"
+    "test": "npx mocha 'test/petname.js'"
   },
   "author": "Team 6",
   "license": "ISC",
