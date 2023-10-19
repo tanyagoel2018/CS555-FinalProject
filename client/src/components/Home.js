@@ -3,6 +3,7 @@ import { restAPI } from "../service/api";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
+import DailyTask from "./DailyTask"
 import {
   Button,
   Container,
@@ -166,6 +167,7 @@ const UserData = () => {
           <Link to="/petRename" className="links">
             Rename Pet
           </Link>
+          <DailyTask/>
         </div>
         <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
           <Alert
