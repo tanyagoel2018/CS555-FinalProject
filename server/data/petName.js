@@ -1,4 +1,6 @@
+import { ObjectId } from "bson";
 import { users } from "../config/dbCollections.js";
+import { petSchema } from "../validations/petNameValidations.js";
 
 const fetchPetName = async (id) => {
   //TODO: Input validation for ID.
@@ -51,29 +53,31 @@ const addPetName = async (id, name) => {
 
 const updatePetname = async (id, name) => {
   //TODO: Input validation for ID and name.
-  const idSchema = yup
-    .string()
-    .matches(
-      /^[A-Za-z0-9_]+$/,
-      "ID should contain only letters, numbers, and underscores"
-    );
-  const nameSchema = yup
-    .string()
-    .required()
-    .min(3, "Name should be at least 3 characters long");
+  // const idSchema = yup
+  //   .string()
+  //   .matches(
+  //     /^[A-Za-z0-9_]+$/,
+  //     "ID should contain only letters, numbers, and underscores"
+  //   );
+  // const nameSchema = yup
+  //   .string()
+  //   .required()
+  //   .min(3, "Name should be at least 3 characters long");
 
-  await idSchema.validate(id);
-  await nameSchema.validate(name);
+  // await idSchema.validate(id);
+  // await nameSchema.validate(name);
+  await petSchema.validate({petName:name});
 
-  const filter = { userId: id };
-  const update = { $set: { petName: name } };
+  const filter = { _id: new ObjectId(id) };
+  const update = { $set: { "pet.petName": name } };
 
-  const result = await collection.updateOne(filter, update);
+  const userCollection = await users();
+  const result = await userCollection.updateOne(filter, update);
 
   if (result.modifiedCount === 1) {
     return "pet name updated succesfully!";
   } else {
-    throw new Error("Pet name update failed");
+    throw "Pet name update failed";
   }
 
   //TODO: update petname in the DB for user ID
