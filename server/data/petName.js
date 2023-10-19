@@ -41,6 +41,14 @@ const addPetName = async (id, name) => {
     await idSchema.validate(id);
     await nameSchema.validate(name);
 
+    // const userExist = await userCollection.findOne({
+    //   _id: new Object(id),
+    // });
+
+    // if (userExist == null) {
+    //   throw "No user with this ID add!";
+    // }
+
     // Insert the pet name into the collection.
     const result = await users.insertOne({ userId: id, petName: name });
 
@@ -66,16 +74,26 @@ const updatePetname = async (id, name) => {
 
   // await idSchema.validate(id);
   // await nameSchema.validate(name);
-  await petSchema.validate({petName:name});
+  await petSchema.validate({ petName: name });
 
   const filter = { _id: new ObjectId(id) };
   const update = { $set: { "pet.petName": name } };
 
   const userCollection = await users();
+  const userExist = await userCollection.findOne(filter);
+
+  if (userExist == null) {
+    throw "No user with this ID!";
+  }
+
+  if (name === userExist.pet.petName) {
+    throw "New name matches old name!";
+  }
+
   const result = await userCollection.updateOne(filter, update);
 
   if (result.modifiedCount === 1) {
-    return "pet name updated succesfully!";
+    return "Pet name updated succesfully!";
   } else {
     throw "Pet name update failed";
   }
