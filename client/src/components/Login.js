@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { restAPI } from "../service/api";
 import { useFormik } from "formik";
 import { loginSchema } from "../validations/userValidation";
-import { useState } from "react";
+import {useNavigate, Link} from 'react-router-dom';
 import {
   Button,
   Container,
@@ -15,7 +15,6 @@ import {
   CircularProgress,
   Snackbar,
   Alert,
-  Link,
 } from "@mui/material";
 
 const Login = () => {
@@ -23,6 +22,16 @@ const Login = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userEmail = localStorage.getItem('email');
+    const userId = localStorage.getItem('id');
+    if (userEmail && userId) {
+      navigate('/home');
+    }
+  }, [navigate]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -45,10 +54,10 @@ const Login = () => {
         .then((response) => {
           setLoader(false);
           setSuccess(true);
-          console.log(response);
-          window.sessionStorage.setItem("email", response.data.email);
-          window.sessionStorage.setItem("id", response.data.id);
-          window.sessionStorage.setItem("name", response.data.name);
+          localStorage.setItem("email", response.data.email);
+          localStorage.setItem("id", response.data.id);
+          localStorage.setItem("name", response.data.name);
+          navigate('/signUp');
         })
         .catch((error) => {
           setLoader(false);
@@ -139,7 +148,7 @@ const Login = () => {
           </form>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link to="/signUp" className="links">
                 Don't have an account? Sign up here!
               </Link>
             </Grid>

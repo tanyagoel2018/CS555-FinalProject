@@ -8,7 +8,7 @@ const getUserByUserID = async (id) => {
   });
 
   if (userExist == null) {
-    throw "Invalid session ID!";
+    throw "Invalid ID!";
   }
 
   userExist._id = userExist._id.toString();

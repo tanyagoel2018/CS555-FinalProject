@@ -1,11 +1,10 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import { restAPI } from "../service/api";
 import { useFormik } from "formik";
 import { userSchema } from "../validations/userValidation";
-import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
+import {useNavigate, Link} from 'react-router-dom';
 import {
   Button,
   Container,
@@ -18,7 +17,6 @@ import {
   CircularProgress,
   Snackbar,
   Alert,
-  Link,
   InputAdornment,
   IconButton,
 } from "@mui/material";
@@ -31,6 +29,18 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
+  // redirection based on session
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userEmail = localStorage.getItem('email');
+    const userId = localStorage.getItem('id');
+    if (userEmail && userId) {
+      navigate('/home');
+    }
+  }, [navigate]);
+  //
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -214,7 +224,7 @@ const Signup = () => {
           </form>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link to="/" className="links">
                 Already have an account? Sign in
               </Link>
             </Grid>

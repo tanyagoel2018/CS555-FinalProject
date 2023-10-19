@@ -1,19 +1,22 @@
 import "./App.css";
-import React, { useEffect, useState } from "react";
-import { restAPI } from "./service/api";
-// import Signup from "./components/Signup";
-// import Login from "./components/Login";
-import Home from "./components/Home";
-
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Home from "./components/Home"
 function App() {
-  const [welcomeMsg, setWelcomeMsg] = useState("Not welcome");
 
   return (
-    <div>
-      {/* <Signup></Signup> */}
-      {/* <Login></Login> */}
-      <Home></Home>
-    </div>
+    <Router>
+      <div className="app">
+          <Routes>
+            <Route exact path='/' element={<Login/>}/>
+            <Route path='/signUp' element={<Signup/>}/>
+            <Route path="/home" element={<Home/>}/>
+          </Routes>
+      </div>
+    </Router>
+
   );
 }
 

@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+/* style for link */
+.links {
+  color: #1876D1;  
+	text-decoration: none !important;
+}
+
+.links:visited {
+	color: #1876D1;
+
+}
