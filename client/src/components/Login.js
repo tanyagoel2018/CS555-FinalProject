@@ -16,14 +16,17 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import { useApi } from "../ContextAPI/APIContext";
 
 const Login = () => {
   const [loader, setLoader] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
-
+  
   const navigate = useNavigate();
+  const {restAPI, withCredentials, setWithCredentials} = useApi();
+  console.log(withCredentials);
 
   useEffect(() => {
     const userEmail = localStorage.getItem('email');
@@ -31,6 +34,7 @@ const Login = () => {
     if (userEmail && userId) {
       navigate('/home');
     }
+    setWithCredentials(false);
   }, [navigate]);
 
   const handleClose = (event, reason) => {
@@ -58,9 +62,11 @@ const Login = () => {
           setLoader(false);
           setSuccess(true);
           // console.log(response.data.token);
+          console.log(withCredentials);
           localStorage.setItem("email", response.data.email);
           localStorage.setItem("id", response.data.id);
           localStorage.setItem("name", response.data.name);
+          setWithCredentials(true);
           navigate('/signUp');
         })
         .catch((error) => {
