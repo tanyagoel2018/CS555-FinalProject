@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let credentials = true
+let credentials = false
 const restAPI = axios.create({
     baseURL: "http://localhost:4000",
     withCredentials: credentials

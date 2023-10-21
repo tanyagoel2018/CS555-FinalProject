@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
-import { restAPI } from "../service/api";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
+import { restAPI } from "../service/api";
+import Cookies from 'js-cookie';
+
 import {
   Button,
   Container,
@@ -17,6 +19,7 @@ import {
   Alert,
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
+import { useApi } from "../ContextAPI/APIContext";
 
 const UserData = () => {
   const [userData, setUserdata] = useState(null);
@@ -26,10 +29,14 @@ const UserData = () => {
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
   const [userId, setUserId] = useState(localStorage.getItem("id"));
   const [reload, setReload] = useState(0);
-
+  const {withCredentials} = useApi();
+  const isCookieSet = Cookies.get('jwt') !== undefined;
+  console.log(Cookies.get());
+  
   useEffect(() => {
     const id = localStorage.getItem("id");
     const url = `/userData?id=${id}`;
+    console.log("in home", withCredentials);
     restAPI
       .get(url)
       .then((response) => {

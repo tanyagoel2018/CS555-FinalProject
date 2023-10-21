@@ -6,6 +6,8 @@ import { getUserByUserID } from "../data/userData.js";
 router.route("/").get(async (req, res) => {
   try {
     let userId = req.query.id;
+    console.log(req.cookies);
+
     const user = await getUserByUserID(userId);
     res.json(user);
   } catch (error) {

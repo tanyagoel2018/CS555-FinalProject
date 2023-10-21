@@ -20,6 +20,7 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
+import { useApi } from "../ContextAPI/APIContext";
 
 const Signup = () => {
   const [loader, setLoader] = useState(false);
@@ -32,7 +33,8 @@ const Signup = () => {
 
   // redirection based on session
   const navigate = useNavigate();
-
+  const {restAPI} = useApi();
+  
   useEffect(() => {
     const userEmail = localStorage.getItem('email');
     const userId = localStorage.getItem('id');
