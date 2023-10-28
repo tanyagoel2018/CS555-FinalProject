@@ -18,8 +18,11 @@ import {
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
 import { useApi } from "../ContextAPI/APIContext";
+// import { restAPI } from "../service/api";
 
 const UserData = () => {
+  const {restAPI} = useApi();
+  
   const [userData, setUserdata] = useState(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -28,8 +31,7 @@ const UserData = () => {
   const [userId, setUserId] = useState(localStorage.getItem("id"));
   const [reload, setReload] = useState(0);
   const {withCredentials} = useApi();
-  const isCookieSet = Cookies.get('jwt') !== undefined;
-  console.log(Cookies.get());
+
   
   useEffect(() => {
     const id = localStorage.getItem("id");

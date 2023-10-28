@@ -6,7 +6,7 @@ const ApiProvider = ({children})=>{
     const [withCredentials, setWithCredentials] = useState(true);
     const restAPI = axios.create({
         baseURL: 'http://localhost:4000',
-        withCredentials: withCredentials,
+        withCredentials: true,
       });
     
     return( <ApiContext.Provider value={{restAPI, withCredentials, setWithCredentials}}>

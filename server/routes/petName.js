@@ -10,7 +10,6 @@ const router = Router();
 router.route("/").post(async (req, res) => {
   try {
     let input = req.body;
-    console.log(req.cookies);
     let userId = xss(input.id);
     let petName = xss(input.petName);
     await petSchema.validate({petName});

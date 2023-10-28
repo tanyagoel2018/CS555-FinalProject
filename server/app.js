@@ -12,10 +12,11 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+app.use(cookieParser()); 
 app.use(cors(corsConfig));
 app.use(helmet());
 configRoutes(app);
-app.use(cookieParser());
+
 const start = async () => {
     try {
       await connectDB(process.env.MONGO_URI);

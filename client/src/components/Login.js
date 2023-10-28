@@ -25,8 +25,7 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
   
   const navigate = useNavigate();
-  const {restAPI, withCredentials, setWithCredentials} = useApi();
-  console.log(withCredentials);
+  // const {restAPI, withCredentials, setWithCredentials} = useApi();
 
   useEffect(() => {
     const userEmail = localStorage.getItem('email');
@@ -34,7 +33,7 @@ const Login = () => {
     if (userEmail && userId) {
       navigate('/home');
     }
-    setWithCredentials(false);
+    // setWithCredentials(false);
   }, [navigate]);
 
   const handleClose = (event, reason) => {
@@ -60,13 +59,13 @@ const Login = () => {
         .post("/login", values)
         .then((response) => {
           setLoader(false);
+          console.log(response);
           setSuccess(true);
           // console.log(response.data.token);
-          console.log(withCredentials);
           localStorage.setItem("email", response.data.email);
           localStorage.setItem("id", response.data.id);
           localStorage.setItem("name", response.data.name);
-          setWithCredentials(true);
+          // setWithCredentials(true);
           navigate('/signUp');
         })
         .catch((error) => {

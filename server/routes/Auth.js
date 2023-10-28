@@ -25,7 +25,6 @@ router.route("/login").post(async (req, res) => {
       httpOnly: true, // Make the cookie accessible only via HTTP(s)
       maxAge: 3600000, // Cookie expiration time in milliseconds (1 hour)
     });
-    console.log(res);
     res.status(200).json(validUser);
   } catch (error) {
     res.status(400).json(error);
