@@ -22,7 +22,6 @@ const PetRename = () => {
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
-  const [userId, setUserId] = useState(localStorage.getItem("id"));
   const navigate = useNavigate();
 
   const handleClose = (event, reason) => {
@@ -39,7 +38,6 @@ const PetRename = () => {
     },
     validationSchema: petSchema,
     onSubmit: (values) => {
-      values.id = userId;
       setLoader(true);
       restAPI
         .post("/protected/petName", values)

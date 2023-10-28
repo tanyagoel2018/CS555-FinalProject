@@ -21,7 +21,7 @@ router.route("/login").post(async (req, res) => {
     });
 
     res.cookie("jwt", token, {
-      httpOnly: false, // Make the cookie accessible not only via HTTP(s)
+      httpOnly: true, // Make the cookie accessible not only via HTTP(s)
       maxAge: 3600000, // Cookie expiration time in milliseconds (1 hour)
     });
     res.status(200).json(validUser);

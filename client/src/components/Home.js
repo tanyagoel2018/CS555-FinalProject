@@ -32,7 +32,6 @@ const UserData = () => {
   const [loader, setLoader] = useState(true);
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
   const [reload, setReload] = useState(0);
-  const { withCredentials } = useApi();
 
   useEffect(() => {
     const bleh = localStorage.getItem("Are_you_in");
@@ -41,7 +40,6 @@ const UserData = () => {
     }
     const id = localStorage.getItem("id");
     const url = `/protected/userData`;
-    console.log("in home", withCredentials);
     restAPI
       .get(url)
       .then((response) => {
