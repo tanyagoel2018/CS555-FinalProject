@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { restAPI } from "../service/api";
 import { useState } from "react";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
-import DailyTask from "./DailyTask"
+import DailyTask from "./DailyTask";
+import Cookies from "js-cookie";
+import { useNavigate, Link } from "react-router-dom";
+
 import {
   Button,
   Container,
@@ -18,19 +19,27 @@ import {
   Alert,
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
+import { useApi } from "../ContextAPI/APIContext";
+// import { restAPI } from "../service/api";
 
 const UserData = () => {
+  const navigate = useNavigate();
+  const { restAPI } = useApi();
+
   const [userData, setUserdata] = useState(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(true);
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
-  const [userId, setUserId] = useState(localStorage.getItem("id"));
   const [reload, setReload] = useState(0);
 
   useEffect(() => {
+    const bleh = localStorage.getItem("Are_you_in");
+    if (!bleh) {
+      navigate("/");
+    }
     const id = localStorage.getItem("id");
-    const url = `/userData?id=${id}`;
+    const url = `/protected/userData`;
     restAPI
       .get(url)
       .then((response) => {
@@ -64,9 +73,8 @@ const UserData = () => {
     },
     validationSchema: petSchema,
     onSubmit: (values) => {
-      values.id = userId;
       restAPI
-        .post("/petName", values)
+        .post("/protected/petName", values)
         .then((response) => {
           setLoader(false);
           setSuccess(true);
@@ -136,8 +144,12 @@ const UserData = () => {
                       value={formik.values.petName}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      error={formik.touched.petName && Boolean(formik.errors.petName)}
-                      helperText={formik.touched.petName && formik.errors.petName}
+                      error={
+                        formik.touched.petName && Boolean(formik.errors.petName)
+                      }
+                      helperText={
+                        formik.touched.petName && formik.errors.petName
+                      }
                     />
                   </Grid>
                 </Grid>
@@ -160,17 +172,17 @@ const UserData = () => {
       <>
         <div className="home">
           <span>
-          <h1>Welcome {userData.name}!</h1>
-          <br></br>
-          <h2>Your pet name is: {userData.pet.petName}!</h2>
-          <br></br>
-          <h2>Your current score is: {userData.rewards}</h2>
-          <Link to="/petRename" className="links">
-            Rename Pet
-          </Link>
+            <h1>Welcome {userData.name}!</h1>
+            <br></br>
+            <h2>Your pet name is: {userData.pet.petName}!</h2>
+            <br></br>
+            <h2>Your current score is: {userData.rewards}</h2>
+            <Link to="/petRename" className="links">
+              Rename Pet
+            </Link>
           </span>
           <span>
-          <DailyTask/>
+            <DailyTask />
           </span>
         </div>
         <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>

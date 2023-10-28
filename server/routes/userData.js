@@ -5,7 +5,8 @@ import { getUserByUserID } from "../data/userData.js";
 // getting all user data route
 router.route("/").get(async (req, res) => {
   try {
-    let userId = req.query.id;
+    let userId = req.user.id;
+
     const user = await getUserByUserID(userId);
     res.json(user);
   } catch (error) {

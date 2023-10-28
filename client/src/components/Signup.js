@@ -1,10 +1,10 @@
-import React,{useState, useEffect} from "react";
-import { restAPI } from "../service/api";
+import React, { useState, useEffect } from "react";
+import { credentialsToggle, restAPI } from "../service/api";
 import { useFormik } from "formik";
 import { userSchema } from "../validations/userValidation";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import {useNavigate, Link} from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 import {
   Button,
   Container,
@@ -20,6 +20,7 @@ import {
   InputAdornment,
   IconButton,
 } from "@mui/material";
+import { useApi } from "../ContextAPI/APIContext";
 
 const Signup = () => {
   const [loader, setLoader] = useState(false);
@@ -32,12 +33,13 @@ const Signup = () => {
 
   // redirection based on session
   const navigate = useNavigate();
+  const { restAPI } = useApi();
 
   useEffect(() => {
-    const userEmail = localStorage.getItem('email');
-    const userId = localStorage.getItem('id');
+    const userEmail = localStorage.getItem("email");
+    const userId = localStorage.getItem("id");
     if (userEmail && userId) {
-      navigate('/home');
+      navigate("/home");
     }
   }, [navigate]);
   //
@@ -65,6 +67,7 @@ const Signup = () => {
     validationSchema: userSchema,
     onSubmit: (values) => {
       setLoader(true);
+      credentialsToggle(false);
       restAPI
         .post("/sign-up", values)
         .then((response) => {
@@ -78,6 +81,7 @@ const Signup = () => {
             setErrorMsg(error.response.data);
           }
         });
+      credentialsToggle(true);
     },
   });
 
