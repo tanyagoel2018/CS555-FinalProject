@@ -10,9 +10,9 @@ const router = Router();
 router.route("/").post(async (req, res) => {
   try {
     let input = req.body;
-    let userId = xss(input.id);
+    let userId = xss(req.user.id);
     let petName = xss(input.petName);
-    await petSchema.validate({petName});
+    await petSchema.validate({ petName });
     let result = await updatePetname(userId, petName);
     res.json(result);
   } catch (error) {

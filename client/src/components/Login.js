@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
-import { credentialsToggle, restAPI } from "../service/api";
+import React, { useState, useEffect } from "react";
+// import { credentialsToggle, restAPI } from "../service/api";
 import { useFormik } from "formik";
 import { loginSchema } from "../validations/userValidation";
-import {useNavigate, Link} from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 import {
   Button,
   Container,
@@ -23,15 +23,16 @@ const Login = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
-  
+
   const navigate = useNavigate();
-  // const {restAPI, withCredentials, setWithCredentials} = useApi();
+  const { restAPI } = useApi();
 
   useEffect(() => {
-    const userEmail = localStorage.getItem('email');
-    const userId = localStorage.getItem('id');
-    if (userEmail && userId) {
-      navigate('/home');
+    // const userEmail = localStorage.getItem("email");
+    // const userId = localStorage.getItem("id");
+    const bleh = localStorage.getItem("Are_you_in");
+    if (bleh) {
+      navigate("/home");
     }
     // setWithCredentials(false);
   }, [navigate]);
@@ -53,8 +54,7 @@ const Login = () => {
     onSubmit: (values) => {
       console.log(values);
       setLoader(true);
-      credentialsToggle(false);
-      
+
       restAPI
         .post("/login", values)
         .then((response) => {
@@ -62,11 +62,12 @@ const Login = () => {
           console.log(response);
           setSuccess(true);
           // console.log(response.data.token);
-          localStorage.setItem("email", response.data.email);
-          localStorage.setItem("id", response.data.id);
-          localStorage.setItem("name", response.data.name);
-          // setWithCredentials(true);
-          navigate('/signUp');
+          // localStorage.setItem("email", response.data.email);
+          // localStorage.setItem("id", response.data.id);
+          // localStorage.setItem("name", response.data.name);
+          // setWithCredentials(true);/
+          localStorage.setItem("Are_you_in", "yes");
+          navigate("/home");
         })
         .catch((error) => {
           setLoader(false);
@@ -75,8 +76,7 @@ const Login = () => {
             setErrorMsg(error.response.data);
           }
         });
-      credentialsToggle(true);
-      },
+    },
   });
 
   return (

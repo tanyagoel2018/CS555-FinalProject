@@ -8,7 +8,7 @@ const DailyTask = ()=>{
 
     const fetchTask = async()=>{
         try {
-            const allTask = await restAPI.get("/daily-task");
+            const allTask = await restAPI.get("/protected/daily-task");
             setDailyTaks(allTask.data.tasks);
             setLoading(false);
         } catch (error) {
