@@ -3,7 +3,7 @@ import { restAPI } from "../service/api";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
-import DailyTask from "./DailyTask"
+import DailyTask from "./DailyTask";
 import {
   Button,
   Container,
@@ -18,6 +18,7 @@ import {
   Alert,
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
+import Products from "./Products";
 
 const UserData = () => {
   const [userData, setUserdata] = useState(null);
@@ -136,8 +137,12 @@ const UserData = () => {
                       value={formik.values.petName}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      error={formik.touched.petName && Boolean(formik.errors.petName)}
-                      helperText={formik.touched.petName && formik.errors.petName}
+                      error={
+                        formik.touched.petName && Boolean(formik.errors.petName)
+                      }
+                      helperText={
+                        formik.touched.petName && formik.errors.petName
+                      }
                     />
                   </Grid>
                 </Grid>
@@ -158,35 +163,56 @@ const UserData = () => {
   } else {
     return (
       <>
-        <div className="home">
-          <span>
-          <h1>Welcome {userData.name}!</h1>
-          <br></br>
-          <h2>Your pet name is: {userData.pet.petName}!</h2>
-          <br></br>
-          <h2>Your current score is: {userData.rewards}</h2>
-          <Link to="/petRename" className="links">
-            Rename Pet
-          </Link>
-          </span>
-          <span>
-          <DailyTask/>
-          </span>
-        </div>
-        <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
-          <Alert
-            onClose={handleClose}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            Update Successfull!
-          </Alert>
-        </Snackbar>
-        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-            {errorMsg}!
-          </Alert>
-        </Snackbar>
+        <Grid container spacing={1}>
+          <Grid item xs={3}>
+            <Products reloadParent={setReload} rewards={userData.rewards} reload={reload}/>
+          </Grid>
+          <Grid item xs={6}>
+            <div className="home center">
+              <span>
+                <h1>Welcome {userData.name}!</h1>
+                <br></br>
+                <h2>Your pet name is: {userData.pet.petName}!</h2>
+                <br></br>
+                <h2>Your current score is: {userData.rewards}</h2>
+                <Link to="/petRename" className="links">
+                  Rename Pet
+                </Link>
+              </span>
+              <span></span>
+            </div>
+            <Snackbar
+              open={success}
+              autoHideDuration={6000}
+              onClose={handleClose}
+            >
+              <Alert
+                onClose={handleClose}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                Update Successfull!
+              </Alert>
+            </Snackbar>
+            <Snackbar
+              open={error}
+              autoHideDuration={6000}
+              onClose={handleClose}
+            >
+              <Alert
+                onClose={handleClose}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                {errorMsg}!
+              </Alert>
+            </Snackbar>
+          </Grid>
+          <Grid item xs={3}>
+            
+            <DailyTask rewards={userData.rewards}/>
+          </Grid>
+        </Grid>
       </>
     );
   }
