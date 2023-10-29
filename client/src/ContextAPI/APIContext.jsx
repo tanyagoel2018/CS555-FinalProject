@@ -3,13 +3,12 @@ import axios from "axios";
 const ApiContext = createContext();
 
 const ApiProvider = ({children})=>{
-    const [withCredentials, setWithCredentials] = useState(true);
     const restAPI = axios.create({
         baseURL: 'http://localhost:4000',
         withCredentials: true,
       });
     
-    return( <ApiContext.Provider value={{restAPI, withCredentials, setWithCredentials}}>
+    return( <ApiContext.Provider value={{restAPI}}>
         {children}
       </ApiContext.Provider>);
 }

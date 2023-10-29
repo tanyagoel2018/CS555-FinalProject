@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useFormik } from "formik";
 import DailyTask from "./DailyTask";
-import Cookies from "js-cookie";
 import { useNavigate, Link } from "react-router-dom";
 
 import {
@@ -20,7 +19,6 @@ import {
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
 import { useApi } from "../ContextAPI/APIContext";
-// import { restAPI } from "../service/api";
 
 const UserData = () => {
   const navigate = useNavigate();

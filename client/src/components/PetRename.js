@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { restAPI } from "../service/api";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
@@ -17,8 +16,10 @@ import {
   Alert,
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
+import { useApi } from "../ContextAPI/APIContext";
 
 const PetRename = () => {
+  const {restAPI} = useApi();
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
