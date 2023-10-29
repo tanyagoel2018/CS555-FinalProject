@@ -10,14 +10,13 @@ import {
   CardActionArea,
   CardMedia,
 } from "@mui/material";
+import useSnackbar from "../hooks/useSnackbar";
 
 const Products = (props) => {
   const [rewards, setRewards] = useState(props.rewards);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Something gone wrong");
+  const snackbar = useSnackbar();
   const {restAPI} = useApi();
-  const [products, setProducts]= useState(productData);
+  const [products, setProducts] = useState(productData);
 
   const purchaseProduct = async (points, image) => {
     const values = {
@@ -27,17 +26,14 @@ const Products = (props) => {
     try {
       await restAPI.post("/protected/products", values);
       setRewards(rewards - values.points);
-      setSuccess(true);
+      snackbar.showSuccess("Purchase Successfull!");
       props.reloadParent(props.reload + 1);
     } catch (error) {
-      setError(true);
       if (error && error.response && error.response.data) {
-        setErrorMsg(error.response.data);
+        snackbar.showError(error.response.data || "Something went wrong");
       }
     }
   };
-
-  const snackbarProp = {success, setError, setSuccess, error, errorMsg, setErrorMsg, successMsg:"Purchase Successfull!" }
   return (
     <div className="center">
       <h2>Products</h2>
@@ -47,7 +43,7 @@ const Products = (props) => {
           return <IndividualProduct name={name} points={points} img = {img} purchaseProduct={purchaseProduct}/>
         })}
       </Grid>
-      <CustomSnackbar snackbarProp={snackbarProp} />
+      <CustomSnackbar snackbarProp={snackbar} />
     </div>
   );
 };
