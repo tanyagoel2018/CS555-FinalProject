@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import DailyTask from "./DailyTask";
 import { useNavigate, Link } from "react-router-dom";
-;
 import {
   Button,
   Container,
@@ -88,7 +87,6 @@ const UserData = () => {
         });
     },
   });
-  //
 
   if (loader) {
     return (
@@ -144,14 +142,10 @@ const UserData = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       error={
-                        
                         formik.touched.petName && Boolean(formik.errors.petName)
-                      
                       }
                       helperText={
-                        
                         formik.touched.petName && formik.errors.petName
-                      
                       }
                     />
                   </Grid>
@@ -173,35 +167,6 @@ const UserData = () => {
   } else {
     return (
       <>
-        <div className="home">
-          <span>
-            <h1>Welcome {userData.name}!</h1>
-            <br></br>
-            <h2>Your pet name is: {userData.pet.petName}!</h2>
-            <br></br>
-            <h2>Your current score is: {userData.rewards}</h2>
-            <Link to="/petRename" className="links">
-              Rename Pet
-            </Link>
-          </span>
-          <span>
-            <DailyTask />
-          </span>
-        </div>
-        <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
-          <Alert
-            onClose={handleClose}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            Update Successfull!
-          </Alert>
-        </Snackbar>
-        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-            {errorMsg}!
-          </Alert>
-        </Snackbar>
         <Grid container spacing={1}>
           <Grid item xs={3}>
             <Products reloadParent={setReload} rewards={userData.rewards} reload={reload}/>

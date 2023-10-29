@@ -11,7 +11,7 @@ const constructorMethod = (app) => {
   app.use("/protected/daily-task", dailyTask);
   app.use("/protected/userData", userData);
   app.use("/protected/petName", petName);
-  app.use("/products",products);
+  app.use("/protected/products",products);
   app.use("*", (req, res) => {
     return res.status(404).json({ msg: "Not Found" });
   });

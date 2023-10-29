@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Task from "./Task";
 import { useApi } from "../ContextAPI/APIContext";
 
-const DailyTask = ()=>{ 
+const DailyTask = ({rewards})=>{ 
     const [dailyTasks, setDailyTaks] = useState([]);
     const [loading, setLoading] = useState(true);
     const {restAPI} = useApi();

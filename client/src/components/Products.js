@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { restAPI } from "../service/api";
 import {
   Typography,
   Grid,
@@ -10,13 +9,14 @@ import {
   Alert,
   Snackbar
 } from "@mui/material";
+import { useApi } from "../ContextAPI/APIContext";
 
 const Products = (props) => {
-  const [userId, setUserId] = useState(localStorage.getItem("id"));
   const [rewards, setRewards] = useState(props.rewards);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Something gone wrong");
+  const {restAPI} = useApi();
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -28,13 +28,12 @@ const Products = (props) => {
 
   const purchaseProduct = async (points, image) => {
     const values = {
-      id: userId,
       rewards: points,
       image: image,
     };
 
     restAPI
-      .post("/products", values)
+      .post("/protected/products", values)
       .then(() => {
         setRewards(rewards - points);
         setSuccess(true);

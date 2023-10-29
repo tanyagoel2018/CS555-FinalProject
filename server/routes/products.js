@@ -6,10 +6,9 @@ import { productUpdateSchema } from "../validations/productValidation.js";
 const router = Router();
 
 router.route("/").post(async (req, res) => {
-
     try {
         let input = req.body;
-        let id = xss(input.id);
+        let id = xss(req.user.id);
         let rewards = xss(input.rewards);
         let image = xss(input.image);
         await productUpdateSchema.validate({rewards, image})
