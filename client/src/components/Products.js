@@ -34,6 +34,7 @@ const Products = (props) => {
       }
     }
   };
+  
   return (
     <div className="center">
       <h2>Products</h2>

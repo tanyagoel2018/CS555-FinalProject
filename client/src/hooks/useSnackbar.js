@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function useSnackbar() {
+const useSnackbar =()=> {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
