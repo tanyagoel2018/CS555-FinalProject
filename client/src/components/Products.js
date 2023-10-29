@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useApi } from "../ContextAPI/APIContext";
+import {productData} from "../data/productData"
+import CustomSnackbar from "./CustomSnackbar";
 import {
   Typography,
   Grid,
@@ -6,10 +9,7 @@ import {
   CardContent,
   CardActionArea,
   CardMedia,
-  Alert,
-  Snackbar
 } from "@mui/material";
-import { useApi } from "../ContextAPI/APIContext";
 
 const Products = (props) => {
   const [rewards, setRewards] = useState(props.rewards);
@@ -17,149 +17,59 @@ const Products = (props) => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Something gone wrong");
   const {restAPI} = useApi();
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setError(false);
-    setSuccess(false);
-  };
+  const [products, setProducts]= useState(productData);
 
   const purchaseProduct = async (points, image) => {
     const values = {
       rewards: points,
       image: image,
     };
-
-    restAPI
-      .post("/protected/products", values)
-      .then(() => {
-        setRewards(rewards - points);
-        setSuccess(true);
-        props.reloadParent(props.reload + 1);
-      })
-      .catch((error) => {
-        setError(true);
-        if (error && error.response && error.response.data) {
-          setErrorMsg(error.response.data);
-        }
-      });
+    try {
+      await restAPI.post("/protected/products", values);
+      setRewards(rewards - values.points);
+      setSuccess(true);
+      props.reloadParent(props.reload + 1);
+    } catch (error) {
+      setError(true);
+      if (error && error.response && error.response.data) {
+        setErrorMsg(error.response.data);
+      }
+    }
   };
+
+  const snackbarProp = {success, setError, setSuccess, error, errorMsg, setErrorMsg, successMsg:"Purchase Successfull!" }
   return (
     <div className="center">
       <h2>Products</h2>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea
-              onClick={() =>
-                purchaseProduct(
-                  100,
-                  "https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg"
-                )
-              }
-            >
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg"
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography>Meat</Typography>
-                <Typography>100 Points</Typography>
-              </CardContent>
-            </CardActionArea>
-            {/* <CardActions style={{justifyContent:'center'}}>
-              <Button size="small" color="primary">
-                100
-              </Button>
-            </CardActions> */}
-          </Card>
-        </Grid>
-        <Grid item xs={6}>
-          <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea
-              onClick={() =>
-                purchaseProduct(
-                  200,
-                  "https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg"
-                )
-              }
-            >
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg"
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography>Orange Hat</Typography>
-                <Typography>200 Points</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-        <Grid item xs={6}>
-          <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea
-              onClick={() =>
-                purchaseProduct(
-                  250,
-                  "https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg"
-                )
-              }
-            >
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg"
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography>Yellow Jacket</Typography>
-                <Typography>250 Points</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-        <Grid item xs={6}>
-          <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea
-              onClick={() =>
-                purchaseProduct(
-                  300,
-                  "https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg"
-                )
-              }
-            >
-              <CardMedia
-                component="img"
-                height="140"
-                image="https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg"
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography>Googles</Typography>
-                <Typography>300 Points</Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
+        {products.map((product) => {
+          const { name, points, img } = product;
+          return <IndividualProduct name={name} points={points} img = {img} purchaseProduct={purchaseProduct}/>
+        })}
       </Grid>
-      <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Purchase Successfull!
-        </Alert>
-      </Snackbar>
-      <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {errorMsg}!
-        </Alert>
-      </Snackbar>
+      <CustomSnackbar snackbarProp={snackbarProp} />
     </div>
   );
 };
 
+const IndividualProduct = ({purchaseProduct, name, points, img })=>{
+      return (
+        <Grid item xs={6}>
+        <Card sx={{ maxWidth: 345 }}>
+          <CardActionArea onClick={() =>purchaseProduct(points,img)}>
+            <CardMedia
+              component="img"
+              height="140"
+              image= {img}
+              alt="green iguana"
+            />
+            <CardContent>
+              <Typography>{name}</Typography>
+              <Typography>{points} Points</Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Grid>
+      );
+}
 export default Products;
