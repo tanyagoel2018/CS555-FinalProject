@@ -5,12 +5,14 @@ import { corsConfig } from "./config/settings.js";
 import helmet from "helmet";
 import cors from "cors";
 import { connectDB } from "./config/dbConnection.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+app.use(cookieParser()); 
 app.use(cors(corsConfig));
 app.use(helmet());
 configRoutes(app);

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { restAPI } from "../service/api";
 import { useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
@@ -17,12 +16,13 @@ import {
   Alert,
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
+import { useApi } from "../ContextAPI/APIContext";
 
 const PetRename = () => {
+  const {restAPI} = useApi();
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(false);
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
-  const [userId, setUserId] = useState(localStorage.getItem("id"));
   const navigate = useNavigate();
 
   const handleClose = (event, reason) => {
@@ -39,10 +39,9 @@ const PetRename = () => {
     },
     validationSchema: petSchema,
     onSubmit: (values) => {
-      values.id = userId;
       setLoader(true);
       restAPI
-        .post("/petName", values)
+        .post("/protected/petName", values)
         .then((response) => {
           setLoader(false);
           navigate("/home");
@@ -97,7 +96,9 @@ const PetRename = () => {
                     value={formik.values.petName}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={formik.touched.petName && Boolean(formik.errors.petName)}
+                    error={
+                      formik.touched.petName && Boolean(formik.errors.petName)
+                    }
                     helperText={formik.touched.petName && formik.errors.petName}
                   />
                 </Grid>

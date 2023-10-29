@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { restAPI } from "../service/api";
+// import { restAPI } from "../service/api";
 import Task from "./Task";
+import { useApi } from "../ContextAPI/APIContext";
 
-const DailyTask = ({rewards}) => {
-  const [dailyTasks, setDailyTaks] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchTask = async () => {
-    try {
-      const allTask = await restAPI.get("/daily-task");
-      setDailyTaks(allTask.data.tasks);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
+const DailyTask = ()=>{ 
+    const [dailyTasks, setDailyTaks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const {restAPI} = useApi();
+    const fetchTask = async()=>{
+        try {
+            const allTask = await restAPI.get("/protected/daily-task");
+            setDailyTaks(allTask.data.tasks);
+            setLoading(false);
+        } catch (error) {
+            console.log(error);            
+        }
     }
-  };
-  useEffect(() => {
-    fetchTask();
-  }, []);
+    useEffect(()=>{
+        fetchTask();
+    },[])
 
   if (loading) {
     return <h4>loading..</h4>;

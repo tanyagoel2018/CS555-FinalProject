@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from "react";
-import { restAPI } from "../service/api";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { loginSchema } from "../validations/userValidation";
-import {useNavigate, Link} from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 import {
   Button,
   Container,
@@ -16,6 +15,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import { useApi } from "../ContextAPI/APIContext";
 
 const Login = () => {
   const [loader, setLoader] = useState(false);
@@ -24,12 +24,12 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState("Something went wrong");
 
   const navigate = useNavigate();
+  const { restAPI } = useApi();
 
   useEffect(() => {
-    const userEmail = localStorage.getItem('email');
-    const userId = localStorage.getItem('id');
-    if (userEmail && userId) {
-      navigate('/home');
+    const bleh = localStorage.getItem("Are_you_in");
+    if (bleh) {
+      navigate("/home");
     }
   }, [navigate]);
 
@@ -48,16 +48,18 @@ const Login = () => {
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
+      console.log(values);
       setLoader(true);
+
       restAPI
         .post("/login", values)
         .then((response) => {
           setLoader(false);
+          console.log(response);
           setSuccess(true);
-          localStorage.setItem("email", response.data.email);
-          localStorage.setItem("id", response.data.id);
-          localStorage.setItem("name", response.data.name);
-          navigate('/signUp');
+
+          localStorage.setItem("Are_you_in", "yes");
+          navigate("/home");
         })
         .catch((error) => {
           setLoader(false);
