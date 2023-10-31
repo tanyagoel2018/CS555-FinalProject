@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import DailyTask from "./DailyTask";
 import { useNavigate, Link } from "react-router-dom";
-import dog from "../animations/dog.gif";
 import {
   Button,
   Container,
