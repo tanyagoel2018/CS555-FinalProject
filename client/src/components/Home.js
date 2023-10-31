@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
 import { useApi } from "../ContextAPI/APIContext";
+import Logout from "./Logout";
 
 const UserData = () => {
   const navigate = useNavigate();
@@ -197,6 +198,7 @@ const UserData = () => {
             {errorMsg}!
           </Alert>
         </Snackbar>
+        <Logout />
       </>
     );
   }

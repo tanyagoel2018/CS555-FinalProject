@@ -1,5 +1,5 @@
 import React from "react";
-import {FcLike, FcOk} from "react-icons/fc"
+import {FcLike} from "react-icons/fc"
 const Task = ({task, reward})=>{
     return <div className="TaskContainer">
         <span className="task">{task}</span>

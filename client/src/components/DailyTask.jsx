@@ -20,7 +20,6 @@ const DailyTask = ()=>{
         fetchTask();
     },[])
 
-
     if (loading){
         return <h4>loading..</h4>
     }

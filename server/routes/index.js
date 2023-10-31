@@ -3,10 +3,12 @@ import userData from "./userData.js";
 import petName from "./petName.js";
 import dailyTask from "./dailyTask.js";
 import verifyJWT from "../middleware/verifyJWT.js";
+import logout from "./logout.js";
 
 const constructorMethod = (app) => {
   app.use("/", auth);
   app.use("/protected", verifyJWT);
+  app.use("/protected/logout", logout);
   app.use("/protected/daily-task", dailyTask);
   app.use("/protected/userData", userData);
   app.use("/protected/petName", petName);
