@@ -40,8 +40,8 @@ const Products = (props) => {
       <h2>Products</h2>
       <Grid container spacing={2}>
         {products.map((product) => {
-          const { name, points, img } = product;
-          return <IndividualProduct name={name} points={points} img = {img} purchaseProduct={purchaseProduct}/>
+          const { name, points, img,cardImg } = product;
+          return <IndividualProduct name={name} points={points} img = {img} cardImg={cardImg} purchaseProduct={purchaseProduct}/>
         })}
       </Grid>
       <CustomSnackbar snackbarProp={snackbar} />
@@ -49,18 +49,18 @@ const Products = (props) => {
   );
 };
 
-const IndividualProduct = ({purchaseProduct, name, points, img })=>{
+const IndividualProduct = ({purchaseProduct, name, points, img, cardImg })=>{
       return (
         <Grid item xs={6}>
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345}}>
           <CardActionArea onClick={() =>purchaseProduct(points,img)}>
             <CardMedia
               component="img"
               height="140"
-              image= {img}
+              image= {cardImg}
               alt="green iguana"
             />
-            <CardContent>
+            <CardContent sx={{backgroundColor:'#EEAC02'}}>
               <Typography>{name}</Typography>
               <Typography>{points} Points</Typography>
             </CardContent>

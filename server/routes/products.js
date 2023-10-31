@@ -9,7 +9,7 @@ router.route("/").post(async (req, res) => {
     try {
         let input = req.body;
         let id = xss(req.user.id);
-        let rewards = xss(input.rewards);
+        let rewards = input.rewards;
         let image = xss(input.image);
         await productUpdateSchema.validate({rewards, image})
         let result = await purchase_product(id,rewards,image);
