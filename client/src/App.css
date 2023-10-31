@@ -47,3 +47,32 @@
 	color: #1876D1;
 
 }
+
+/* center alignment */
+
+.center{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Dailytasks */
+.TaskContainer {
+
+  border-radius: 1cm;
+  margin-bottom: 1rem;
+  box-sizing: "border-box";
+  background-color: rgb(231, 242, 255);
+  padding: 0.8rem;
+  width: 100%;
+  overflow: hidden;  
+}
+ .TaskContainer .task{
+  float: left;
+ 
+}
+ .TaskContainer .reward{
+  float: right;
+}
