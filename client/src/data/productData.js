@@ -1,26 +1,30 @@
 export const productData =[
-    {
-        points: 100,
-        cardImg :"https://images.pexels.com/photos/8434641/pexels-photo-8434641.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-        img: "https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg",
-        name: "Food",  
+    {   id:1,
+        points: 10,
+        cardImg :"https://drive.google.com/uc?export=download&id=1WQXI4Xjw1pCywn7oosruCds_7Auj1u8n",
+        img: "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD",
+        name: "Collar",  
+        own: true
     },
-    {
-        points: 200,
-        img: "https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg",
-        cardImg :"https://redbarkshop.com/cdn/shop/products/redbark_shop_mywhiskeygirl_1O0A6378_450x300.jpg?v=1685382961",
-        name: "Orange Hat",  
+    {   id:2,
+        points: 20,
+        img: "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD",
+        cardImg :"https://drive.google.com/uc?export=download&id=104IqDyKxXjarwQz3S8JeEpJg-_StwmzM",
+        name: "Brown Hat",  
+        own: true
     },
-    {
-        points: 250,
-        img: "https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg",
-        cardImg:"https://www.maxbone.com/cdn/shop/products/talon-raincoat-568151_1000x.jpg?v=1696375563",
-        name: "Yellow Jacket",  
+    {   id:3,
+        points: 30,
+        img: "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD",
+        cardImg:"https://drive.google.com/uc?export=download&id=1TO3a1SC2tfPmcva-Gmuv0LkZZD3op6Lx",
+        name: "Green sweater",  
+        own:false
     },
-    {
-        points: 300,
-        img: "https://images.pexels.com/photos/7209396/pexels-photo-7209396.jpeg",
-        cardImg:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMQufgxS6zmsJ-Jvc4G51-U18nMHE0IXep7w&usqp=CAU",
-        name: "Googles",  
+    {   id:4,
+        points: 40,
+        img: "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD",
+        cardImg:"https://drive.google.com/uc?export=download&id=1cSi9AugNXJSwC5Ce0AmXMoqUf_JvGUse",
+        name: "Milk",  
+        own:false
     },
 ]

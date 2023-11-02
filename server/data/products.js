@@ -17,7 +17,6 @@ const purchase_product = async (id, rewards,image) => {
   const userCollection = await users();
   const result = await userCollection.updateOne(filter, update);
 
-
   if (result.modifiedCount === 1) {
     return "Rewards updated succesfully!";
   } else {

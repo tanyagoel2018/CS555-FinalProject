@@ -64,6 +64,16 @@ const UserData = () => {
       });
   }, [reload]);
 
+  useEffect(()=>{
+      const timer = setTimeout(()=>{
+        setGif("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD");
+      }, 3000)
+
+      return ()=>{
+        clearTimeout(timer);
+      }
+  }, [gif])
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -79,14 +89,11 @@ const UserData = () => {
       image: image,
     };
     try {
-      await restAPI.post("/protected/products", values);
+      // await restAPI.post("/protected/products", values);
       setGif(image);
-      snackbar.showSuccess("Purchase Successfull!");
-      setReload(reload + 1);
+
     } catch (error) {
-      if (error && error.response && error.response.data) {
-        snackbar.showError(error.response.data || "Something went wrong");
-      }
+      
     }
   };
 
