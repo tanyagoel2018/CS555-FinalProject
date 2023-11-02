@@ -93,7 +93,7 @@ const UserData = () => {
       setGif(image);
 
     } catch (error) {
-      
+
     }
   };
 
@@ -282,6 +282,24 @@ const UserData = () => {
                   }}
                 >
                   Sleep
+                </Paper>
+                <Paper
+                  elevation={10}
+                  sx={{
+                    bgcolor: "#EEAC02",
+                    width: "5em",
+                    height: "3em",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginLeft: "20px",
+                    cursor: "pointer",
+                  }}
+                  onClick={()=>{
+                    changesActivity(0,'https://drive.google.com/uc?export=download&id=1eBtk59RDNwiifOdUFyQT5Wd9Rt_Ir-YR')
+                  }}
+                >
+                  Feed
                 </Paper>
               </Stack>
               
