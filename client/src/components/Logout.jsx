@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useApi } from "../ContextAPI/APIContext";
 import { useNavigate } from "react-router-dom";
 import { Backdrop, Button, CircularProgress } from "@mui/material";
+import {LiaRunningSolid} from "react-icons/lia";
+
 const Logout = ()=>{
     const {restAPI} = useApi();
     const navigate = useNavigate();
@@ -12,7 +14,6 @@ const Logout = ()=>{
     const logMeOut= async()=>{
         // await restAPI.get("/protected/logout");
         const allTask = await restAPI.get("/protected/logout");
-        console.log(allTask);
     };
     
     const handleLogout= async()=>{
@@ -36,9 +37,10 @@ const Logout = ()=>{
           <CircularProgress color="inherit" />
         </Backdrop>
 
-        <Button to="/" className="btn" onClick={handleLogout}>
+        {<LiaRunningSolid size={40} onClick={handleLogout}/>}
+        {/* <Button to="/" className="btn" onClick={handleLogout}>
                 Logout
-            </Button>
+            </Button> */}
         </>
     );
 }

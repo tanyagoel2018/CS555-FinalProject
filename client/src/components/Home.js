@@ -25,8 +25,6 @@ import { useApi } from "../ContextAPI/APIContext";
 import Products from "./Products";
 import useSnackbar from "../hooks/useSnackbar";
 
-import Logout from "./Logout";
-
 const UserData = () => {
   const navigate = useNavigate();
   const { restAPI } = useApi();
@@ -336,7 +334,6 @@ const UserData = () => {
             <DailyTask userData={userData} />
           </Grid>
         </Grid>
-        <Logout />
       </>
     );
   }

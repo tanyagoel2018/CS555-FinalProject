@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 // import { restAPI } from "../service/api";
 import Task from "./Task";
 import { useApi } from "../ContextAPI/APIContext";
-import { Avatar,Paper, Stack } from "@mui/material";
+import { Avatar,Paper, Stack, Tooltip} from "@mui/material";
+import Logout from "./Logout";
 
 const DailyTask = ({userData})=>{ 
     const [dailyTasks, setDailyTaks] = useState([]);
@@ -31,8 +32,12 @@ const DailyTask = ({userData})=>{
         <br/>
         <Stack direction='row' sx={{alignItems:'center'}}>
         <Avatar sx={{bgcolor:"#840032"}}>{userData.name.slice(0,1)}</Avatar><span style={{paddingLeft:'20px',fontSize:'30px'}}>{userData.name}</span>
+        <span style={{padding: 10}}></span>
+        <Tooltip title="Logout" arrow>
+        <Avatar sx={{bgcolor:"#840032"}}><Logout/></Avatar>
+        </Tooltip>
         </Stack>
-      <h2>Rewards : {userData.rewards}</h2>
+      <h4>Rewards : {userData.rewards}</h4>
       </Paper>
       
       <h2>Daily Tasks</h2>

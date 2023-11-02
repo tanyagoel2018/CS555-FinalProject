@@ -47,7 +47,6 @@ const Login = () => {
       .post("/login", values)
       .then((response) => {
         snackbar.showSuccess("Login successful!");
-
         localStorage.setItem("Are_you_in", "yes");
         navigate("/home");
       })
@@ -55,6 +54,8 @@ const Login = () => {
         if (error && error.response && error.response.data) {
           snackbar.showError(error.response.data);
         }
+        
+      setLoader(false);  
       });
   }
 
