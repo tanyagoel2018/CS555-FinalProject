@@ -3,19 +3,18 @@ import { useFormik } from "formik";
 import { loginSchema } from "../validations/userValidation";
 import { useNavigate, Link } from "react-router-dom";
 import CustomSnackbar from "./CustomSnackbar";
+import { RenderTextField } from "./InputFields";
 import {
   Button,
   Container,
-  TextField,
   CssBaseline,
   Box,
   Grid,
   Typography,
-  Backdrop,
-  CircularProgress,
 } from "@mui/material";
 import { useApi } from "../ContextAPI/APIContext";
 import useSnackbar from "../hooks/useSnackbar";
+import BackDrop from "./Backdrop";
 
 const Login = () => {
   const [loader, setLoader] = useState(false);
@@ -72,17 +71,22 @@ const Login = () => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loader}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        <BackDrop loader={loader} />
         <Box sx={{ mt: 3 }}>
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
-              {renderTextField("email", "Email", "email")}
-              {renderTextField("password", "Password", "password")}
+              <RenderTextField
+                id="email"
+                label="Email"
+                type="email"
+                formik={formik}
+              />
+              <RenderTextField
+                id="password"
+                label="Password"
+                type="password"
+                formik={formik}
+              />
             </Grid>
             <Button
               type="submit"
@@ -105,26 +109,6 @@ const Login = () => {
       </Box>
     </Container>
   );
-
-  function renderTextField(id, label, type) {
-    return (
-      <Grid item xs={12}>
-        <TextField
-          variant="outlined"
-          id={id}
-          name={id}
-          label={label}
-          type={type}
-          fullWidth
-          value={formik.values[id]}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched[id] && Boolean(formik.errors[id])}
-          helperText={formik.touched[id] && formik.errors[id]}
-        />
-      </Grid>
-    );
-  }
 };
 
 export default Login;
