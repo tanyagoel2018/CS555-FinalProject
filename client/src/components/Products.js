@@ -18,15 +18,31 @@ const Products = (props) => {
   const {restAPI} = useApi();
   const [products, setProducts] = useState(productData);
 
-  const purchaseProduct = async (points, image) => {
+  const updateProductList = (id)=>{
+    setProducts(products.map((product=>{
+      if (id === product.id){
+          return {...product, own:true };
+      } 
+      return product;
+    })))
+  }
+
+  const purchaseProduct = async (points, image, id, own) => {
     const values = {
       rewards: points,
       image: image,
     };
+    if (own){
+      snackbar.showSuccess("You already own it");
+      return;
+    }
+
     try {
       await restAPI.post("/protected/products", values);
       setRewards(rewards - values.points);
       snackbar.showSuccess("Purchase Successfull!");
+      updateProductList(id);
+      console.log(products);
       props.reloadParent(props.reload + 1);
     } catch (error) {
       if (error && error.response && error.response.data) {
@@ -40,8 +56,7 @@ const Products = (props) => {
       <h2>Products</h2>
       <Grid container spacing={2}>
         {products.map((product) => {
-          const { name, points, img } = product;
-          return <IndividualProduct name={name} points={points} img = {img} purchaseProduct={purchaseProduct}/>
+          return <IndividualProduct product={product} purchaseProduct={purchaseProduct}/>
         })}
       </Grid>
       <CustomSnackbar snackbarProp={snackbar} />
@@ -49,20 +64,24 @@ const Products = (props) => {
   );
 };
 
-const IndividualProduct = ({purchaseProduct, name, points, img })=>{
+const IndividualProduct = ({purchaseProduct, product})=>{
+  const { name, points, img,cardImg,id, own } = product;
+  
+  let color = own?"#d1fcae": "#d9dbd7";
+    let status = own?"Purchased":`${points} points`
       return (
         <Grid item xs={6}>
-        <Card sx={{ maxWidth: 345 }}>
-          <CardActionArea onClick={() =>purchaseProduct(points,img)}>
+        <Card sx={{ maxWidth: 345}}>
+          <CardActionArea onClick={() =>purchaseProduct(points,img,id, own)}>
             <CardMedia
               component="img"
               height="140"
-              image= {img}
+              image= {cardImg}
               alt="green iguana"
             />
-            <CardContent>
+            <CardContent sx={{backgroundColor:color}}>
               <Typography>{name}</Typography>
-              <Typography>{points} Points</Typography>
+              <Typography>{status}</Typography>
             </CardContent>
           </CardActionArea>
         </Card>
