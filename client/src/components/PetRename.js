@@ -1,70 +1,58 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Button,
   Container,
-  TextField,
   CssBaseline,
   Box,
   Grid,
   Typography,
-  Backdrop,
-  CircularProgress,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
 import { useApi } from "../ContextAPI/APIContext";
+import CustomSnackbar from "./CustomSnackbar";
+import useSnackbar from "../hooks/useSnackbar";
+import BackDrop from "./Backdrop";
+import { RenderTextField } from "./InputFields";
 
 const PetRename = () => {
-  const {restAPI} = useApi();
-  const [error, setError] = useState(false);
-  const [loader, setLoader] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("Something went wrong");
+  const { restAPI } = useApi();
   const navigate = useNavigate();
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setError(false);
-  };
+  const [loading, setLoading] = useState(false);
+  const snackbar = useSnackbar();
+  // const [error, setError] = useState(false);
+  // const [errorMsg, setErrorMsg] = useState("Something went wrong");
 
-  //petName form
   const formik = useFormik({
     initialValues: {
       petName: "",
     },
     validationSchema: petSchema,
-    onSubmit: (values) => {
-      setLoader(true);
-      restAPI
-        .post("/protected/petName", values)
-        .then((response) => {
-          setLoader(false);
-          navigate("/home");
-        })
-        .catch((error) => {
-          setLoader(false);
-          setError(true);
-          if (error && error.response && error.response.data) {
-            setErrorMsg(error.response.data);
-          }
-        });
-    },
+    onSubmit: handleSubmit,
   });
-  //
+
+  function handleSubmit(values) {
+    setLoading(true);
+    restAPI
+      .post("/protected/petName", values)
+      .then((response) => {
+        setLoading(false);
+        snackbar.showSuccess("Pet rename successful!");
+        navigate("/home");
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error && error.response && error.response.data) {
+          snackbar.showError(error.response.data);
+        }
+      });
+  }
 
   return (
     <>
       <Container component="main" maxWidth="xs">
-        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-            {errorMsg}
-          </Alert>
-        </Snackbar>
         <CssBaseline />
         <Box
           sx={{
@@ -77,29 +65,16 @@ const PetRename = () => {
           <Typography component="h1" variant="h5">
             Update Pet Name
           </Typography>
-          <Backdrop
-            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={loader}
-          >
-            <CircularProgress color="inherit" />
-          </Backdrop>
+          <BackDrop loader={loading} />
           <Box sx={{ mt: 3 }}>
             <form onSubmit={formik.handleSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <TextField
-                    variant="outlined"
+                  <RenderTextField
                     id="petName"
-                    name="petName"
                     label="Pet Name"
-                    fullWidth
-                    value={formik.values.petName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.petName && Boolean(formik.errors.petName)
-                    }
-                    helperText={formik.touched.petName && formik.errors.petName}
+                    type="string"
+                    formik={formik}
                   />
                 </Grid>
               </Grid>
@@ -115,6 +90,7 @@ const PetRename = () => {
             <Link to="/home" className="links">
               Cancel
             </Link>
+            <CustomSnackbar snackbarProp={snackbar} />
           </Box>
         </Box>
       </Container>
