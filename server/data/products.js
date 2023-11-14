@@ -3,16 +3,18 @@ import { users } from "../config/dbCollections.js";
 import { getUserByUserID } from "./userData.js";
 import { productUpdateSchema } from "../validations/productValidation.js";
 
-const purchase_product = async (id, rewards,image) => {
+const purchase_product = async (id, rewards, image) => {
   let userData = await getUserByUserID(id);
   const newReward = userData.rewards - rewards;
-  if(newReward<0){
-    throw "Insufficient Rewards";
+  if (newReward < 0) {
+    throw "Insufficient rewards, complete tasks to get more rewards!";
   }
-  await productUpdateSchema.validate({rewards, image})
+  await productUpdateSchema.validate({ rewards, image });
 
   const filter = { _id: new ObjectId(id) };
-  const update = { $set: { rewards: Number(newReward), "pet.recentImage" : image } };
+  const update = {
+    $set: { rewards: Number(newReward), "pet.recentImage": image },
+  };
 
   const userCollection = await users();
   const result = await userCollection.updateOne(filter, update);
