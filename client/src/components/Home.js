@@ -331,7 +331,10 @@ const UserData = () => {
             </Snackbar>
           </Grid>
           <Grid item xs={3}>
-            <DailyTask userData={userData} />
+            <DailyTask 
+            userData={userData} 
+            reloadParent={setReload}
+            reload={reload}/>
           </Grid>
         </Grid>
       </>

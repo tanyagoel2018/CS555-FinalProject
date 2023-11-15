@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import { getUserByUserID } from "../data/userData.js";
+import { getUserByUserID, updateProfilePic } from "../data/userData.js";
 
 // getting all user data route
 router.route("/").get(async (req, res) => {
@@ -8,6 +8,17 @@ router.route("/").get(async (req, res) => {
     let userId = req.user.id;
 
     const user = await getUserByUserID(userId);
+    res.json(user);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+
+router.route("/profilePicEdit").post(async (req, res) => {
+  try {
+    let userId = req.user.id;
+    let url = req.body.url;
+    let user = await updateProfilePic(userId,url);
     res.json(user);
   } catch (error) {
     res.status(400).json(error);

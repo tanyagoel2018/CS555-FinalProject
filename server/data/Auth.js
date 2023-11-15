@@ -29,6 +29,7 @@ const createUser = async (email, password, name, age) => {
     password: hash,
     name: name,
     age: age,
+    profilePic:null,
     rewards: 0,
     tasks: [],
     pet: {
