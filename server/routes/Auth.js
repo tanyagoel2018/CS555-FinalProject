@@ -22,7 +22,7 @@ router.route("/login").post(async (req, res) => {
 
     res.cookie("jwt", token, {
       httpOnly: true, // Make the cookie accessible not only via HTTP(s)
-      maxAge: 3600000, // Cookie expiration time in milliseconds (1 hour)
+      maxAge: 43200000, // Cookie expiration time in milliseconds (12 hours)
     });
     res.status(200).json(validUser);
   } catch (error) {
@@ -47,15 +47,15 @@ router.route("/sign-up").post(async (req, res) => {
   }
 });
 
-router.route("/logout").get(async(req, res)=>{
-    let id = xss(req.user.id);
-    // TODO: JWT doesnt exist;
+router.route("/logout").get(async (req, res) => {
+  let id = xss(req.user.id);
+  // TODO: JWT doesnt exist;
 
-    res.cookie("jwt", req.cookies.jwt, {
-      httpOnly: true, // Make the cookie accessible not only via HTTP(s)
-      maxAge: new Date(Date.now() + 2 * 1000), // Cookie expiration time in milliseconds (2 seconds)
-    });
-    return res.json({msg: "token expires in 2 seconds"});
+  res.cookie("jwt", req.cookies.jwt, {
+    httpOnly: true, // Make the cookie accessible not only via HTTP(s)
+    maxAge: new Date(Date.now() + 2 * 1000), // Cookie expiration time in milliseconds (2 seconds)
+  });
+  return res.json({ msg: "token expires in 2 seconds" });
 });
 
 export default router;
