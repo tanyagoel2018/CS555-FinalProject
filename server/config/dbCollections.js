@@ -11,6 +11,7 @@ const getCollectionFn = (collection) => {
       return _col;
     };
   };
-  
+   
 export const users = getCollectionFn('Users');
+export const products = getCollectionFn('Products');
   

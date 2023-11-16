@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useApi } from "../ContextAPI/APIContext";
 import {productData} from "../data/productData"
 import CustomSnackbar from "./CustomSnackbar";
@@ -13,11 +13,12 @@ import {
 import useSnackbar from "../hooks/useSnackbar";
 
 const Products = (props) => {
+
   const [rewards, setRewards] = useState(props.rewards);
   const snackbar = useSnackbar();
   const {restAPI} = useApi();
   const [products, setProducts] = useState(productData);
-
+  
   const updateProductList = (id)=>{
     setProducts(products.map((product=>{
       if (id === product.id){
