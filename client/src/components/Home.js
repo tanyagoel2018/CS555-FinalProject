@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import DailyTask from "./DailyTask";
 import { useNavigate, Link } from "react-router-dom";
+import Animation from "./PetAnimation";
 import {
   Button,
   Container,
@@ -63,15 +64,6 @@ const UserData = () => {
       });
   }, [reload]);
 
-  useEffect(()=>{
-      const timer = setTimeout(()=>{
-        setGif("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD");
-      }, 3000)
-
-      return ()=>{
-        clearTimeout(timer);
-      }
-  }, [gif])
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -81,20 +73,6 @@ const UserData = () => {
     setSuccess(false);
   };
 
-  //pet activities
-  const changesActivity = async (points, image) => {
-    const values = {
-      rewards: points,
-      image: image,
-    };
-    try {
-      // await restAPI.post("/protected/products", values);
-      setGif(image);
-
-    } catch (error) {
-
-    }
-  };
 
   //petName form
   const formik = useFormik({
@@ -210,98 +188,14 @@ const UserData = () => {
           <Grid item xs={6}>
             <div className="home center">
             <span>
-                {/* <h1>Welcome {userData.name}!</h1> */}
-                {/* <br></br> */}
+
                 <h2>{userData.pet.petName}</h2>
-                {/* <br></br> */}
-                {/* <h2>Your current score is: {userData.rewards}</h2> */}
+                
                 <Link to="/petRename" className="links">
                   Rename Pet
                 </Link>
               </span>
-              <Card sx={{ width: "30em", height: "25em" , boxShadow: "none"}}>
-                <CardMedia
-                  component="img"
-                  image={gif}
-                  height={"500em"}
-                  alt="green iguana"
-                />
-              </Card>
-              <br/>
-              <Stack direction="row">
-                <Paper
-                  elevation={10}
-                  sx={{
-                    bgcolor: "#EEAC02",
-                    width: "5em",
-                    height: "3em",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    changesActivity(0,"https://res.cloudinary.com/dzlf4ut72/image/upload/v1698719182/uploads/tmkwrdfgfkdj0fpjt5ij.gif");
-                  }}
-                >
-                  Play
-                </Paper>
-                <Paper
-                  elevation={10}
-                  sx={{
-                    bgcolor: "#EEAC02",
-                    width: "5em",
-                    height: "3em",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginLeft: "20px",
-                    cursor: "pointer",
-                  }}
-                  onClick={()=>{
-                    changesActivity(0,'https://res.cloudinary.com/dzlf4ut72/image/upload/v1698719629/uploads/owmjjxeg8bhpfkqy86fc.gif')
-                  }}
-                >
-                  Explore
-                </Paper>
-                <Paper
-                  elevation={10}
-                  sx={{
-                    bgcolor: "#EEAC02",
-                    width: "5em",
-                    height: "3em",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginLeft: "20px",
-                    cursor: "pointer",
-                  }}
-                  onClick={()=>{
-                    changesActivity(0,'https://res.cloudinary.com/dzlf4ut72/image/upload/v1698719488/uploads/lj3amm7xekpkpywzatml.gif')
-                  }}
-                >
-                  Sleep
-                </Paper>
-                <Paper
-                  elevation={10}
-                  sx={{
-                    bgcolor: "#EEAC02",
-                    width: "5em",
-                    height: "3em",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginLeft: "20px",
-                    cursor: "pointer",
-                  }}
-                  onClick={()=>{
-                    changesActivity(0,'https://drive.google.com/uc?export=download&id=1eBtk59RDNwiifOdUFyQT5Wd9Rt_Ir-YR')
-                  }}
-                >
-                  Feed
-                </Paper>
-              </Stack>
-              
+              <Animation gif = {gif}/>              
             </div>
             <Snackbar
               open={success}
