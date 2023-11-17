@@ -183,8 +183,10 @@ const UserData = () => {
               reloadParent={setReload}
               rewards={userData.rewards}
               reload={reload}
+              gif = {gif}
               setGif = {setGif}
             />
+
           </Grid>
           <Grid item xs={6}>
             <div className="home center">

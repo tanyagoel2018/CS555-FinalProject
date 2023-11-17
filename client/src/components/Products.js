@@ -27,7 +27,7 @@ const Products = (props) => {
     try {
          response = await restAPI.get("/protected/products");
          const response2 = await restAPI.get("/protected/products/myProducts");
-          console.log(response2);
+         console.log(response2);
          setProducts(response.data.products);
          setProductOwned(response2.data.products);
       } catch (error) {
@@ -38,15 +38,16 @@ const Products = (props) => {
     fetchAllProducts();
   },[transaction])
 
-
-
   const handleSaveOutfit =async ()=>{
+      console.log("inside save handle");
         try {
-         let response = await restAPI.post("/protected/products/myProducts", {img: localOutfit});
-         console.log(response.data);
+        //  let response = await restAPI.post("/protected/products/myProducts", {img: "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD"});
+        console.log(props.gif);
+        props.setGif("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD");
         } catch (error) {
-        }
-  };
+
+      }
+};
 
   const purchaseProduct = async (points, image, id, own) => {
     const values = {
@@ -83,22 +84,7 @@ const Products = (props) => {
           return <MyProducts product={product} />
         })}
       </Grid>
-      <Paper
-            elevation={10}
-            sx={{
-            bgcolor: "#54ff76",
-            width: "5em",
-            height: "3em",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginLeft: "20px",
-            cursor: "pointer",
-            }}
-            onClick={handleSaveOutfit}
-            >
-            save outfit
-        </Paper>
+
       <CustomSnackbar snackbarProp={snackbar} />
     </div>
   );
@@ -128,14 +114,19 @@ const IndividualProduct = ({purchaseProduct, product})=>{
       </Grid>
       );
 }
-const MyProducts = ({product})=>{
-  const { name, img,cardImg, _id,} = product;
+const MyProducts = ({product })=>{
+  const  [selected, setSelected] = useState(true)
+  const { name, img, cardImg, _id,} = product;
+  const handleClick = ()=>{
+    setSelected(!selected);
+  } 
 
-  let color = "#d1fcae";
+  let color = selected?"#d1fcae": "#d9dbd7";
+
       return (
         <Grid item xs={6}>
         <Card sx={{ maxWidth: 345}}>
-          <CardActionArea onClick={() =>{}}>
+          <CardActionArea onClick={handleClick}>
             <CardMedia
               component="img"
               height="140"

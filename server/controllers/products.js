@@ -99,11 +99,11 @@ const updateOutfit =async(req, res) =>{
     const id = xss(req.user.id);
     const {img} = xss(req.body);
     try {
-        setNewOutfit(id, img);
+       await setNewOutfit(id, img);
     } catch (error) {
-        res.status(400).json({error});
+        return res.status(400).json({error});
     }
-    res.status(200).json("Success");
+   return res.status(200).json("Success");
 };
 
 export {purchaseProduct, getPurchasableProducts, getMyProducts, updateOutfit}

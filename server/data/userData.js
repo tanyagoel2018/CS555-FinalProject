@@ -29,3 +29,4 @@ const setNewOutfit = async(userId, image)=>{
 }
 
 export { getUserByUserID,setNewOutfit };
+ 
