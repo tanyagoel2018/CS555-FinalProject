@@ -5,10 +5,10 @@ import { expect } from "chai";
 describe("Pet rename API Test", function () {
   it("should return 200 status when all fields are valid", function (done) {
     request(app)
-      .post("/petName")
+      .post("/protected/petName/")
       .send({
         id: "652f263396042f44ee66681f",
-        petName: "Stanley",
+        petName: "StanleyNew",
       })
       .expect(200)
       .end((err, res) => {
@@ -20,10 +20,10 @@ describe("Pet rename API Test", function () {
 
   it("should return 400 status when the new name is same as old name", function (done) {
     request(app)
-      .post("/petName")
+      .post("/protected/petName")
       .send({
         id: "652f263396042f44ee66681f",
-        petName: "Stanley",
+        petName: "StanleyNew",
       })
       .expect(400)
       .end((err, res) => {
@@ -35,7 +35,7 @@ describe("Pet rename API Test", function () {
 
   it("should return 400 status when the pet name field is empty", function (done) {
     request(app)
-      .post("/petName")
+      .post("/protected/petName")
       .send({
         id: "652f263396042f44ee66681f",
         petName: "",

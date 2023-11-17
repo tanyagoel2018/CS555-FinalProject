@@ -12,7 +12,7 @@ const CustomSnackbar = ({snackbarProp})=>{
                 {message}
             </Alert>
         </Snackbar>
-      </>
+        </>
     );
 }
 
