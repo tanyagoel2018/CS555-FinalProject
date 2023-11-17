@@ -17,8 +17,26 @@ const Products = (props) => {
   const [rewards, setRewards] = useState(props.rewards);
   const snackbar = useSnackbar();
   const {restAPI} = useApi();
-  const [products, setProducts] = useState(productData);
-  
+  const [products, setProducts] = useState([]);
+  const [productOwned, setProductOwned] = useState([]);
+  const [transaction, setTransaction] = useState(false);
+
+  const fetchAllProducts = async()=>{
+    let  response = undefined;
+    try {
+         response = await restAPI.get("/protected/products");
+         const response2 = await restAPI.get("/protected/products/myProducts");
+          console.log(response2);
+         setProducts(response.data.products);
+         setProductOwned(response2.data.products);
+      } catch (error) {
+      }
+
+  }
+  useEffect(()=>{
+    fetchAllProducts();
+  },[transaction])
+
   const updateProductList = (id)=>{
     setProducts(products.map((product=>{
       if (id === product.id){
@@ -28,22 +46,21 @@ const Products = (props) => {
     })))
   }
 
+
   const purchaseProduct = async (points, image, id, own) => {
     const values = {
-      rewards: points,
-      image: image,
+      productId: id,
     };
-    if (own){
-      snackbar.showSuccess("You already own it");
-      return;
-    }
-
+    
     try {
-      await restAPI.post("/protected/products", values);
+
+     const response =  await restAPI.post("/protected/products", values);
+     console.log(response.data.msg);
       setRewards(rewards - values.points);
       snackbar.showSuccess("Purchase Successfull!");
-      updateProductList(id);
+      // updateProductList(id);
       console.log(products);
+      setTransaction(!transaction);
       props.reloadParent(props.reload + 1);
     } catch (error) {
       if (error && error.response && error.response.data) {
@@ -54,9 +71,15 @@ const Products = (props) => {
   
   return (
     <div className="center">
-      <h2>Products</h2>
+      <h2>Store</h2>
       <Grid container spacing={2}>
         {products.map((product) => {
+          return <IndividualProduct product={product} purchaseProduct={purchaseProduct}/>
+        })}
+      </Grid>
+      <h2>My Products</h2>
+      <Grid container spacing={2}>
+        {productOwned.map((product) => {
           return <IndividualProduct product={product} purchaseProduct={purchaseProduct}/>
         })}
       </Grid>
@@ -66,14 +89,14 @@ const Products = (props) => {
 };
 
 const IndividualProduct = ({purchaseProduct, product})=>{
-  const { name, points, img,cardImg,id, own } = product;
+  const { name, points, img,cardImg,_id, own } = product;
   
   let color = own?"#d1fcae": "#d9dbd7";
     let status = own?"Purchased":`${points} points`
       return (
         <Grid item xs={6}>
         <Card sx={{ maxWidth: 345}}>
-          <CardActionArea onClick={() =>purchaseProduct(points,img,id, own)}>
+          <CardActionArea onClick={() =>purchaseProduct(points,img,_id, own)}>
             <CardMedia
               component="img"
               height="140"

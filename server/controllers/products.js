@@ -1,31 +1,38 @@
-import {addProductToUser, getAllProducts, getProductById} from "../data/products.js";
+import {addProductToUser, getAllProducts, getProductById, myProducts} from "../data/products.js";
 import xss from "xss";
 import { getUserByUserID } from "../data/userData.js";
 import { products, users } from "../config/dbCollections.js";
 
 const purchaseProduct = async( req, res)=>{
-    let id = xss(req.user.id);
+    let id = xss(req.user.id); 
     let productId = xss(req.body.productId);
+    console.log("Product id", productId);
+
     if (id == undefined){
         return res.status(400).json({error:"please log in"});
     }
+    if (productId == undefined){
+        return res.status(400).json({error: "Product ID needed"});
 
+    }
     let userData = undefined;
     // get user data;
     try {
-         userData = getUserByUserID(id)
+         userData = await getUserByUserID(id)
     } catch (error) {
-        console.log(id);
+        console.log(error);
     }
     const userProducts = userData.products;
-
-    //if you already own it.
-    for (const productOwned of userProducts){
-        if (productOwned== productId){
-            return res.json({msg: "You already own it"});
+    console.log(userProducts);
+    // if you already own it.
+    for (let productOwned of userProducts){
+        if (productOwned){
+            if (productOwned === productId){
+                return res.status(200).json({msg: "You already own it"});
+            }
         }
     }
-
+    console.log("you can afford it");
     //Can you afford it
     const reward = userData.rewards;
     let product = undefined;
@@ -39,7 +46,6 @@ const purchaseProduct = async( req, res)=>{
     if (reward<product.points){
         return res.json({msg:"insufficient funds"});
     } 
-    
 
     //add product to user;
     try {
@@ -64,15 +70,30 @@ const getPurchasableProducts = async(req, res)=>{
     }
 
     for (const prod of allProducts){
+        let present = false;
         for (const userProduct of userData.products){
             if (userProduct == prod._id){
+                present = true;
                 break;
             }
         }
-        purchasableProdcut.push(prod);
+        if(!present) purchasableProdcut.push(prod);
     }
-    console.log(purchasableProdcut);
+    
     return res.json({products: purchasableProdcut});
 }
 
-export {purchaseProduct, getPurchasableProducts}
+const getMyProducts = async(req, res)=>  {         
+    let id = xss(req.user.id); 
+    let products = undefined;
+
+    try {
+        products = await myProducts(id);
+    } catch (error) {
+        console.log(error);
+    }
+    res.json({products});
+}
+
+
+export {purchaseProduct, getPurchasableProducts, getMyProducts}
