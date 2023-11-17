@@ -144,7 +144,10 @@ const UserData = () => {
             </div>
           </Grid>
           <Grid item xs={3}>
-            <DailyTask userData={userData} />
+            <DailyTask 
+            userData={userData} 
+            reloadParent={setReload}
+            reload={reload}/>
           </Grid>
         </Grid>
         <CustomSnackbar snackbarProp={snackbar} />
