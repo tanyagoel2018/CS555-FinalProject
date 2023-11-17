@@ -28,5 +28,21 @@ const setNewOutfit = async(userId, image)=>{
   }
 }
 
-export { getUserByUserID,setNewOutfit };
+const updateProfilePic = async(id,url)=>{
+  const filter = { _id: new ObjectId(id) };
+  const update = { $set: { "profilePic": url } };
+
+  const userCollection = await users();
+  const userExist = await getUserByUserID(id);
+
+  const result = await userCollection.updateOne(filter, update);
+
+  if (result.modifiedCount === 1) {
+    return "Profile Picture updated succesfully!";
+  } else {
+    throw "Profile Picture update failed";
+  }
+}
+
+export { getUserByUserID, updateProfilePic,setNewOutfit };
  

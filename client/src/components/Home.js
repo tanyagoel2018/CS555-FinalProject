@@ -7,72 +7,51 @@ import Animation from "./PetAnimation";
 import {
   Button,
   Container,
-  TextField,
   CssBaseline,
   Box,
   Grid,
   Typography,
-  Backdrop,
-  CircularProgress,
-  Snackbar,
-  Alert,
-  Card,
-  CardMedia,
-  Paper,
-  Stack,
 } from "@mui/material";
 import { petSchema } from "../validations/petNameValidations";
 import { useApi } from "../ContextAPI/APIContext";
 import Products from "./Products";
+import CustomSnackbar from "./CustomSnackbar";
 import useSnackbar from "../hooks/useSnackbar";
+import { RenderTextField } from "./InputFields";
+import BackDrop from "./Backdrop";
 
 const UserData = () => {
   const navigate = useNavigate();
   const { restAPI } = useApi();
   const snackbar = useSnackbar();
   const [userData, setUserdata] = useState(null);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
   const [loader, setLoader] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("Something went wrong");
   const [reload, setReload] = useState(0);
-  const [gif,setGif] = useState(null);
+  const [gif, setGif] = useState(null);
 
   useEffect(() => {
     const bleh = localStorage.getItem("Are_you_in");
     if (!bleh) {
       navigate("/");
     }
-    const id = localStorage.getItem("id");
     const url = `/protected/userData`;
     restAPI
       .get(url)
       .then((response) => {
         try {
           setUserdata(response.data);
-          setGif(response.data.pet.recentImage)
+          setGif(response.data.pet.recentImage);
           setLoader(false);
         } catch (error) {
           setLoader(true);
         }
       })
       .catch((error) => {
-        setError(true);
         if (error && error.response && error.response.data) {
-          setErrorMsg(error.response.data);
+          snackbar.showError(error.response.data);
         }
       });
   }, [reload]);
-
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setError(false);
-    setSuccess(false);
-  };
-
 
   //petName form
   const formik = useFormik({
@@ -85,41 +64,23 @@ const UserData = () => {
         .post("/protected/petName", values)
         .then((response) => {
           setLoader(false);
-          setSuccess(true);
           setReload(reload + 1);
         })
         .catch((error) => {
           setLoader(false);
-          setError(true);
           if (error && error.response && error.response.data) {
-            setErrorMsg(error.response.data);
+            snackbar.showError(error.response.data);
           }
         });
     },
   });
 
   if (loader) {
-    return (
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loader}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
+    return <BackDrop loader={loader} />;
   } else if (!userData.pet.petName) {
     return (
       <>
         <Container component="main" maxWidth="xs">
-          <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-            <Alert
-              onClose={handleClose}
-              severity="error"
-              sx={{ width: "100%" }}
-            >
-              {errorMsg}
-            </Alert>
-          </Snackbar>
           <CssBaseline />
           <Box
             sx={{
@@ -132,31 +93,16 @@ const UserData = () => {
             <Typography component="h1" variant="h5">
               Welcome {userData.name} Name your Pet
             </Typography>
-            <Backdrop
-              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={loader}
-            >
-              <CircularProgress color="inherit" />
-            </Backdrop>
+            <BackDrop loader={loader} />
             <Box sx={{ mt: 3 }}>
               <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
+                    <RenderTextField
                       id="petName"
-                      name="petName"
                       label="Pet Name"
-                      fullWidth
-                      value={formik.values.petName}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.petName && Boolean(formik.errors.petName)
-                      }
-                      helperText={
-                        formik.touched.petName && formik.errors.petName
-                      }
+                      type="string"
+                      formik={formik}
                     />
                   </Grid>
                 </Grid>
@@ -169,6 +115,7 @@ const UserData = () => {
                   Update
                 </Button>
               </form>
+              <CustomSnackbar snackbarProp={snackbar} />
             </Box>
           </Box>
         </Container>
@@ -190,47 +137,23 @@ const UserData = () => {
           </Grid>
           <Grid item xs={6}>
             <div className="home center">
-            <span>
-
+              <span>
                 <h2>{userData.pet.petName}</h2>
-                
                 <Link to="/petRename" className="links">
                   Rename Pet
                 </Link>
               </span>
-              <Animation gif = {gif}/>              
+              <Animation gif={gif} />
             </div>
-            <Snackbar
-              open={success}
-              autoHideDuration={6000}
-              onClose={handleClose}
-            >
-              <Alert
-                onClose={handleClose}
-                severity="success"
-                sx={{ width: "100%" }}
-              >
-                Update Successfull!
-              </Alert>
-            </Snackbar>
-            <Snackbar
-              open={error}
-              autoHideDuration={6000}
-              onClose={handleClose}
-            >
-              <Alert
-                onClose={handleClose}
-                severity="error"
-                sx={{ width: "100%" }}
-              >
-                {errorMsg}!
-              </Alert>
-            </Snackbar>
           </Grid>
           <Grid item xs={3}>
-            <DailyTask userData={userData} />
+            <DailyTask 
+            userData={userData} 
+            reloadParent={setReload}
+            reload={reload}/>
           </Grid>
         </Grid>
+        <CustomSnackbar snackbarProp={snackbar} />
       </>
     );
   }
