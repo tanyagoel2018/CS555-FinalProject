@@ -4,7 +4,7 @@ const ApiContext = createContext();
 
 const ApiProvider = ({ children }) => {
   const restAPI = axios.create({
-    baseURL: "http://localhost:4002",
+    baseURL: "http://localhost:4000",
     withCredentials: true,
   });
 
