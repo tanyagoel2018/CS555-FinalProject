@@ -3,6 +3,7 @@ const router = Router();
 import xss from "xss";
 import { createUser, loginByEmailId } from "../data/Auth.js";
 import { userSchema, loginSchema } from "../validations/userValidation.js";
+import { addFeedback } from "../data/userFeedback.js";
 import jwt from "jsonwebtoken";
 import "dotenv/config.js";
 
