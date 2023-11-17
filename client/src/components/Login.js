@@ -52,8 +52,7 @@ const Login = () => {
       .catch((error) => {
         if (error && error.response && error.response.data) {
           snackbar.showError(error.response.data);
-        }
-        
+        }  
       setLoader(false);  
       });
   }

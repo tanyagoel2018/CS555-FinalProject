@@ -68,6 +68,7 @@ const DailyTask = ({userData,reloadParent,reload})=>{
           return <Task task={task} reward={reward} />;
         })}
       </article>
+      <Link to="/userfeedback" className="links">Feedback</Link>
     </div>
   );
 };
