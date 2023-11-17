@@ -1,6 +1,6 @@
 import {addProductToUser, getAllProducts, getProductById, myProducts} from "../data/products.js";
 import xss from "xss";
-import { getUserByUserID } from "../data/userData.js";
+import { getUserByUserID, setNewOutfit } from "../data/userData.js";
 import { products, users } from "../config/dbCollections.js";
 
 const purchaseProduct = async( req, res)=>{
@@ -95,5 +95,15 @@ const getMyProducts = async(req, res)=>  {
     res.json({products});
 }
 
+const updateOutfit =async(req, res) =>{
+    const id = xss(req.user.id);
+    const {img} = xss(req.body);
+    try {
+        setNewOutfit(id, img);
+    } catch (error) {
+        res.status(400).json({error});
+    }
+    res.status(200).json("Success");
+};
 
-export {purchaseProduct, getPurchasableProducts, getMyProducts}
+export {purchaseProduct, getPurchasableProducts, getMyProducts, updateOutfit}

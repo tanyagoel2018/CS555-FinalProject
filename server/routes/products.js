@@ -2,7 +2,7 @@ import { purchase_product } from "../data/products.js";
 import { Router } from "express";
 import xss from "xss";
 import { productUpdateSchema } from "../validations/productValidation.js";
-import {purchaseProduct, getPurchasableProducts, getMyProducts} from "../controllers/products.js"
+import {purchaseProduct, getPurchasableProducts, getMyProducts, updateOutfit} from "../controllers/products.js"
 const router = Router();
 
 // router.route("/").post(async (req, res) => {
@@ -19,6 +19,6 @@ const router = Router();
 //     }
 // })
 router.route("/").post(purchaseProduct).get(getPurchasableProducts);
-router.route("/myProducts").get(getMyProducts);
+router.route("/myProducts").get(getMyProducts).post(updateOutfit);
 
 export default router;

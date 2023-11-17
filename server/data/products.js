@@ -13,8 +13,8 @@ const purchase_product = async (id, rewards,image) => {
 
   const filter = { _id: new ObjectId(id) };
 
-  // const update = { $set: { rewards: Number(newReward), "pet.recentImage" : image } };
-  const update= { $push: { products: id } }
+  const update = { $set: { rewards: Number(newReward), "pet.recentImage" : image } };
+  // const update= { $push: { products: id } }
   const userCollection = await users();
   const result = await userCollection.updateOne(filter, update);
 
@@ -28,14 +28,12 @@ const purchase_product = async (id, rewards,image) => {
 const getAllProducts = async()=>{
   const productCollection = await products();  
   let result = undefined;
-  try {
       result = await productCollection.find({}).toArray();
       result = result.map((product)=>{
           product._id = product._id.toString();
           return product;
       })
-    } catch (error) {
-    }
+
     result = result.map((prod)=>{
       prod._id = prod._id.toString();
       return prod;
@@ -47,24 +45,20 @@ const getAllProducts = async()=>{
 const getProductById = async(id)=>{
     const productCollection = await products();  
     let result = undefined;
-    try {
+ 
       result = await productCollection.findOne({_id: new ObjectId(id)});
       result._id = result._id.toString();
-    } catch (error) {
-      console.log(error);
-    }
+   
     return result;
 }
 
 const addProductToUser = async (userId, productId, reward)=>{
   const userCollection = await users();  
   let result = undefined;
-  try {
+ 
     result = await userCollection.updateOne({_id: new ObjectId(userId)}, { $push: { products: productId}, $set: { rewards: Number(reward)}});
     // result._id = result._id.toString();
-  } catch (error) {
-    console.log(error);
-  }
+ 
   return result;
 }
 
@@ -91,6 +85,7 @@ const myProducts = async(id)=>{
   }
   return productsOwned;
 }
+
 
 
 export { purchase_product, getAllProducts, addProductToUser, getProductById, myProducts };

@@ -6,8 +6,10 @@ const Animation = (props)=>{
     const [gify,setGify] = useState(props.gif);     
     const [animations, setAnimations] = useState(animationData);
 
+    
     useEffect(()=>{
         const timer = setTimeout(()=>{
+
             setGify("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD");
         }, 3000)
         return ()=>{
