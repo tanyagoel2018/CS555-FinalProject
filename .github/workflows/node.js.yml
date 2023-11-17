@@ -31,12 +31,12 @@ jobs:
 
     # Install dependencies in the client directory
     - name: Install Client Dependencies
-      run: npm install, npm ci
+      run: npm ci
       working-directory: ./client
 
     # Install dependencies in the server directory
     - name: Install Server Dependencies
-      run: npm install, npm ci
+      run: npm ci
       working-directory: ./server
       
     # Build and test steps for client and server, if needed
