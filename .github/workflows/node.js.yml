@@ -11,21 +11,31 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
+    # After Node.js setup, install dependencies
+    - name: Install Client Dependencies
+      run: npm install
+      working-directory: ./client
+
+    - name: Install Server Dependencies
+      run: npm install
+      working-directory: ./server
+      
+    # Here you can add steps for building and testing
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
