@@ -20,85 +20,103 @@ const Products = (props) => {
   const [products, setProducts] = useState([]);
   const [productOwned, setProductOwned] = useState([]);
   const [transaction, setTransaction] = useState(false);
-  const [localOutfit, setLocalOutfit] = useState(props.gif);
-
+  const {updateGif} = props;
+  const [outfit, setOutfit] = useState({"Collar": false, "Milk": false, "Brown Hat": false, "Red sweater": false});
   const fetchAllProducts = async()=>{
     let  response = undefined;
     try {
          response = await restAPI.get("/protected/products");
          const response2 = await restAPI.get("/protected/products/myProducts");
-         console.log(response2);
          setProducts(response.data.products);
          setProductOwned(response2.data.products);
       } catch (error) {
+        snackbar.showError("Products are feeling shy to show up");
       }
 
   }
+
   useEffect(()=>{
     fetchAllProducts();
   },[transaction])
 
-  const handleSaveOutfit =async ()=>{
-      console.log("inside save handle");
-        try {
-        //  let response = await restAPI.post("/protected/products/myProducts", {img: "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD"});
-        console.log(props.gif);
-        props.setGif("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD");
-        } catch (error) {
-
-      }
-};
-
-  const purchaseProduct = async (points, image, id, own) => {
-    const values = {
-      productId: id,
-    };
-    
+  const handlePurchaseProduct = async (id, points) => {
     try {
-     const response =  await restAPI.post("/protected/products", values);
-     console.log(response.data.msg);
-      setRewards(rewards - values.points);
+      const response =  await restAPI.post("/protected/products",  {productId: id} );
+      setRewards(rewards - points);
       snackbar.showSuccess("Purchase Successfull!");
-      // updateProductList(id);
-      console.log(products);
       setTransaction(!transaction);
-      props.reloadParent(props.reload + 1);
     } catch (error) {
       if (error && error.response && error.response.data) {
         snackbar.showError(error.response.data || "Something went wrong");
       }
     }
   };
-  
+
+  const [toggle, setToggle] = useState(true);
+
+  const handleSaveOutfit =async ()=>{
+        try {
+          let img = undefined;
+          if(props.gif == "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD"){
+            img = "https://drive.google.com/uc?export=download&id=1fyDSj1BJyEnafSYnIZDXVXF1hQv6GjKy";
+          }
+          else{
+            img = "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD";
+          }
+
+          setToggle(!toggle);
+          let response = await restAPI.post("/protected/products/myProducts", {img: img});
+          updateGif(img);
+          snackbar.showSuccess("Outfit updated!");
+        } catch (error) {
+          snackbar.showError("couldn't update");
+      }
+};
+
+  console.log(outfit);
   return (
     <div className="center">
       <h2>Store</h2>
       <Grid container spacing={2}>
         {products.map((product) => {
-          return <IndividualProduct product={product} purchaseProduct={purchaseProduct}/>
+          return <IndividualProduct product={product} handlePurchaseProduct={handlePurchaseProduct}/>
         })}
       </Grid>
       <h2>My Products</h2>
       <Grid container spacing={2} marginBottom={2}>
         {productOwned.map((product) => {
-          return <MyProducts product={product} />
+          return <MyProducts product={product} outfit={outfit} setOutfit={setOutfit} />
         })}
       </Grid>
-
+      <Paper
+          elevation={10}
+          sx={{
+          bgcolor: "#54ff76",
+          width: "5em",
+          height: "3em",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginLeft: "20px",
+          cursor: "pointer",
+          }}
+          onClick={handleSaveOutfit}
+        >
+          save outfit
+        </Paper>
       <CustomSnackbar snackbarProp={snackbar} />
     </div>
   );
 };
 
-const IndividualProduct = ({purchaseProduct, product})=>{
+const IndividualProduct = ({handlePurchaseProduct, product})=>{
   const { name, points, img,cardImg,_id, own } = product;
 
-  let color = own?"#d1fcae": "#d9dbd7";
-    let status = own?"Purchased":`${points} points`
-      return (
+  let color = "#d9dbd7";
+    return (
         <Grid item xs={6}>
         <Card sx={{ maxWidth: 345}}>
-          <CardActionArea onClick={() =>purchaseProduct(points,img,_id, own)}>
+          <CardActionArea onClick={() =>handlePurchaseProduct(_id, points)}>
             <CardMedia
               component="img"
               height="140"
@@ -107,18 +125,24 @@ const IndividualProduct = ({purchaseProduct, product})=>{
             />
             <CardContent sx={{backgroundColor:color}}>
               <Typography>{name}</Typography>
-              <Typography>{status}</Typography>
+              <Typography>{points} points</Typography>
             </CardContent>
           </CardActionArea>
         </Card>
       </Grid>
-      );
+    );
 }
-const MyProducts = ({product })=>{
-  const  [selected, setSelected] = useState(true)
-  const { name, img, cardImg, _id,} = product;
+const MyProducts = ({product, setOutfit, outfit })=>{
+  const  [selected, setSelected] = useState(false)
+  const { name, img, cardImg, _id} = product;
+  const getName= () => name;
   const handleClick = ()=>{
-    setSelected(!selected);
+    if (!selected){
+      setSelected(!selected);
+      setOutfit( outfit =>({...outfit, name: true}));
+    }
+      setSelected(!selected);
+      setOutfit(outfit =>({...outfit, name: false}));
   } 
 
   let color = selected?"#d1fcae": "#d9dbd7";
