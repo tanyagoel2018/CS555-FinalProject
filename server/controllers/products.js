@@ -1,7 +1,6 @@
 import {addProductToUser, getAllProducts, getProductById, myProducts} from "../data/products.js";
 import xss from "xss";
 import { getUserByUserID, setNewOutfit } from "../data/userData.js";
-import { products, users } from "../config/dbCollections.js";
 
 const purchaseProduct = async( req, res)=>{
     let id = xss(req.user.id); 
@@ -44,7 +43,7 @@ const purchaseProduct = async( req, res)=>{
     }
 
     if (reward<product.points){
-        return res.json({msg:"insufficient funds"});
+        return res.status(400).json("Sorry, not enough rewards");
     } 
 
     //add product to user;
@@ -97,7 +96,8 @@ const getMyProducts = async(req, res)=>  {
 
 const updateOutfit =async(req, res) =>{
     const id = xss(req.user.id);
-    const {img} = xss(req.body);
+    const img = xss(req.body.img);
+
     try {
        await setNewOutfit(id, img);
     } catch (error) {

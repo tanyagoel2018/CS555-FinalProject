@@ -3,31 +3,35 @@ import { animationData } from "../data/animationData";
 import { Card, CardMedia, Stack, Paper } from "@mui/material";
 
 const Animation = (props)=>{
-    const [gify,setGify] = useState(props.gif);     
-    const [localGif, setLocalGif] = useState(props.gif);
-    const [animations, setAnimations] = useState(animationData);
-    const handleSaveOutfit =async ()=>{
-        console.log("inside save handle");
-        setGify("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD");
-        setLocalGif("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD")
-    };
+    // const [gify,setGify] = useState(props.gif);     
+    // const [localGif, setLocalGif] = useState(props.gif);
     
-    useEffect(()=>{
-        const timer = setTimeout(()=>{
-            setGify(localGif);
-            // setGify("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD");
-        }, 3000)
-        return ()=>{
-          clearTimeout(timer);
-        }
-    }, [gify]);
+    // const handleSaveOutfit =async ()=>{
+    //     console.log("inside save handle");
+    //     props.updateGif("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD");
 
+    //     setGify("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD");
+    //     setLocalGif("https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD")
+    // };
+    
+    const {gif, updateGif} = props;
+
+    const handleChangeAnimation = (img)=>{
+        updateGif(img);
+
+        setTimeout(()=>{
+           updateGif(gif);
+        }, 3000)
+    }
+
+
+    const [animations, setAnimations] = useState(animationData);
     return (
         <>
          <Card sx={{ width: "30em", height: "25em" , boxShadow: "none"}}>
             <CardMedia
             component="img"
-            image={gify}
+            image={gif}
             height={"500em"}
             alt="green iguana"
             />
@@ -35,31 +39,15 @@ const Animation = (props)=>{
             <Stack direction="row" marginBlock={10}>            
                 {animations.map((animation) => {
                 const { gif, buttonName } = animation;
-                return <AnimationButton gify={gif} buttonName={buttonName} setGify= {setGify} />;
+                return <AnimationButton gify={gif} buttonName={buttonName} handleChangeAnimation= {handleChangeAnimation} />;
                 })}
             </Stack>
-            <Paper
-              elevation={10}
-              sx={{
-              bgcolor: "#54ff76",
-              width: "5em",
-              height: "3em",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginLeft: "20px",
-              cursor: "pointer",
-              }}
-              onClick={handleSaveOutfit}
-            >
-            save outfit
-        </Paper>
         </>
        
     );
 }
 
-const AnimationButton = ({buttonName, gify, setGify})=>{
+const AnimationButton = ({buttonName, gify, handleChangeAnimation})=>{
     return (    
         <Paper
             elevation={10}
@@ -74,7 +62,7 @@ const AnimationButton = ({buttonName, gify, setGify})=>{
             cursor: "pointer",
             }}
             onClick={()=>{
-                setGify(gify)
+                handleChangeAnimation(gify)
             }}
             >
             {buttonName}

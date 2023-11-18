@@ -52,6 +52,10 @@ const UserData = () => {
         }
       });
   }, [reload]);
+  //update the gif
+  const updateGif = (img)=>{
+      setGif(img);
+  }
 
   //petName form
   const formik = useFormik({
@@ -131,7 +135,7 @@ const UserData = () => {
               rewards={userData.rewards}
               reload={reload}
               gif = {gif}
-              setGif = {setGif}
+              updateGif= {updateGif}
             />
 
           </Grid>
@@ -143,7 +147,7 @@ const UserData = () => {
                   Rename Pet
                 </Link>
               </span>
-              <Animation gif={gif} />
+              <Animation gif={gif}  updateGif = {updateGif}/>
             </div>
           </Grid>
           <Grid item xs={3}>
