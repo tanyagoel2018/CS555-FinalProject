@@ -1,13 +1,13 @@
 import axios from "axios";
 
-let credentials = true
+let credentials = true;
 const restAPI = axios.create({
-    baseURL: "http://localhost:4000",
-    withCredentials: true
+  baseURL: "http://localhost:4002",
+  withCredentials: true,
 });
 
-const credentialsToggle = (state)=>{
-    credentials = state;
-}
+const credentialsToggle = (state) => {
+  credentials = state;
+};
 
-export {restAPI, credentialsToggle}
+export { restAPI, credentialsToggle };

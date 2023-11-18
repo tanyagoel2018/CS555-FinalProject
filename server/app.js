@@ -6,11 +6,10 @@ import helmet from "helmet";
 import cors from "cors";
 import { connectDB } from "./config/dbConnection.js";
 import cookieParser from "cookie-parser";
-
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser()); 
 app.use(cors(corsConfig));
@@ -23,7 +22,7 @@ const start = async () => {
       console.log("Database is connected");
       app.listen(process.env.PORT, ()=>{
         console.log("Server is listening on port 4000 localhost");
-        });    
+      });
     } catch (error) {
       console.log(error);
     }
