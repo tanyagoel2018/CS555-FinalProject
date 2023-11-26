@@ -22,8 +22,6 @@ const PetRename = () => {
 
   const [loading, setLoading] = useState(false);
   const snackbar = useSnackbar();
-  // const [error, setError] = useState(false);
-  // const [errorMsg, setErrorMsg] = useState("Something went wrong");
 
   const formik = useFormik({
     initialValues: {

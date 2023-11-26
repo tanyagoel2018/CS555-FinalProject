@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
 import { animationData } from "../data/animationData";
 import { Card, CardMedia, Stack, Paper } from "@mui/material";
 

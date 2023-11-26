@@ -8,40 +8,46 @@ import {
   CardContent,
   CardActionArea,
   CardMedia,
-  Button, Paper
+  Paper,
 } from "@mui/material";
 import useSnackbar from "../hooks/useSnackbar";
 
 const Products = (props) => {
-
   const [rewards, setRewards] = useState(props.rewards);
   const snackbar = useSnackbar();
-  const {restAPI} = useApi();
+  const { restAPI } = useApi();
   const [products, setProducts] = useState([]);
   const [productOwned, setProductOwned] = useState([]);
   const [transaction, setTransaction] = useState(false);
-  const {updateGif} = props;
-  const [outfit, setOutfit] = useState({"Collar": false, "Milk": false, "Brown Hat": false, "Red sweater": false});
-  const fetchAllProducts = async()=>{
-    let  response = undefined;
+  const { updateGif } = props;
+  const [outfit, setOutfit] = useState({
+    Collar: false,
+    Milk: false,
+    "Brown Hat": false,
+    "Red sweater": false,
+  });
+  const fetchAllProducts = async () => {
+    let response = undefined;
     try {
-         response = await restAPI.get("/protected/products");
-         const response2 = await restAPI.get("/protected/products/myProducts");
-         setProducts(response.data.products);
-         setProductOwned(response2.data.products);
-      } catch (error) {
-        snackbar.showError("Products are feeling shy to show up");
-      }
+      response = await restAPI.get("/protected/products");
+      const response2 = await restAPI.get("/protected/products/myProducts");
+      setProducts(response.data.products);
+      setProductOwned(response2.data.products);
+    } catch (error) {
+      snackbar.showError("Products are feeling shy to show up");
+    }
+  };
 
-  }
-
-  useEffect(()=>{
+  useEffect(() => {
     fetchAllProducts();
-  },[transaction])
+  }, [transaction]);
 
   const handlePurchaseProduct = async (id, points) => {
+    let response = undefined;
     try {
-      const response =  await restAPI.post("/protected/products",  {productId: id} );
+      response = await restAPI.post("/protected/products", {
+        productId: id,
+      });
       setRewards(rewards - points);
       snackbar.showSuccess("Purchase Successfull!");
       setTransaction(!transaction);
@@ -54,24 +60,30 @@ const Products = (props) => {
 
   const [toggle, setToggle] = useState(true);
 
-  const handleSaveOutfit =async ()=>{
-        try {
-          let img = undefined;
-          if(props.gif == "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD"){
-            img = "https://drive.google.com/uc?export=download&id=1fyDSj1BJyEnafSYnIZDXVXF1hQv6GjKy";
-          }
-          else{
-            img = "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD";
-          }
-
-          setToggle(!toggle);
-          let response = await restAPI.post("/protected/products/myProducts", {img: img});
-          updateGif(img);
-          snackbar.showSuccess("Outfit updated!");
-        } catch (error) {
-          snackbar.showError("couldn't update");
+  const handleSaveOutfit = async () => {
+    try {
+      let img = undefined;
+      if (
+        props.gif ==
+        "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD"
+      ) {
+        img =
+          "https://drive.google.com/uc?export=download&id=1fyDSj1BJyEnafSYnIZDXVXF1hQv6GjKy";
+      } else {
+        img =
+          "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD";
       }
-};
+
+      setToggle(!toggle);
+      let response = await restAPI.post("/protected/products/myProducts", {
+        img: img,
+      });
+      updateGif(img);
+      snackbar.showSuccess("Outfit updated!");
+    } catch (error) {
+      snackbar.showError("Couldn't update outfit!");
+    }
+  };
 
   console.log(outfit);
   return (
@@ -79,18 +91,29 @@ const Products = (props) => {
       <h2>Store</h2>
       <Grid container spacing={2}>
         {products.map((product) => {
-          return <IndividualProduct product={product} handlePurchaseProduct={handlePurchaseProduct}/>
+          return (
+            <IndividualProduct
+              product={product}
+              handlePurchaseProduct={handlePurchaseProduct}
+            />
+          );
         })}
       </Grid>
       <h2>My Products</h2>
       <Grid container spacing={2} marginBottom={2}>
         {productOwned.map((product) => {
-          return <MyProducts product={product} outfit={outfit} setOutfit={setOutfit} />
+          return (
+            <MyProducts
+              product={product}
+              outfit={outfit}
+              setOutfit={setOutfit}
+            />
+          );
         })}
       </Grid>
       <Paper
-          elevation={10}
-          sx={{
+        elevation={10}
+        sx={{
           bgcolor: "#54ff76",
           width: "5em",
           height: "3em",
@@ -99,71 +122,70 @@ const Products = (props) => {
           justifyContent: "center",
           marginLeft: "20px",
           cursor: "pointer",
-          }}
-          onClick={handleSaveOutfit}
-        >
-          save outfit
-        </Paper>
+        }}
+        onClick={handleSaveOutfit}
+      >
+        save outfit
+      </Paper>
       <CustomSnackbar snackbarProp={snackbar} />
     </div>
   );
 };
 
-const IndividualProduct = ({handlePurchaseProduct, product})=>{
-  const { name, points, img,cardImg,_id, own } = product;
+const IndividualProduct = ({ handlePurchaseProduct, product }) => {
+  const { name, points, img, cardImg, _id, own } = product;
 
   let color = "#d9dbd7";
-    return (
-        <Grid item xs={6}>
-        <Card sx={{ maxWidth: 345}}>
-          <CardActionArea onClick={() =>handlePurchaseProduct(_id, points)}>
-            <CardMedia
-              component="img"
-              height="140"
-              image= {cardImg}
-              alt="green iguana"
-            />
-            <CardContent sx={{backgroundColor:color}}>
-              <Typography>{name}</Typography>
-              <Typography>{points} points</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
-    );
-}
-const MyProducts = ({product, setOutfit, outfit })=>{
-  const  [selected, setSelected] = useState(false)
-  const { name, img, cardImg, _id} = product;
-  const getName= () => name;
-  const handleClick = ()=>{
-    if (!selected){
+  return (
+    <Grid item xs={6}>
+      <Card sx={{ maxWidth: 345 }}>
+        <CardActionArea onClick={() => handlePurchaseProduct(_id, points)}>
+          <CardMedia
+            component="img"
+            height="140"
+            image={cardImg}
+            alt="green iguana"
+          />
+          <CardContent sx={{ backgroundColor: color }}>
+            <Typography>{name}</Typography>
+            <Typography>{points} points</Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Grid>
+  );
+};
+const MyProducts = ({ product, setOutfit, outfit }) => {
+  const [selected, setSelected] = useState(true);
+  const { name, img, cardImg, _id } = product;
+  const getName = () => name;
+  const handleClick = () => {
+    if (!selected) {
       setSelected(!selected);
-      setOutfit( outfit =>({...outfit, name: true}));
+      setOutfit((outfit) => ({ ...outfit, name: true }));
     }
-      setSelected(!selected);
-      setOutfit(outfit =>({...outfit, name: false}));
-  } 
+    setSelected(!selected);
+    setOutfit((outfit) => ({ ...outfit, name: false }));
+  };
 
-  let color = selected?"#d1fcae": "#d9dbd7";
+  let color = selected ? "#d1fcae" : "#d9dbd7";
 
-      return (
-        <Grid item xs={6}>
-        <Card sx={{ maxWidth: 345}}>
-          <CardActionArea onClick={handleClick}>
-            <CardMedia
-              component="img"
-              height="140"
-              image= {cardImg}
-              alt="green iguana"
-            />
-            <CardContent sx={{backgroundColor:color}}>
-              <Typography>{name}</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
-      );
-
-}
+  return (
+    <Grid item xs={6}>
+      <Card sx={{ maxWidth: 345 }}>
+        <CardActionArea onClick={handleClick}>
+          <CardMedia
+            component="img"
+            height="140"
+            image={cardImg}
+            alt="green iguana"
+          />
+          <CardContent sx={{ backgroundColor: color }}>
+            <Typography>{name}</Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Grid>
+  );
+};
 export default Products;

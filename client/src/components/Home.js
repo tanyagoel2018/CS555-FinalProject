@@ -51,11 +51,11 @@ const UserData = () => {
           snackbar.showError(error.response.data);
         }
       });
-  }, [reload]);
+  }, [reload, navigate, restAPI]);
   //update the gif
-  const updateGif = (img)=>{
-      setGif(img);
-  }
+  const updateGif = (img) => {
+    setGif(img);
+  };
 
   //petName form
   const formik = useFormik({
@@ -134,10 +134,9 @@ const UserData = () => {
               reloadParent={setReload}
               rewards={userData.rewards}
               reload={reload}
-              gif = {gif}
-              updateGif= {updateGif}
+              gif={gif}
+              updateGif={updateGif}
             />
-
           </Grid>
           <Grid item xs={6}>
             <div className="home center">
@@ -147,14 +146,15 @@ const UserData = () => {
                   Rename Pet
                 </Link>
               </span>
-              <Animation gif={gif}  updateGif = {updateGif}/>
+              <Animation gif={gif} updateGif={updateGif} />
             </div>
           </Grid>
           <Grid item xs={3}>
-            <DailyTask 
-            userData={userData} 
-            reloadParent={setReload}
-            reload={reload}/>
+            <DailyTask
+              userData={userData}
+              reloadParent={setReload}
+              reload={reload}
+            />
           </Grid>
         </Grid>
         <CustomSnackbar snackbarProp={snackbar} />

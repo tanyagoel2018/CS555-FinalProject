@@ -29,7 +29,7 @@ const DailyTask = ({userData,reloadParent,reload})=>{
     }
     useEffect(()=>{
         fetchTask();
-    },[])
+    },[fetchTask])
 
   if (loading) {
     return <h4>loading..</h4>;
