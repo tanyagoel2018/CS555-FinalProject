@@ -30,9 +30,14 @@ const UserData = () => {
   const [gif, setGif] = useState(null);
 
   useEffect(() => {
-    const bleh = localStorage.getItem("Are_you_in");
-    if (!bleh) {
-      navigate("/");
+    let item = localStorage.getItem("Are_you_in");
+    if (item) {
+      item = JSON.parse(item);
+      let now =new Date();
+      let validSession = now.getTime() < item.expirationTime
+      if(!validSession){
+          navigate("/");
+      }
     }
     const url = `/protected/userData`;
     restAPI
@@ -164,3 +169,4 @@ const UserData = () => {
 };
 
 export default UserData;
+

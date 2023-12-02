@@ -6,6 +6,7 @@ import verifyJWT from "../middleware/verifyJWT.js";
 import products from "./products.js";
 import logout from "./logout.js";
 import feedback from "./feedback.js";
+import adminTasks from "./adminTasks.js";
 
 const constructorMethod = (app) => {
   app.use("/", auth);
@@ -16,6 +17,7 @@ const constructorMethod = (app) => {
   app.use("/protected/petName", petName);
   app.use("/protected/products", products);
   app.use("/protected/userfeedback", feedback);
+  app.use("/protected/adminTask", adminTasks);
   app.use("*", (req, res) => {
     return res.status(404).json({ msg: "Not Found" });
   });

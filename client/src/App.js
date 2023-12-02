@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import PetRename from "./components/PetRename";
 import FeedbackForm from "./components/userfeedback";
+import AdminHome from "./components/adminComps/AdminHome";
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/petRename" element={<PetRename />} />
           <Route path="/userfeedback" element={<FeedbackForm />} />
+          <Route path="/adminHome" element={<AdminHome />} />
         </Routes>
       </div>
     </Router>
