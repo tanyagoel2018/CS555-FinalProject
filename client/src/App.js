@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import PetRename from "./components/PetRename";
 import FeedbackForm from "./components/userfeedback";
 import AdminHome from "./components/adminComps/AdminHome";
+import AdminLogin from "./components/adminComps/AdminLogin";
 function App() {
   return (
     <Router>
@@ -18,6 +19,7 @@ function App() {
           <Route path="/petRename" element={<PetRename />} />
           <Route path="/userfeedback" element={<FeedbackForm />} />
           <Route path="/adminHome" element={<AdminHome />} />
+          <Route path="/adminLogin" element={<AdminLogin />} />
         </Routes>
       </div>
     </Router>
