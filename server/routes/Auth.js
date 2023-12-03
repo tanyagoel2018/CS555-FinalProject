@@ -17,7 +17,7 @@ router.route("/login").post(async (req, res) => {
     let validUser;
     validUser = await loginByEmailId(email, password);
 
-    const token = jwt.sign({ id: validUser.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: validUser.id,admin:false }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_LIFETIME,
     });
 
@@ -40,7 +40,7 @@ router.route("/AdminLogin").post(async (req, res) => {
     let validUser;
     validUser = await AdminLoginByEmailId(email, password);
 
-    const token = jwt.sign({ id: validUser.id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: validUser.id,admin:true }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_LIFETIME,
     });
 

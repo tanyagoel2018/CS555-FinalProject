@@ -41,6 +41,10 @@ const AdminHome = () => {
         }
       })
       .catch((error) => {
+        if(error.response.status==403){
+            localStorage.removeItem('Are_you_in');
+            navigate('/');
+        }
         if (error && error.response && error.response.data) {
           snackbar.showError(error.response.data);
         }

@@ -1,6 +1,6 @@
 import { Avatar, Button, Checkbox, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from '@mui/icons-material/Send';
 import Task from "../Task";
@@ -10,8 +10,10 @@ import { useApi } from "../../ContextAPI/APIContext";
 
 
 const ShowUserData = () => {
+    const navigate = useNavigate()
   const { state } = useLocation();
-  const { userId } = state;
+
+  let userId = null;
   const {restAPI} = useApi();
   const [open, setOpen] = useState(false);
   const [taskId,setTaskId] = useState(null);
@@ -28,14 +30,21 @@ const ShowUserData = () => {
   };
 
 
+
+
   useEffect(()=>{
-    restAPI.get(`/protected/userData/${userId}`)
-    .then((response)=>{
-        setUser(response.data)
-    })
-    .catch((error)=>{
-        console.log(error);
-    })
+    if(state && state.userId){
+        restAPI.get(`/protected/userData/${state.userId}`)
+        .then((response)=>{
+            setUser(response.data)
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+      }
+      else{
+        navigate('/adminHome')
+      } 
   },[reload])
 let tasks=null;
   if(user && user.tasks){tasks = user.tasks.map((item) => {

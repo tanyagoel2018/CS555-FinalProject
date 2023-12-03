@@ -17,6 +17,10 @@ router.route("/").get(async (req, res) => {
 
 router.route("/allUsers").get(async (req, res) => {
   try {
+    const admin = req.user.admin;
+    if(!admin){
+      return res.status(403).json('not an admin');
+    }
     const users = await getAllUsers();
     res.json(users);
   } catch (error) {
