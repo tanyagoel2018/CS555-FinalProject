@@ -45,6 +45,35 @@ const createUser = async (email, password, name, age) => {
   return 'Registration successful';
 };
 
+const createAdmin = async (email, password) => {
+  email = email.trim().toLowerCase();
+  password = password.trim();
+  await loginSchema.validate({ email, password});
+
+  let hash = await bcrypt.hash(password, saltRounds);
+  const adminCollection = await admin();
+  const userExist = await adminCollection.findOne({
+    email: email,
+  });
+
+  if (userExist != null) {
+    if (userExist.email.toLowerCase() === email.toLowerCase()) {
+      throw "admin with that email already exists";
+    }
+  }
+
+  let newUser = {
+    email: email,
+    password: hash
+  };
+
+  const insertInfo = await adminCollection.insertOne(newUser);
+  if (!insertInfo.acknowledged || !insertInfo.insertedId) {
+    throw "Error : Could not add admin";
+  }
+  return 'Registration successful';
+};
+
 const loginByEmailId = async (email, password) => {
   email = email.trim().toLowerCase();
   password = password.trim();
@@ -95,4 +124,4 @@ const AdminLoginByEmailId = async (email, password) => {
 
 // Add new code from here
 
-export { AdminLoginByEmailId, createUser, loginByEmailId };
+export { createAdmin,AdminLoginByEmailId, createUser, loginByEmailId };

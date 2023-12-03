@@ -14,6 +14,7 @@ router.route("/").get(async (req, res) => {
   }
 });
 
+
 router.route("/allUsers").get(async (req, res) => {
   try {
     const users = await getAllUsers();
@@ -38,6 +39,16 @@ router.route("/profilePicEdit").post(async (req, res) => {
     let userId = req.user.id;
     let url = req.body.url;
     let user = await updateProfilePic(userId,url);
+    res.json(user);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
+router.route("/:userId").get(async (req, res) => {
+  try {
+    let userId = req.params.userId.toString();
+
+    const user = await getUserByUserID(userId);
     res.json(user);
   } catch (error) {
     res.status(400).json(error);

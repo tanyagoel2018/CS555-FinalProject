@@ -35,9 +35,12 @@ const UserData = () => {
       item = JSON.parse(item);
       let now =new Date();
       let validSession = now.getTime() < item.expirationTime
-      if(!validSession){
+      if(!validSession || item.admin){
           navigate("/");
       }
+    }
+    else{
+      navigate("/")
     }
     const url = `/protected/userData`;
     restAPI

@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import xss from "xss";
-import { AdminLoginByEmailId, createUser, loginByEmailId } from "../data/Auth.js";
+import { AdminLoginByEmailId, createAdmin, createUser, loginByEmailId } from "../data/Auth.js";
 import { userSchema, loginSchema } from "../validations/userValidation.js";
 import { addFeedback } from "../data/userFeedback.js";
 import jwt from "jsonwebtoken";
@@ -81,5 +81,20 @@ router.route("/logout").get(async (req, res) => {
   });
   return res.json({ msg: "token expires in 2 seconds" });
 });
+
+//not to be used in frontend
+router.route("/createAdmin").post(async(req,res)=>{
+  try {
+    let input = req.body;
+    await loginSchema.validate(input);
+    let email = xss(input.email);
+    let password = xss(input.password);
+
+    const newUser = await createAdmin(email, password);
+    res.json(newUser);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+})
 
 export default router;

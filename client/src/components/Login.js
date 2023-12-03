@@ -121,6 +121,11 @@ const Login = () => {
                 Don't have an account? Sign up here!
               </Link>
             </Grid>
+            <Grid item>
+              <Link to="/adminLogin" className="links">
+                Login as an Admin
+              </Link>
+            </Grid>
           </Grid>
           <CustomSnackbar snackbarProp={snackbar} />
         </Box>

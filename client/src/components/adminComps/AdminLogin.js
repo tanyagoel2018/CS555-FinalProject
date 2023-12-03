@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
-import { loginSchema } from "../validations/userValidation";
+import { loginSchema } from "../../validations/userValidation";
 import { useNavigate, Link } from "react-router-dom";
-import CustomSnackbar from "./CustomSnackbar";
-import { RenderTextField } from "./InputFields";
+import CustomSnackbar from "../CustomSnackbar";
+import { RenderTextField } from "../InputFields";
 import {
   Button,
   Container,
@@ -12,9 +12,9 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useApi } from "../ContextAPI/APIContext";
-import useSnackbar from "../hooks/useSnackbar";
-import BackDrop from "./Backdrop";
+import { useApi } from "../../ContextAPI/APIContext";
+import useSnackbar from "../../hooks/useSnackbar";
+import BackDrop from "../Backdrop";
 
 const AdminLogin = () => {
   const [loader, setLoader] = useState(false);
@@ -61,7 +61,7 @@ const AdminLogin = () => {
         let expirationTime = now.getTime()+720*60*1000 //12 hours
         let item = {
           value:'yes',
-          admin:false,
+          admin:true,
           expirationTime:expirationTime
         };
         localStorage.setItem("Are_you_in", JSON.stringify(item));
@@ -87,7 +87,7 @@ const AdminLogin = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          Login
+          Admin Login
         </Typography>
         <BackDrop loader={loader} />
         <Box sx={{ mt: 3 }}>
@@ -117,8 +117,8 @@ const AdminLogin = () => {
           </form>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link to="/signUp" className="links">
-                Don't have an account? Sign up here!
+              <Link to="/" className="links">
+                Login as a user
               </Link>
             </Grid>
           </Grid>
