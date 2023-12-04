@@ -39,8 +39,10 @@ const TaskComplete = (props) => {
   return (
     <Modal open={props.open} onClose={props.handleClose}>
       <Box sx={style}>
+        <br/>
+        <br/>
         <h3>Are you sure, you want to mark this task as complete?</h3>
-        <p>Rewards will be updated and task will be removed for this user</p>
+        <p>Rewards will be updated and task will be marked as completed for this user</p>
         <div style={{display:'flex',padding:"50px"}}>
         <Button
           variant="outlined"

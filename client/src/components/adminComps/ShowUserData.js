@@ -61,15 +61,16 @@ const ShowUserData = () => {
                   handleOpen({ taskId: item._id, reward: item.reward })
                 }
                 startIcon={<SendIcon />}
+                disabled={item.completed}
               >
-                Done
+                DONE
               </Button>
             </div>
             <div
               className="task"
               style={{marginTop:'-5px'}}
             >
-              <div style={{marginBottom:'-14px'}}>Task : {item.task}</div>
+              {item.completed?<div style={{marginBottom:'-14px',textDecoration:'line-through'}}>Task : {item.task}</div>:<div style={{marginBottom:'-14px'}}>Task : {item.task}</div>}
               <br/>
               <span>&nbsp;&nbsp;Assigned By: {item.assignedBy}</span>
             </div>
@@ -78,21 +79,26 @@ const ShowUserData = () => {
                 variant="outlined"
                 size="small"
                 startIcon={<DeleteIcon />}
+                disabled={item.completed}
               >
                 Delete
               </Button>
             </div>
             <div className="reward" style={{ marginRight: "10px" }}>
-              <Button variant="outlined" size="small" startIcon={<LiaEdit />}>
+              <Button disabled={item.completed} variant="outlined" size="small" startIcon={<LiaEdit />}>
                 Edit
               </Button>
             </div>
             <div className="reward" style={{ marginTop: "5px" }}>
-              <span>
+              {item.completed?<span style={{textDecoration:'line-through'}}>
+                Reward : {item.reward}
+                {/* <FcLike /> */}
+                <span style={{ paddingLeft: "20px" }}></span>
+              </span>:<span>
                 Reward : {item.reward}
                 <FcLike />
                 <span style={{ paddingLeft: "20px" }}></span>
-              </span>
+              </span>}
             </div>
           </div>
         </div>
@@ -104,8 +110,8 @@ const ShowUserData = () => {
     return (
       <>
         <Grid container spacing={1}>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={6}>
+          <Grid item xs={0} sm={1} md={2} lg={3}></Grid>
+          <Grid item xs={12} sm={10} md={8} lg={6}>
             <br />
             <div className="parent">
               <div className="div1 center">
@@ -130,7 +136,9 @@ const ShowUserData = () => {
               </div>
             </div>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={0} sm={1} md={2} lg={3}>
+            <br />
+            <br />
             <br />
             <br />
             <br />

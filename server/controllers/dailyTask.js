@@ -2,7 +2,7 @@ import { fetchAllTask } from "../data/dailyTask.js";
 import { ObjectId } from "mongodb";
 const getDailyTask = async (req, res) => {
   //TODO: get id from session object;
-  let id = "6524760af1675ad28cfb417b";
+  let id = req.user.id;
   //ID validation
   id = id.trim();
   if (!ObjectId.isValid(id)) throw `Valid ObjectId required for daily tasks`;

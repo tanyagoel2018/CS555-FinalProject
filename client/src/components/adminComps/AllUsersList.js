@@ -17,9 +17,9 @@ const showUser =(user)=>{
 
   const list = usersData.map((user) => {
     return (
-        <>
+        <div key={user._id}>
         <Divider/>
-        <ListItem button sx={{ width: "400px"}} onClick={()=>showUser(user)} key={user._id}>
+        <ListItem button sx={{ width: "400px"}} onClick={()=>showUser(user)}>
           <ListItemAvatar>
             <Avatar
               sx={{ bgcolor: "#840032"}}
@@ -34,7 +34,7 @@ const showUser =(user)=>{
           </span>
         </ListItem>
         <Divider/>
-        </>
+        </div>
         
     );
   });
