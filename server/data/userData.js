@@ -19,8 +19,7 @@ const getAllUsers = async () => {
 const getUserByName = async(searchQuery)=>{
   const userCollection = await users();
   const regex = new RegExp(searchQuery,"i");
-  const results = await userCollection.find({name:{$regex:regex}})
-  console.log(results);
+  const results = await userCollection.find({name:{$regex:regex}}).toArray();
   results.forEach(user => {
     user._id = user._id.toString(); 
   });

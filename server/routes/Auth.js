@@ -40,7 +40,7 @@ router.route("/AdminLogin").post(async (req, res) => {
     let validUser;
     validUser = await AdminLoginByEmailId(email, password);
 
-    const token = jwt.sign({ id: validUser.id,admin:true }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: validUser.id,admin:true,name:validUser.name }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_LIFETIME,
     });
 
@@ -89,8 +89,9 @@ router.route("/createAdmin").post(async(req,res)=>{
     await loginSchema.validate(input);
     let email = xss(input.email);
     let password = xss(input.password);
+    let name =xss(input.name);
 
-    const newUser = await createAdmin(email, password);
+    const newUser = await createAdmin(email, password,name);
     res.json(newUser);
   } catch (error) {
     res.status(400).json(error);

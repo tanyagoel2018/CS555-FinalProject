@@ -114,7 +114,11 @@ let tasks=null;
           </div>
         </Grid>
         <Grid item xs={2}>
-            <Link to={'/adminHome'}>Back to Home</Link>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <Link to={'/adminHome'}><Button variant="outlined" color="secondary">Back to home</Button></Link>
         </Grid>
       </Grid>
 

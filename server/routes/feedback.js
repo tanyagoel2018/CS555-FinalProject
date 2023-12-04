@@ -17,7 +17,7 @@ import "dotenv/config.js";
 
 router.route("/").post(async (req, res) => {
   try {
-    console.log("I'm in routes");
+    // console.log("I'm in routes");
     let input = req.body;
     const newFeedback = await addFeedback(input);
     res.status(200).json({ msg: "Feedback added!" });

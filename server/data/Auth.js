@@ -45,9 +45,10 @@ const createUser = async (email, password, name, age) => {
   return 'Registration successful';
 };
 
-const createAdmin = async (email, password) => {
+const createAdmin = async (email, password,name) => {
   email = email.trim().toLowerCase();
   password = password.trim();
+  name=name.trim();
   await loginSchema.validate({ email, password});
 
   let hash = await bcrypt.hash(password, saltRounds);
@@ -64,7 +65,8 @@ const createAdmin = async (email, password) => {
 
   let newUser = {
     email: email,
-    password: hash
+    password: hash,
+    name:name
   };
 
   const insertInfo = await adminCollection.insertOne(newUser);

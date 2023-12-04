@@ -5,7 +5,7 @@ import { getUserByUserID, setNewOutfit } from "../data/userData.js";
 const purchaseProduct = async( req, res)=>{
     let id = xss(req.user.id); 
     let productId = xss(req.body.productId);
-    console.log("Product id", productId);
+    // console.log("Product id", productId);
 
     if (id == undefined){
         return res.status(400).json({error:"please log in"});
@@ -22,7 +22,7 @@ const purchaseProduct = async( req, res)=>{
         console.log(error);
     }
     const userProducts = userData.products;
-    console.log(userProducts);
+    // console.log(userProducts);
     // if you already own it.
     for (let productOwned of userProducts){
         if (productOwned){
