@@ -1,10 +1,7 @@
 <<<<<<< HEAD
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 =======
-import React, { useCallback, useEffect, useMemo } from "react";
-import { useState } from "react";
-import { useFormik } from "formik";
-import DailyTask from "./DailyTask";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 >>>>>>> 46f56de (websocket implemented)
 import { useNavigate, Link } from "react-router-dom";
 import {Grid, Typography, Box} from "@mui/material";
@@ -144,6 +141,7 @@ const UserData = () => {
         console.log("API call from home");
         try {
           setUserdata(response.data);
+          console.log("APi call made");
           setGif(response.data.pet.recentImage);
           setLoader(false);
         } catch (error) {
@@ -151,9 +149,14 @@ const UserData = () => {
         }
       })
       .catch((error) => {
+        if (error.response.status === 403){
+          localStorage.removeItem("Are_you_in");
+          navigate("/");
+        }
         if (error && error.response && error.response.data) {
           snackbar.showError(error.response.data);
         }
+
       });
 >>>>>>> 46f56de (websocket implemented)
   }, [reload, navigate, restAPI]);
@@ -199,15 +202,9 @@ const UserData = () => {
           <Grid item xs={3}>
             <NameBanner userName={userData.name} rewards = {userData.rewards}/>
             <DailyTask
-<<<<<<< HEAD
-                userData={userData}
-                reloadParent={setReload}
-                reload={reload}
-=======
               userData={userData}
               reloadParent={setReload}
               reload={reload}
->>>>>>> 46f56de (websocket implemented)
               socket={socket}
             />
           </Grid>
