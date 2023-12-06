@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useApi } from "../ContextAPI/APIContext";
 import { useNavigate } from "react-router-dom";
-import { Backdrop, CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress, Box } from "@mui/material";
 import {LiaRunningSolid} from "react-icons/lia";
+import { FaPowerOff } from "react-icons/fa6";
 
 const Logout = ()=>{
     const {restAPI} = useApi();
@@ -12,8 +13,15 @@ const Logout = ()=>{
     const [loading, setLoading] = useState(false);
 
     const logMeOut= async()=>{
-        await restAPI.get("/protected/logout");
-        // const allTask = await restAPI.get("/protected/logout");
+        // await restAPI.get("/protected/logout");
+        try {
+            await restAPI.get("/protected/logout");
+        } catch (error) {
+            if (error.response.status === 403){
+                localStorage.removeItem("Are_you_in");
+                navigate("/");
+              }
+        }
     };
     
     const handleLogout= async()=>{
@@ -37,7 +45,7 @@ const Logout = ()=>{
           <CircularProgress color="inherit" />
         </Backdrop>
 
-        {<LiaRunningSolid size={40} onClick={handleLogout}/>}
+        {<FaPowerOff size={23} onClick={handleLogout} color={"#fafafa"}/>}
         {/* <Button to="/" className="btn" onClick={handleLogout}>
                 Logout
             </Button> */}

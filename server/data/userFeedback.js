@@ -1,22 +1,55 @@
 import { feedbacks } from "../config/dbCollections.js";
+import { feedbackSchema } from "../validations/feedbackValidation.js";
 
-const addFeedback = async (feedback) => {
-  console.log("In data/userFeedback");
+const addFeedback = async (userId, userFeedback) => {
+  // console.log("In data/userFeedback");
+
+  await feedbackSchema.validate({ feedback: userFeedback });
+
   const feedbackCollection = await feedbacks();
-  //   const feedbackSchema = yup
-  //     .string()
-  //     .required()
-  //     .min(2, "Feedback should be at least 2 characters long");
 
-  try {
-    // await feedbackSchema.validate(feedback);
-    console.log(feedbackCollection);
-    const result = await feedbackCollection.insertOne({ feedback });
+  const userExist = await feedbackCollection.findOne({
+    userID: userId,
+  });
 
-    return result.ops[0].feedback;
-  } catch (error) {
-    console.error("Validation or Database Error:", error.message);
+  if (userExist != null) {
+    try {
+      let result = undefined;
+      result = await feedbackCollection.updateOne(
+        { userID: userId },
+        { $push: { allFeedbacks: userFeedback } }
+      );
+      return;
+    } catch (error) {
+      console.error("Validation or Database Error:", error.message);
+    }
+  } else {
+    let newFeedback = {
+      userID: userId,
+      allFeedbacks: [userFeedback],
+    };
+
+    try {
+      const result = await feedbackCollection.insertOne(newFeedback);
+      return;
+    } catch (error) {
+      console.error("Validation or Database Error:", error.message);
+    }
   }
 };
 
-export { addFeedback };
+const getAllFeedbacksWithUserId = async (userId) => {
+  const feedbackCollection = await feedbacks();
+
+  const userExist = await feedbackCollection.findOne({
+    userID: userId,
+  });
+
+  if (userExist == null) {
+    throw `No such user exists!`;
+  }
+
+  return userExist.allFeedbacks;
+};
+
+export { addFeedback, getAllFeedbacksWithUserId };

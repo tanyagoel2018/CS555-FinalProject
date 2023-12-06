@@ -6,6 +6,11 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import PetRename from "./components/PetRename";
 import FeedbackForm from "./components/userfeedback";
+import AdminHome from "./components/adminComps/AdminHome";
+import AddTasks from "./components/adminComps/AddTasks";
+import AdminLogin from "./components/adminComps/AdminLogin";
+import EditTask from "./components/adminComps/EditTask";
+import ShowUserData from "./components/adminComps/ShowUserData";
 function App() {
   return (
     <Router>
@@ -16,10 +21,15 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/petRename" element={<PetRename />} />
           <Route path="/userfeedback" element={<FeedbackForm />} />
-        </Routes>
+          <Route path="/adminHome" element={<AdminHome />} />
+          <Route path="/addTasks" element={<AddTasks />} />
+          <Route path="/adminLogin" element={<AdminLogin />} />
+          <Route path="/showUser" element={<ShowUserData />} />
+          <Route path="/editTasks" element={<EditTask />} />
+        </Routes> 
       </div>
     </Router>
   );
 }
-
+ 
 export default App;

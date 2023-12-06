@@ -1,7 +1,11 @@
-import React, {  useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Box, Button, Avatar,Tooltip } from "@mui/material";
 import { useApi } from "../ContextAPI/APIContext";
 import axios from "axios";
+import IconButton from '@mui/material/IconButton';
+import { RxCross1 } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
+import useSnackbar from "../hooks/useSnackbar";
 
 const style = {
   position: "absolute",
@@ -9,7 +13,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 260,
-  bgcolor: "#fcc026",
+  bgcolor: "#f4f2f7",
   border: "2px solid #000",
   boxShadow: 24,
   display:'flex',
@@ -22,10 +26,17 @@ const style = {
 
 const ProfilePic = (props) => {
   const { restAPI } = useApi();
-  const [profilePic, setProfilePic] = useState(props.profilePic);
-  const [updatePic,setUpdatePic] = useState(null);
+  const {profilePic, setProfilePic} = props;
+  const [localProfilePic, setLocalProfilePic] = useState(props.profilePic);
+  const [updatePic,setUpdatePic] = useState(profilePic);
   const cloudinaryApi = "dzlf4ut72";
   const presetValue = "lqbvmbqp";
+  const navigate = useNavigate();
+  const snackbar = useSnackbar();
+
+  useEffect(()=>{
+    setLocalProfilePic(props.profilePic);
+  },[props.profilePic])
 
   const handleImageChange = (event) => {
     setUpdatePic(event.target.files[0]);
@@ -33,11 +44,17 @@ const ProfilePic = (props) => {
     if (selectedFile) {
         const reader = new FileReader();
         reader.onloadend = () => {
-        setProfilePic(reader.result);
+        setLocalProfilePic(reader.result);
         };
     reader.readAsDataURL(selectedFile);
     }
   };
+
+  const handleClose = ()=>{
+    setLocalProfilePic(props.profilePic);
+    props.handleClose();
+  }
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -51,33 +68,39 @@ const ProfilePic = (props) => {
           formData
         )
         .then((response) => {
-          setProfilePic(response.data.url);
           restAPI
             .post("/protected/userData/profilePicEdit",{url:response.data.url})
             .then((response)=>{
+                snackbar.showSuccess("Profile Picture Updated")
+                setProfilePic(response.data.url);
                 props.handleClose();
             })
             .catch((error)=>{
-                
-            })
-        
+              if (error.response.status === 403){
+                localStorage.removeItem("Are_you_in");
+                navigate("/");
+              }
+              snackbar.showError("Error! Try again later")
+            });
         })
         .catch((error) => {
-          console.log(error);
+          snackbar.showError("Error! Try again later")
         });
   };
   return (
-    <Modal open={props.open} onClose={props.handleClose}>
+    <Modal open={props.open} onClose={handleClose}>
       <Box sx={style}>
+      <IconButton edge="end" color="inherit" onClick={props.handleClose} aria-label="close" sx={{marginLeft: "-260px", marginTop:"-20px"}}>
+                <RxCross1 color='red'/>
+        </IconButton>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="post-image" className="form-label">
             <Tooltip title="Edit Profile Image" arrow>
-                <Avatar
+              <Avatar
                     sx={{ bgcolor: "#840032",width:200,height:200 }}
                     alt={props.userName}
-                    src={profilePic}
-                />
+                    src={localProfilePic}/>
                 </Tooltip>
             </label>
             <input

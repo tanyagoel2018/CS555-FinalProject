@@ -1,6 +1,32 @@
 import { users } from "../config/dbCollections.js";
 import { ObjectId } from "mongodb";
 
+
+const getAllUsers = async () => {
+  const userCollection = await users();
+  const usersExist = await userCollection.find({}).toArray();
+
+  if (!usersExist) {
+    throw "Could Not get all Users";
+  }
+  usersExist.forEach(user => {
+    user._id = user._id.toString(); 
+  });
+
+  return usersExist;
+};
+
+const getUserByName = async(searchQuery)=>{
+  const userCollection = await users();
+  const regex = new RegExp(searchQuery,"i");
+  const results = await userCollection.find({name:{$regex:regex}}).toArray();
+  results.forEach(user => {
+    user._id = user._id.toString(); 
+  });
+
+  return results;
+}
+
 const getUserByUserID = async (id) => {
   const userCollection = await users();
   const userExist = await userCollection.findOne({
@@ -44,5 +70,17 @@ const updateProfilePic = async(id,url)=>{
   }
 }
 
-export { getUserByUserID, updateProfilePic,setNewOutfit };
+const getProfilePic = async(id)=>{
+  const userCollection = await users();
+  let profilepic = undefined;
+  try {
+    profilepic = await userCollection.findOne({ _id: new ObjectId(id) },{ projection: { profilePic: 1, _id:0 }})
+    // console.log(profilepic);
+  } catch (error) {
+      throw error;
+  }
+  return profilepic;  
+}
+
+export { getUserByUserID, updateProfilePic,setNewOutfit, getProfilePic, getAllUsers, getUserByName };
  

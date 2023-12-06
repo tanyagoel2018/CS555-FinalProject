@@ -5,7 +5,7 @@ import {
   Button,
   Container,
   CssBaseline,
-  Box,
+  Box, 
   Grid,
   Typography,
 } from "@mui/material";
@@ -15,6 +15,7 @@ import CustomSnackbar from "./CustomSnackbar";
 import useSnackbar from "../hooks/useSnackbar";
 import BackDrop from "./Backdrop";
 import { RenderTextField } from "./InputFields";
+import {useLocation} from 'react-router-dom';
 
 const PetRename = () => {
   const { restAPI } = useApi();
@@ -22,6 +23,16 @@ const PetRename = () => {
 
   const [loading, setLoading] = useState(false);
   const snackbar = useSnackbar();
+
+  const location = useLocation()
+  let save = undefined
+  let buttonText = "Update";
+  let headingText = "Update Pet Name";
+  if(location.state){
+    save = true;
+    buttonText = "Save";
+    headingText = "Name Your Pet";
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -42,6 +53,10 @@ const PetRename = () => {
       })
       .catch((error) => {
         setLoading(false);
+        if (error.response.status === 403){
+          localStorage.removeItem("Are_you_in");
+          navigate("/");
+        }
         if (error && error.response && error.response.data) {
           snackbar.showError(error.response.data);
         }
@@ -61,7 +76,7 @@ const PetRename = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Update Pet Name
+            {headingText}
           </Typography>
           <BackDrop loader={loading} />
           <Box sx={{ mt: 3 }}>
@@ -82,12 +97,12 @@ const PetRename = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Update
+                {buttonText}
               </Button>
             </form>
-            <Link to="/home" className="links">
+            {!save &&  <Link to="/home" className="links">
               Cancel
-            </Link>
+            </Link>}
             <CustomSnackbar snackbarProp={snackbar} />
           </Box>
         </Box>

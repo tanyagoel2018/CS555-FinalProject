@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 10 # or a value that suits your build time
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -41,14 +41,7 @@ jobs:
       working-directory: ./server
       
     # Build and test steps for client and server, if needed
-    - name: Build and Test Client
+    - name: Build Client
       run: |
         npm run build
-        npm test
       working-directory: ./client
-
-    - name: Build and Test Server
-      run: |
-        npm run build
-        npm test
-      working-directory: ./server

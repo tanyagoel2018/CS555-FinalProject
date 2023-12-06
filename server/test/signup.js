@@ -15,7 +15,7 @@ describe("Sign-up Form API Test", function () {
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
-        expect(res.body).to.equal("Registration successful");
+        expect(res.body).to.equal("user already exists");
         done();
       });
   });

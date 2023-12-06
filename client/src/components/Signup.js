@@ -28,10 +28,20 @@ const Signup = () => {
   const { restAPI } = useApi();
 
   useEffect(() => {
-    const userEmail = localStorage.getItem("email");
-    const userId = localStorage.getItem("id");
-    if (userEmail && userId) {
-      navigate("/home");
+    let item = localStorage.getItem("Are_you_in");
+    if (item) {
+      item = JSON.parse(item);
+      let now =new Date();
+      let validSession = now.getTime() < item.expirationTime
+      if(validSession && !item.admin){
+          navigate("/home");
+      }
+      else if(validSession && item.admin){
+        navigate("/adminHome")
+      }
+      else{
+        localStorage.removeItem("Are_you_in");
+      }
     }
   }, [navigate]);
 
@@ -58,6 +68,10 @@ const Signup = () => {
         })
         .catch((error) => {
           setLoader(false);
+          if (error.response.status === 403){
+            localStorage.removeItem("Are_you_in");
+            navigate("/");
+          }
           if (error && error.response && error.response.data) {
             snackbar.showError(error.response.data);
           }

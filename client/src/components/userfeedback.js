@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import CustomSnackbar from "./CustomSnackbar";
 import useSnackbar from "../hooks/useSnackbar";
 import { useFormik } from "formik";
-import { userSchema } from "../validations/userValidation";
 import { useNavigate, Link } from "react-router-dom";
 import { useApi } from "../ContextAPI/APIContext";
 import { RenderTextArea } from "./InputFields";
 import BackDrop from "./Backdrop";
+import CustomSnackbar from "./CustomSnackbar";
 import {
   Button,
   Container,
@@ -15,6 +14,8 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import { feedbackSchema } from "../validations/feedbackValidation";
+import Feedbacks from "./Feedback";
 
 const FeedbackForm = () => {
   const [feedback, setFeedback] = useState("");
@@ -28,42 +29,34 @@ const FeedbackForm = () => {
     setFeedback(event.target.value);
   };
 
-  // const handleSubmit = (event) => {
-  //   // setLoader(true);
-  //   restAPI
-  //     .post("/userfeedback", event)
-  //     .then((response) => {
-  //       snackbar.showSuccess("Feedback submitted!");
-  //       localStorage.setItem("Feedback_added", "yes");
-  //       navigate("/home");
-  //     })
-  //     .catch((error) => {
-  //       if (error && error.response && error.response.data) {
-  //         snackbar.showError(error.response.data);
-  //       }
-  //     });
-  // };
-
   const formik = useFormik({
     initialValues: {
       feedback: "",
     },
-    onSubmit: (values) => {
-      setLoader(true);
-      restAPI
-        .post("/protected/userfeedback", values)
-        .then((response) => {
-          snackbar.showSuccess("Feedback Submitted!");
-          navigate("/home");
-        })
-        .catch((error) => {
-          if (error && error.response && error.response.data) {
-            snackbar.showError(error.response.data);
-          }
-        });
-      setLoader(false);
-    },
+    validationSchema: feedbackSchema,
+    onSubmit: handleSubmit,
   });
+
+  function handleSubmit(values) {
+    setLoader(true);
+
+    restAPI
+      .post("/protected/userfeedback", values)
+      .then((response) => {
+        snackbar.showSuccess("Feedback Successfull!");
+        navigate("/home");
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          localStorage.removeItem("Are_you_in");
+          navigate("/");
+        }
+        if (error && error.response && error.response.data) {
+          snackbar.showError(error.response.data);
+        }
+        setLoader(false);
+      });
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -83,16 +76,6 @@ const FeedbackForm = () => {
         <Box sx={{ mt: 3 }}>
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
-              {/* <label>
-              Your Feedback:
-              <textarea
-                value={feedback}
-                onChange={handleInputChange}
-                rows="4"
-                cols="50"
-              />
-            </label>
-            <br /> */}
               <RenderTextArea
                 id="feedback"
                 label="Feedback"
@@ -109,6 +92,22 @@ const FeedbackForm = () => {
               Submit Feedback
             </Button>
           </form>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            paddingBottom={3}
+          >
+            <Button
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Cancel
+            </Button>
+          </Box>
+          <CustomSnackbar snackbarProp={snackbar} />
+          <Feedbacks></Feedbacks>
         </Box>
       </Box>
     </Container>

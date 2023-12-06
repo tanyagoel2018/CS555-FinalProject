@@ -1,24 +1,16 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { useFormik } from "formik";
-import DailyTask from "./DailyTask";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Animation from "./PetAnimation";
-import {
-  Button,
-  Container,
-  CssBaseline,
-  Box,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { petSchema } from "../validations/petNameValidations";
+import {Grid, Typography, Box} from "@mui/material";
 import { useApi } from "../ContextAPI/APIContext";
+import DailyTask from "./DailyTask";
+import Animation from "./PetAnimation";
 import Products from "./Products";
 import CustomSnackbar from "./CustomSnackbar";
 import useSnackbar from "../hooks/useSnackbar";
-import { RenderTextField } from "./InputFields";
 import BackDrop from "./Backdrop";
+import { io } from "socket.io-client";
+import NameBanner from "./NameBanner";
+import { CiEdit } from "react-icons/ci";
 
 const UserData = () => {
   const navigate = useNavigate();
@@ -28,18 +20,45 @@ const UserData = () => {
   const [loader, setLoader] = useState(true);
   const [reload, setReload] = useState(0);
   const [gif, setGif] = useState(null);
+  const socket = useMemo(() => {
+    const mySocket = io("localhost:4000", {
+      autoConnect: false,
+      withCredentials: true,
+      transports: ["websocket"]
+    });
+    return mySocket;
+  }, []); 
+  // const socket = io("localhost:4000", {
+  //       autoConnect: false,
+  //       withCredentials: true,
+  //       transports: ["websocket"]
+  //     });
+  
+    useEffect(()=>{
+        socket.connect();
+        socket.on("Connect", ()=>{
+          console.log("connected"); 
+        });
+    }, [socket]);
 
-  useEffect(() => {
-    const bleh = localStorage.getItem("Are_you_in");
-    if (!bleh) {
-      navigate("/");
-    }
+    useEffect(()=>{
+      socket.on("score:update",(e)=>{
+        fetchUserData();
+        setReload(reload+1);
+        console.log(e);
+      });
+
+    },[socket]);
+
+  const fetchUserData = async()=>{
     const url = `/protected/userData`;
     restAPI
       .get(url)
       .then((response) => {
+        console.log("API call from home");
         try {
           setUserdata(response.data);
+          console.log("APi call made");
           setGif(response.data.pet.recentImage);
           setLoader(false);
         } catch (error) {
@@ -47,113 +66,79 @@ const UserData = () => {
         }
       })
       .catch((error) => {
+        if (error.response.status === 403){
+          localStorage.removeItem("Are_you_in");
+          navigate("/");
+        }
         if (error && error.response && error.response.data) {
           snackbar.showError(error.response.data);
         }
+
       });
+  }
+
+ 
+  useEffect(() => {
+    let item = localStorage.getItem("Are_you_in");
+    if (item) {
+      item = JSON.parse(item);
+      let now =new Date();
+      let validSession = now.getTime() < item.expirationTime
+      if(!validSession || item.admin){
+          navigate("/");
+      }
+    }
+    else{
+      navigate("/")
+    }
+    fetchUserData();
   }, [reload, navigate, restAPI]);
   //update the gif
   const updateGif = (img) => {
     setGif(img);
   };
-
-  //petName form
-  const formik = useFormik({
-    initialValues: {
-      petName: "",
-    },
-    validationSchema: petSchema,
-    onSubmit: (values) => {
-      restAPI
-        .post("/protected/petName", values)
-        .then((response) => {
-          setLoader(false);
-          setReload(reload + 1);
-        })
-        .catch((error) => {
-          setLoader(false);
-          if (error && error.response && error.response.data) {
-            snackbar.showError(error.response.data);
-          }
-        });
-    },
-  });
-
+  //COLOR : #2C579C
   if (loader) {
     return <BackDrop loader={loader} />;
   } else if (!userData.pet.petName) {
-    return (
-      <>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Typography component="h1" variant="h5">
-              Welcome {userData.name} Name your Pet
-            </Typography>
-            <BackDrop loader={loader} />
-            <Box sx={{ mt: 3 }}>
-              <form onSubmit={formik.handleSubmit}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <RenderTextField
-                      id="petName"
-                      label="Pet Name"
-                      type="string"
-                      formik={formik}
-                    />
-                  </Grid>
-                </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Update
-                </Button>
-              </form>
-              <CustomSnackbar snackbarProp={snackbar} />
-            </Box>
-          </Box>
-        </Container>
-      </>
-    );
+      navigate("/petRename", {state : {save:true}});  
   } else {
     return (
       <>
         <Grid container spacing={1}>
           <Grid item xs={3}>
             <Products
-              reloadParent={setReload}
               rewards={userData.rewards}
-              reload={reload}
+              reloadParent={setReload}
+              reload = {reload}
               gif={gif}
-              updateGif={updateGif}
+              updatexdGif={updateGif}
             />
+           
           </Grid>
           <Grid item xs={6}>
             <div className="home center">
               <span>
-                <h2>{userData.pet.petName}</h2>
+                <Typography variant="h5" display={"inline-block"} paddingRight={1} paddingTop={5}>
+                  Hi,{userData.pet.petName} here
+                </Typography>
+                
                 <Link to="/petRename" className="links">
-                  Rename Pet
-                </Link>
-              </span>
-              <Animation gif={gif} updateGif={updateGif} />
+                     <CiEdit/>
+                  </Link>
+                </span>
+                <Box paddingTop={2.5}>
+                  <Animation gif={gif}  updateGif = {updateGif}/>
+                </Box>
             </div>
           </Grid>
           <Grid item xs={3}>
+            <NameBanner userName={userData.name} rewards = {userData.rewards}/>
             <DailyTask
               userData={userData}
               reloadParent={setReload}
               reload={reload}
+              socket={socket}
             />
           </Grid>
         </Grid>
@@ -164,3 +149,4 @@ const UserData = () => {
 };
 
 export default UserData;
+

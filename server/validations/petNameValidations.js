@@ -1,8 +1,4 @@
-//TODO: write YUP validation
-
 import yup from "yup";
-import YupPassword from "yup-password";
-YupPassword(yup);
 
 const petSchema = yup.object({
   petName: yup

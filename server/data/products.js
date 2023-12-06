@@ -2,8 +2,9 @@ import { ObjectId } from "mongodb";
 import { users, products } from "../config/dbCollections.js";
 import { getUserByUserID } from "./userData.js";
 import { productUpdateSchema } from "../validations/productValidation.js";
-
+import { animations } from "../config/dbCollections.js";
 const purchase_product = async (id, rewards, image) => {
+  
   let userData = await getUserByUserID(id);
   const newReward = userData.rewards - rewards;
   if (newReward < 0) {
@@ -64,11 +65,39 @@ const addProductToUser = async (userId, productId, reward)=>{
   return result;
 }
 
+const tagCombinationHelper = (array)=>{
+  const result = [];
+  const memo = {};
+
+  // Recursively generate combinations with memoization
+  function generateCombinations(currentIndex, currentCombination) {
+    const key = currentIndex + '|' + currentCombination.join(',');
+
+    if (memo[key]) {
+      return;
+    }
+
+    memo[key] = true;
+
+    // Only add to the result if the combination is non-empty
+    if (currentCombination.length > 0) {
+      result.push([...currentCombination]);
+    }
+
+    for (let i = currentIndex; i < array.length; i++) {
+      const updatedCombination = [...currentCombination, array[i]];
+      generateCombinations(i + 1, updatedCombination);
+    }
+  }
+
+  generateCombinations(0, []);
+  return result;
+}
 const myProducts = async(id)=>{
   const productCollection = await products();
 
   let productsOwned = undefined;
-  
+  let allAnimation = undefined;
   try {
     let userData = await getUserByUserID(id);
     let productIds = userData.products;
@@ -79,13 +108,35 @@ const myProducts = async(id)=>{
     productsOwned = await productCollection.find({_id: {$in: productIds}}).toArray();
     productsOwned = productsOwned.map((product)=>{
       product._id = product._id.toString();
-      return product;
+      return product.tag;
     })
+    const tagsToSearch = tagCombinationHelper(productsOwned)
+
+    const sortedTagsToSearch = tagsToSearch.map(innerArray => innerArray.slice().sort());
+
+    const batchedQuery = {
+      $or: sortedTagsToSearch.map(combination => ({
+        tags: { $eq: combination }
+      }))
+    };
+    const animationCollection = await animations();
+    allAnimation = await animationCollection.find(batchedQuery).toArray();
+    allAnimation = allAnimation.map((anima)=>{
+      anima._id = anima._id.toString();
+      if(anima.animation == userData.pet.recentImage){
+          anima.selected= true;
+      }
+      else{
+        anima.selected = false;
+      }
+      return anima
+    });
 
   } catch (error) {
     console.log(error);
   }
-  return productsOwned;
+
+  return allAnimation;
 }
 
 

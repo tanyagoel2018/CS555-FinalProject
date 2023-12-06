@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "npx mocha 'test/login.js' 'test/signup.js'"
+    "test": "npx mocha 'test/login.mjs' 'test/signup.js'"
   },
   "author": "Team 6",
   "license": "ISC",
@@ -22,7 +22,9 @@
     "jsonwebtoken": "^9.0.2",
     "mocha": "^10.2.0",
     "mongodb": "^6.1.0",
+    "node": "^21.2.0",
     "nodemon": "^3.0.1",
+    "socket.io": "^4.7.2",
     "supertest": "^6.3.3",
     "xss": "^1.0.14",
     "yup": "^1.3.2",
