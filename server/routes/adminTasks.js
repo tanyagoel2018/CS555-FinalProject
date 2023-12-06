@@ -1,7 +1,9 @@
 import { Router } from "express";
+import xss from "xss";
+
 const router = Router();
 
-import { completeTask, addNewTask } from "../data/adminTasks.js";
+import { completeTask, addNewTask, deleteTask, editTask } from "../data/adminTasks.js";
 
 router.route("/").post(async (req, res) => {
   try {
@@ -20,6 +22,7 @@ router.route("/").post(async (req, res) => {
     res.status(400).json(error);
   }
 });
+
 
 router.route("/add").post(async (req, res) => {
   //name = req.user.name
@@ -59,10 +62,29 @@ router.route("/edit").post(async (req, res) => {
     let taskId = req.body.taskId;
 
     const user = await editTask(userId, name, task, reward, taskId);
+    req.io.to(userId).emit("task:update", {e:"task-update"});
+
     res.json(user) ;
   } catch (error) {
     res.status(400).json(error);
   }
 });
+
+router.route("/delete").post(async (req, res) => {
+
+    let userId = xss(req.body.userId);
+    let taskId = xss(req.body.taskId);
+
+    userId = userId.trim();
+    taskId = taskId.trim();
+    try {
+        const result = await deleteTask(userId, taskId);
+        req.io.to(userId).emit("task:update", {e:"task-update"});
+        return res.status(200).json("Task deleted");
+      } catch (error) {
+        return res.status(404).json("Task not found");
+    }
+});
+
 
 export default router;

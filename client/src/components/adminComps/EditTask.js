@@ -87,6 +87,7 @@ const EditTask = () => {
           Edit Task
         </Typography>
         <Box sx={{ mt: 3 }}>
+
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -115,10 +116,16 @@ const EditTask = () => {
                 sx={{ mt: 3, mb: 2 }}
                 disabled={loader}
               >
-                {loader ? "Adding Task..." : "Add Task"}
+                {loader ? "Updating Task..." : "Update Task"}
               </Button>
             </Grid>
           </form>
+          <Box display="flex" justifyContent="center" alignItems="center">
+              <Button onClick={()=>{
+                  navigate("/showUser", { state: { userId: userId } })
+              }}> Cancel</Button>
+          </Box>
+         
           <CustomSnackbar snackbarProp={snackbar} />
         </Box>
       </Box>

@@ -60,7 +60,8 @@ const addNewTask = async (userId, name, task, reward) => {
   }
 };
 
-const editTask =async(userId, name, task, reward, taskId)=>{
+const editTask = async(userId, name, task, reward, taskId)=>{
+  
   const filter = { _id: new ObjectId(userId),'tasks._id':new ObjectId(taskId) };
   const userCollection = await users();
   const updateTask = await userCollection.updateOne(filter, {
@@ -78,4 +79,22 @@ const editTask =async(userId, name, task, reward, taskId)=>{
   
 }
 
-export { completeTask, addNewTask };
+const deleteTask = async(userId, taskId)=>{
+  userId = userId.trim();
+  taskId = taskId.trim();
+
+  const userCollection = await users();
+  const result = await userCollection.findOneAndUpdate(
+    {_id: new ObjectId(userId)}, 
+    {$pull: {tasks: {_id: new ObjectId(taskId)}}},
+    {returnDocument:'after'}
+  );
+  if(!result.value){
+      return "Task Not Found"
+  }
+  return result;
+  
+};
+
+
+export { completeTask, addNewTask, deleteTask, editTask };

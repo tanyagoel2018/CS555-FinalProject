@@ -44,6 +44,16 @@ const ShowUserData = () => {
     });
   };
 
+  const handleDelete = async(taskId)=>{
+      console.log(taskId);
+      try {
+        const response = await restAPI.post("/protected/adminTask/delete", {userId:user._id, taskId:taskId});
+        setReload(reload+1);
+      } catch (error) {
+          console.log(error);
+      }
+  }
+
   useEffect(() => {
     if (state && state.userId) {
       restAPI
@@ -61,83 +71,8 @@ const ShowUserData = () => {
   let tasks = null;
   if (user && user.tasks) {
     tasks = user.tasks.map((item) => {
-      return (
-        <div
-          className="TaskContainer"
-          key={item._id}
-          style={{ height: "50px" }}
-        >
-          <div style={{ marginTop: "10px" }}>
-            <div className="task" style={{ marginRight: "10px" }}>
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() =>
-                  handleOpen({ taskId: item._id, reward: item.reward })
-                }
-                startIcon={<SendIcon />}
-                disabled={item.completed}
-              >
-                DONE
-              </Button>
-            </div>
-            <div className="task" style={{ marginTop: "-5px" }}>
-              {item.completed ? (
-                <div
-                  style={{
-                    marginBottom: "-14px",
-                    textDecoration: "line-through",
-                  }}
-                >
-                  Task : {item.task}
-                </div>
-              ) : (
-                <div style={{ marginBottom: "-14px" }}>Task : {item.task}</div>
-              )}
-              <br />
-              <span>&nbsp;&nbsp;Assigned By: {item.assignedBy}</span>
-            </div>
-            <div className="reward">
-              <Button
-                variant="outlined"
-                size="small"
-                startIcon={<DeleteIcon />}
-                disabled={item.completed}
-              >
-                Delete
-              </Button>
-            </div>
-            <div className="reward" style={{ marginRight: "10px" }}>
-              <Button
-                disabled={item.completed}
-                variant="outlined"
-                size="small"
-                startIcon={<LiaEdit />}
-                onClick={() => {
-                  goToEditTask(item);
-                }}
-              >
-                Edit
-              </Button>
-            </div>
-            <div className="reward" style={{ marginTop: "5px" }}>
-              {item.completed ? (
-                <span style={{ textDecoration: "line-through" }}>
-                  Reward : {item.reward}
-                  {/* <FcLike /> */}
-                  <span style={{ paddingLeft: "20px" }}></span>
-                </span>
-              ) : (
-                <span>
-                  Reward : {item.reward}
-                  <FcLike />
-                  <span style={{ paddingLeft: "20px" }}></span>
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-      );
+      return <TaskList task = {item} handleOpen={handleOpen} handleDelete = {handleDelete} goToEditTask ={goToEditTask}/>
+
     });
   }
 
@@ -199,5 +134,87 @@ const ShowUserData = () => {
     );
   }
 };
+
+const TaskList = ({task, handleClose, handleDelete, handleOpen, goToEditTask})=>{
+  return (
+    <div
+      className="TaskContainer"
+      key={task._id}
+      style={{ height: "50px" }}
+    >
+      <div style={{ marginTop: "10px" }}>
+        <div className="task" style={{ marginRight: "10px" }}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() =>
+              handleOpen({ taskId: task._id, reward: task.reward })
+            }
+            startIcon={<SendIcon />}
+            disabled={task.completed}
+          >
+            DONE
+          </Button>
+        </div>
+        <div className="task" style={{ marginTop: "-5px" }}>
+          {task.completed ? (
+            <div
+              style={{
+                marginBottom: "-14px",
+                textDecoration: "line-through",
+              }}
+            >
+              Task : {task.task}
+            </div>
+          ) : (
+            <div style={{ marginBottom: "-14px" }}>Task : {task.task}</div>
+          )}
+          <br />
+          <span>&nbsp;&nbsp;Assigned By: {task.assignedBy}</span>
+        </div>
+        <div className="reward">
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<DeleteIcon />}
+            disabled={task.completed}
+            onClick= {()=>{handleDelete(task._id)}}
+          >
+            Delete
+          </Button>
+        </div>
+        <div className="reward" style={{ marginRight: "10px" }}>
+          <Button
+            disabled={task.completed}
+            variant="outlined"
+            size="small"
+            startIcon={<LiaEdit />}
+            onClick={() => {
+              goToEditTask(task);
+            }}
+          >
+            Edit
+          </Button>
+        </div>
+        <div className="reward" style={{ marginTop: "5px" }}>
+          {task.completed ? (
+            <span style={{ textDecoration: "line-through" }}>
+              Reward : {task.reward}
+              {/* <FcLike /> */}
+              <span style={{ paddingLeft: "20px" }}></span>
+            </span>
+          ) : (
+            <span>
+              Reward : {task.reward}
+              <FcLike />
+              <span style={{ paddingLeft: "20px" }}></span>
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+}
 
 export default ShowUserData;

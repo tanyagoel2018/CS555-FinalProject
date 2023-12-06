@@ -105,6 +105,11 @@ const AddTask = () => {
               </Button>
             </Grid>
           </form>
+          <Box display="flex" justifyContent="center" alignItems="center">
+              <Button onClick={()=>{
+                  navigate("/showUser", { state: { userId: userId } })
+              }}> Cancel</Button>
+          </Box>
           <CustomSnackbar snackbarProp={snackbar} />
         </Box>
       </Box>

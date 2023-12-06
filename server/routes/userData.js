@@ -6,7 +6,6 @@ import { getAllUsers, getUserByName, getUserByUserID, updateProfilePic, getProfi
 router.route("/").get(async (req, res) => {
   try {
     let userId = req.user.id;
-
     const user = await getUserByUserID(userId);
     res.json(user);
   } catch (error) {
