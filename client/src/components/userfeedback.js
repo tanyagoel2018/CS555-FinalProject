@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useApi } from "../ContextAPI/APIContext";
 import { RenderTextArea } from "./InputFields";
 import BackDrop from "./Backdrop";
-import CustomSnackbar from "./CustomSnackbar"
+import CustomSnackbar from "./CustomSnackbar";
 import {
   Button,
   Container,
@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { feedbackSchema } from "../validations/feedbackValidation";
+import Feedbacks from "./Feedback";
 
 const FeedbackForm = () => {
   const [feedback, setFeedback] = useState("");
@@ -38,7 +39,6 @@ const FeedbackForm = () => {
 
   function handleSubmit(values) {
     setLoader(true);
-    console.log("Hellu");
 
     restAPI
       .post("/protected/userfeedback", values)
@@ -47,10 +47,10 @@ const FeedbackForm = () => {
         navigate("/home");
       })
       .catch((error) => {
-          if (error.response.status === 403){
-            localStorage.removeItem("Are_you_in");
-            navigate("/");
-          }
+        if (error.response.status === 403) {
+          localStorage.removeItem("Are_you_in");
+          navigate("/");
+        }
         if (error && error.response && error.response.data) {
           snackbar.showError(error.response.data);
         }
@@ -93,6 +93,7 @@ const FeedbackForm = () => {
             </Button>
           </form>
           <CustomSnackbar snackbarProp={snackbar} />
+          <Feedbacks></Feedbacks>
         </Box>
       </Box>
     </Container>

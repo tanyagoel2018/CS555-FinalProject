@@ -38,4 +38,18 @@ const addFeedback = async (userId, userFeedback) => {
   }
 };
 
-export { addFeedback };
+const getAllFeedbacksWithUserId = async (userId) => {
+  const feedbackCollection = await feedbacks();
+
+  const userExist = await feedbackCollection.findOne({
+    userID: userId,
+  });
+
+  if (userExist == null) {
+    throw `No such user exists!`;
+  }
+
+  return userExist.allFeedbacks;
+};
+
+export { addFeedback, getAllFeedbacksWithUserId };
