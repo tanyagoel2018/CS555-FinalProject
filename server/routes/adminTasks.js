@@ -58,8 +58,8 @@ router.route("/edit").post(async (req, res) => {
 
     let taskId = req.body.taskId;
 
-    // const user = await editTask(userId, name, task, reward, taskId);
-    // res.json(user) ;
+    const user = await editTask(userId, name, task, reward, taskId);
+    res.json(user) ;
   } catch (error) {
     res.status(400).json(error);
   }

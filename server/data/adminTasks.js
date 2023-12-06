@@ -60,12 +60,22 @@ const addNewTask = async (userId, name, task, reward) => {
   }
 };
 
-export { completeTask, addNewTask };
+const editTask =async(userId, name, task, reward, taskId)=>{
+  const filter = { _id: new ObjectId(userId),'tasks._id':new ObjectId(taskId) };
+  const userCollection = await users();
+  const updateTask = await userCollection.updateOne(filter, {
+    $set: { 'tasks.$.task':task,
+            'tasks.$.reward':reward,
+            'tasks.$.assignedBy':name}
+  });
 
-//object ={,
-//   _id:new ObjectId()
-//   task,
-//   reward,
-//   completed:false,
-//   assignedby:name
-// }
+  if(updateTask.modifiedCount===1){
+    return 'Update successfull';
+  }
+  else{
+    throw 'Update failed';
+  }
+  
+}
+
+export { completeTask, addNewTask };
