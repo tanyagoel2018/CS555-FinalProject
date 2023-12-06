@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useApi } from "../ContextAPI/APIContext";
-import { Box, Grid} from "@mui/material";
+import { Box, Grid, Typography} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 const Feedbacks = ({userData,reloadParent,reload, socket})=>{ 
@@ -36,13 +36,15 @@ const Feedbacks = ({userData,reloadParent,reload, socket})=>{
     <Box className="center">
       <br/>
       <h2>Feedbacks (by you) so far:</h2>
+      <Box sx={{ overflow: 'auto', maxHeight: '150px' }}>
       <article>
-        <Grid container spacing={2} paddingLeft={2} overflow="auto" maxHeight={"25em"}>
         {feedbacks.map((feedback) => {
-        return (<h4>{feedback}, </h4>);
+        return (
+            <Typography variant={"body1"}>{feedback}</Typography>
+        );
         })}
-        </Grid>
         </article>
+        </Box>
     </Box>
   );
 };
