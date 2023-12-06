@@ -133,7 +133,7 @@ const ShowUserData = () => {
         <Grid container spacing={1}>
           <Grid item xs={0} sm={1} md={2} lg={3}></Grid>
           <Grid item xs={12} sm={10} md={8} lg={6}>
-            <br />
+            <br/>
             <div className="parent">
               <div className="div1 center">
                 <Avatar
@@ -150,16 +150,12 @@ const ShowUserData = () => {
                   Rewards: {user.rewards} <FcLike />
                 </h2>
               </div>
-              <div className="div4 center">
-                <br />
-                <br />
+              <div className="div4 center" >
                 {tasks}
               </div>
             </div>
           </Grid>
           <Grid item xs={0} sm={1} md={2} lg={3}>
-            <br />
-            <br />
             <br />
             <br />
             <br />
