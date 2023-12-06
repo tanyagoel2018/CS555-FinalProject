@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-=======
-import React, { useCallback, useEffect, useMemo, useState } from "react";
->>>>>>> 46f56de (websocket implemented)
 import { useNavigate, Link } from "react-router-dom";
 import {Grid, Typography, Box} from "@mui/material";
 import { useApi } from "../ContextAPI/APIContext";
@@ -13,12 +9,8 @@ import CustomSnackbar from "./CustomSnackbar";
 import useSnackbar from "../hooks/useSnackbar";
 import BackDrop from "./Backdrop";
 import { io } from "socket.io-client";
-
-<<<<<<< HEAD
 import NameBanner from "./NameBanner";
 import { CiEdit } from "react-icons/ci";
-=======
->>>>>>> 46f56de (websocket implemented)
 
 const UserData = () => {
   const navigate = useNavigate();
@@ -49,12 +41,6 @@ const UserData = () => {
         });
     }, [socket]);
 
-<<<<<<< HEAD
-    useEffect(()=>{
-      socket.on("score:update",(e)=>{
-        fetchUserData();
-=======
-
     useEffect(()=>{
       socket.on("score:update",(e)=>{
         fetchUserData();
@@ -63,7 +49,6 @@ const UserData = () => {
       });
 
     },[socket]);
-<<<<<<< HEAD
 
   const fetchUserData = async()=>{
     const url = `/protected/userData`;
@@ -91,75 +76,8 @@ const UserData = () => {
 
       });
   }
-=======
->>>>>>> 46f56de (websocket implemented)
 
-  useEffect(() => {
-    let item = localStorage.getItem("Are_you_in");
-    if (item) {
-      item = JSON.parse(item);
-      let now =new Date();
-      let validSession = now.getTime() < item.expirationTime
-      if(!validSession || item.admin){
-          navigate("/");
-      }
-    }
-    else{
-      navigate("/")
-    }
-<<<<<<< HEAD
-    fetchUserData();
-    // const url = `/protected/userData`;
-    // restAPI
-    //   .get(url)
-    //   .then((response) => {
-    //     console.log("API call from home");
-    //     try {
-    //       setUserdata(response.data);
-    //       console.log("APi call made");
-    //       setGif(response.data.pet.recentImage);
-    //       setLoader(false);
-    //     } catch (error) {
-    //       setLoader(true);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     if (error.response.status === 403){
-    //       localStorage.removeItem("Are_you_in");
-    //       navigate("/");
-    //     }
-    //     if (error && error.response && error.response.data) {
-    //       snackbar.showError(error.response.data);
-    //     }
-
-    //   });
-=======
-    const url = `/protected/userData`;
-    restAPI
-      .get(url)
-      .then((response) => {
-        console.log("API call from home");
-        try {
-          setUserdata(response.data);
-          console.log("APi call made");
-          setGif(response.data.pet.recentImage);
-          setLoader(false);
-        } catch (error) {
-          setLoader(true);
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 403){
-          localStorage.removeItem("Are_you_in");
-          navigate("/");
-        }
-        if (error && error.response && error.response.data) {
-          snackbar.showError(error.response.data);
-        }
-
-      });
-  }
-
+ 
   useEffect(() => {
     let item = localStorage.getItem("Are_you_in");
     if (item) {
@@ -174,30 +92,6 @@ const UserData = () => {
       navigate("/")
     }
     fetchUserData();
-    // const url = `/protected/userData`;
-    // restAPI
-    //   .get(url)
-    //   .then((response) => {
-    //     console.log("API call from home");
-    //     try {
-    //       setUserdata(response.data);
-    //       console.log("APi call made");
-    //       setGif(response.data.pet.recentImage);
-    //       setLoader(false);
-    //     } catch (error) {
-    //       setLoader(true);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     if (error.response.status === 403){
-    //       localStorage.removeItem("Are_you_in");
-    //       navigate("/");
-    //     }
-    //     if (error && error.response && error.response.data) {
-    //       snackbar.showError(error.response.data);
-    //     }
-
-    //   });
   }, [reload, navigate, restAPI]);
   //update the gif
   const updateGif = (img) => {
