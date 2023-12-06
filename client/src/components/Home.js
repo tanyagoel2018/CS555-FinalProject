@@ -42,28 +42,16 @@ const UserData = () => {
         });
     }, [socket]);
 
-
     useEffect(()=>{
       socket.on("score:update",(e)=>{
+        fetchUserData();
         setReload(reload+1);
         console.log(e);
       });
 
     },[socket]);
 
-  useEffect(() => {
-    let item = localStorage.getItem("Are_you_in");
-    if (item) {
-      item = JSON.parse(item);
-      let now =new Date();
-      let validSession = now.getTime() < item.expirationTime
-      if(!validSession || item.admin){
-          navigate("/");
-      }
-    }
-    else{
-      navigate("/")
-    }
+  const fetchUserData = async()=>{
     const url = `/protected/userData`;
     restAPI
       .get(url)
@@ -88,6 +76,46 @@ const UserData = () => {
         }
 
       });
+  }
+
+  useEffect(() => {
+    let item = localStorage.getItem("Are_you_in");
+    if (item) {
+      item = JSON.parse(item);
+      let now =new Date();
+      let validSession = now.getTime() < item.expirationTime
+      if(!validSession || item.admin){
+          navigate("/");
+      }
+    }
+    else{
+      navigate("/")
+    }
+    fetchUserData();
+    // const url = `/protected/userData`;
+    // restAPI
+    //   .get(url)
+    //   .then((response) => {
+    //     console.log("API call from home");
+    //     try {
+    //       setUserdata(response.data);
+    //       console.log("APi call made");
+    //       setGif(response.data.pet.recentImage);
+    //       setLoader(false);
+    //     } catch (error) {
+    //       setLoader(true);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     if (error.response.status === 403){
+    //       localStorage.removeItem("Are_you_in");
+    //       navigate("/");
+    //     }
+    //     if (error && error.response && error.response.data) {
+    //       snackbar.showError(error.response.data);
+    //     }
+
+    //   });
   }, [reload, navigate, restAPI]);
   //update the gif
   const updateGif = (img) => {

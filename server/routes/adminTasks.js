@@ -12,6 +12,9 @@ router.route("/").post(async (req, res) => {
     let reward = req.body.reward;
 
     const user = await completeTask(userId, taskId, reward);
+    req.io.to(userId).emit("score:update", {e:"score-update"});
+    req.io.to(userId).emit("task:update", {e:"task-update"});
+
     res.json(user);
   } catch (error) {
     res.status(400).json(error);
@@ -33,9 +36,12 @@ router.route("/add").post(async (req, res) => {
     let reward = req.body.reward;
 
     const user = await addNewTask(userId, name, task, reward);
-    res.json(user);
+    req.io.to(userId).emit("task:update", {e:"task-update"});
+    
+    return res.json(user);
   } catch (error) {
-    res.status(400).json(error);
+    console.log(error);
+   return res.status(400).json(error);
   }
 });
 

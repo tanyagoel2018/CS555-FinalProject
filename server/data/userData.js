@@ -75,7 +75,7 @@ const getProfilePic = async(id)=>{
   let profilepic = undefined;
   try {
     profilepic = await userCollection.findOne({ _id: new ObjectId(id) },{ projection: { profilePic: 1, _id:0 }})
-    console.log(profilepic);
+    // console.log(profilepic);
   } catch (error) {
       throw error;
   }

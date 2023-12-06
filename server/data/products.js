@@ -111,7 +111,6 @@ const myProducts = async(id)=>{
       return product.tag;
     })
     const tagsToSearch = tagCombinationHelper(productsOwned)
-    console.log(tagsToSearch);
 
     const sortedTagsToSearch = tagsToSearch.map(innerArray => innerArray.slice().sort());
 
@@ -132,7 +131,6 @@ const myProducts = async(id)=>{
       }
       return anima
     });
-    console.log(allAnimation);
 
   } catch (error) {
     console.log(error);

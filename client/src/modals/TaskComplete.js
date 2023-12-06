@@ -21,19 +21,32 @@ const style = {
 
 const TaskComplete = (props) => {
   const { restAPI } = useApi();
-  const markComplete=()=>{
-    restAPI
-    .post('/protected/adminTask/',{
+
+
+  const markComplete= async()=>{
+    try {
+      const respose = await restAPI.post('/protected/adminTask/', {
         userId:props.userId,
         taskId:props.taskId,
-        reward:props.reward
-    })
-    .then((response)=>{
+        reward:props.reward});
         props.handleClose()
-    })
-    .catch((error)=>{
-        console.log(error);
-    })
+    } catch (error) {
+      console.log(error);
+    }
+
+
+    //  restAPI
+    // .post('/protected/adminTask/',{
+    //     userId:props.userId,
+    //     taskId:props.taskId,
+    //     reward:props.reward
+    // })
+    // .then((response)=>{
+    //     props.handleClose()
+    // })
+    // .catch((error)=>{
+    //     console.log(error);
+    // })
   }
 
   return (
@@ -47,7 +60,7 @@ const TaskComplete = (props) => {
         <Button
           variant="outlined"
           color="secondary"
-          onClick={()=>markComplete()}
+          onClick={markComplete}
           size="small"
           sx={{ marginRight:'50px' }}
         >
