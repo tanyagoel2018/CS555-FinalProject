@@ -16,7 +16,8 @@ router.route("/").post(async (req, res) => {
     let result = await updatePetname(userId, petName);
     res.json(result);
   } catch (error) {
-    res.status(400).json(error);
+    console.log(error);
+    // res.status(400).json(error);
   }
 });
 

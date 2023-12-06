@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useState } from "react";
 import { useFormik } from "formik";
 import DailyTask from "./DailyTask";
@@ -19,6 +19,8 @@ import CustomSnackbar from "./CustomSnackbar";
 import useSnackbar from "../hooks/useSnackbar";
 import { RenderTextField } from "./InputFields";
 import BackDrop from "./Backdrop";
+import { io } from "socket.io-client";
+
 
 const UserData = () => {
   const navigate = useNavigate();
@@ -28,6 +30,35 @@ const UserData = () => {
   const [loader, setLoader] = useState(true);
   const [reload, setReload] = useState(0);
   const [gif, setGif] = useState(null);
+  const socket = useMemo(() => {
+    const mySocket = io("localhost:4000", {
+      autoConnect: false,
+      withCredentials: true,
+      transports: ["websocket"]
+    });
+    return mySocket;
+  }, []); 
+  // const socket = io("localhost:4000", {
+  //       autoConnect: false,
+  //       withCredentials: true,
+  //       transports: ["websocket"]
+  //     });
+  
+    useEffect(()=>{
+        socket.connect();
+        socket.on("Connect", ()=>{
+          console.log("connected"); 
+        });
+    }, [socket]);
+
+
+    useEffect(()=>{
+      socket.on("score:update",(e)=>{
+        setReload(reload+1);
+        console.log(e);
+      });
+
+    },[socket]);
 
   useEffect(() => {
     let item = localStorage.getItem("Are_you_in");
@@ -46,6 +77,7 @@ const UserData = () => {
     restAPI
       .get(url)
       .then((response) => {
+        console.log("API call from home");
         try {
           setUserdata(response.data);
           setGif(response.data.pet.recentImage);
@@ -162,6 +194,7 @@ const UserData = () => {
               userData={userData}
               reloadParent={setReload}
               reload={reload}
+              socket={socket}
             />
           </Grid>
         </Grid>

@@ -7,10 +7,11 @@ import { Avatar,Paper, Stack, Tooltip} from "@mui/material";
 import Logout from "./Logout";
 import { Link } from "react-router-dom";
 
-const DailyTask = ({userData,reloadParent,reload})=>{ 
+const DailyTask = ({userData,reloadParent,reload, socket})=>{ 
     const [dailyTasks, setDailyTaks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
+    const [taskReload, setTaskReload ] = useState(0);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
       setOpen(false);
@@ -30,7 +31,15 @@ const DailyTask = ({userData,reloadParent,reload})=>{
     }
     useEffect(()=>{
         fetchTask();
-    },[])
+    },[taskReload])
+    
+    useEffect(()=>{
+      socket.on("task:update", (e)=>{
+        console.log(e);
+        setTaskReload(taskReload+1);
+      });
+      
+    },[socket]);
 
   if (loading) {
     return <h4>loading..</h4>;
