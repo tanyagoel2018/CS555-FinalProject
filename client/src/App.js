@@ -9,6 +9,7 @@ import FeedbackForm from "./components/userfeedback";
 import AdminHome from "./components/adminComps/AdminHome";
 import AddTasks from "./components/adminComps/AddTasks";
 import AdminLogin from "./components/adminComps/AdminLogin";
+import EditTask from "./components/adminComps/EditTask";
 import ShowUserData from "./components/adminComps/ShowUserData";
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/addTasks" element={<AddTasks />} />
           <Route path="/adminLogin" element={<AdminLogin />} />
           <Route path="/showUser" element={<ShowUserData />} />
+          <Route path="/editTasks" element={<EditTask />} />
         </Routes> 
       </div>
     </Router>

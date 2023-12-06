@@ -25,7 +25,7 @@ router.route("/add").post(async (req, res) => {
   //name = req.user.name
   //task = req.body.task
   //rew
-  console.log(req.body);
+  // console.log(req.body);
   try {
     let userId = req.body.userId;
 
@@ -42,6 +42,26 @@ router.route("/add").post(async (req, res) => {
   } catch (error) {
     console.log(error);
    return res.status(400).json(error);
+  }
+});
+
+router.route("/edit").post(async (req, res) => {
+  console.log(req.body);
+  try {
+    let userId = req.body.userId;
+
+    let name = req.user.name;
+
+    let task = req.body.task;
+
+    let reward = req.body.reward;
+
+    let taskId = req.body.taskId;
+
+    // const user = await editTask(userId, name, task, reward, taskId);
+    // res.json(user) ;
+  } catch (error) {
+    res.status(400).json(error);
   }
 });
 

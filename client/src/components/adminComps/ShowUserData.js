@@ -33,6 +33,17 @@ const ShowUserData = () => {
     navigate("/addTasks", { state: { userId: user._id } });
   };
 
+  const goToEditTask = (item) => {
+    navigate("/editTasks", {
+      state: {
+        userId: user._id,
+        taskId: item._id,
+        task: item.task,
+        reward: item.reward,
+      },
+    });
+  };
+
   useEffect(() => {
     if (state && state.userId) {
       restAPI
@@ -102,6 +113,9 @@ const ShowUserData = () => {
                 variant="outlined"
                 size="small"
                 startIcon={<LiaEdit />}
+                onClick={() => {
+                  goToEditTask(item);
+                }}
               >
                 Edit
               </Button>
