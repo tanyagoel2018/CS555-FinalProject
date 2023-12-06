@@ -47,10 +47,13 @@ const FeedbackForm = () => {
         navigate("/home");
       })
       .catch((error) => {
+<<<<<<< HEAD
           if (error.response.status === 403){
             localStorage.removeItem("Are_you_in");
             navigate("/");
           }
+=======
+>>>>>>> 2172459 (updated feedback feature)
         if (error && error.response && error.response.data) {
           snackbar.showError(error.response.data);
         }
