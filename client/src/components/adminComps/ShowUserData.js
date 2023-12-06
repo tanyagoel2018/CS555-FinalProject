@@ -29,6 +29,10 @@ const ShowUserData = () => {
     setReload(reload + 1);
   };
 
+  const goToAddTask = () => {
+    navigate("/addTasks", { state: { userId: user._id } });
+  };
+
   useEffect(() => {
     if (state && state.userId) {
       restAPI
@@ -66,12 +70,20 @@ const ShowUserData = () => {
                 DONE
               </Button>
             </div>
-            <div
-              className="task"
-              style={{marginTop:'-5px'}}
-            >
-              {item.completed?<div style={{marginBottom:'-14px',textDecoration:'line-through'}}>Task : {item.task}</div>:<div style={{marginBottom:'-14px'}}>Task : {item.task}</div>}
-              <br/>
+            <div className="task" style={{ marginTop: "-5px" }}>
+              {item.completed ? (
+                <div
+                  style={{
+                    marginBottom: "-14px",
+                    textDecoration: "line-through",
+                  }}
+                >
+                  Task : {item.task}
+                </div>
+              ) : (
+                <div style={{ marginBottom: "-14px" }}>Task : {item.task}</div>
+              )}
+              <br />
               <span>&nbsp;&nbsp;Assigned By: {item.assignedBy}</span>
             </div>
             <div className="reward">
@@ -85,20 +97,29 @@ const ShowUserData = () => {
               </Button>
             </div>
             <div className="reward" style={{ marginRight: "10px" }}>
-              <Button disabled={item.completed} variant="outlined" size="small" startIcon={<LiaEdit />}>
+              <Button
+                disabled={item.completed}
+                variant="outlined"
+                size="small"
+                startIcon={<LiaEdit />}
+              >
                 Edit
               </Button>
             </div>
             <div className="reward" style={{ marginTop: "5px" }}>
-              {item.completed?<span style={{textDecoration:'line-through'}}>
-                Reward : {item.reward}
-                {/* <FcLike /> */}
-                <span style={{ paddingLeft: "20px" }}></span>
-              </span>:<span>
-                Reward : {item.reward}
-                <FcLike />
-                <span style={{ paddingLeft: "20px" }}></span>
-              </span>}
+              {item.completed ? (
+                <span style={{ textDecoration: "line-through" }}>
+                  Reward : {item.reward}
+                  {/* <FcLike /> */}
+                  <span style={{ paddingLeft: "20px" }}></span>
+                </span>
+              ) : (
+                <span>
+                  Reward : {item.reward}
+                  <FcLike />
+                  <span style={{ paddingLeft: "20px" }}></span>
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -131,7 +152,7 @@ const ShowUserData = () => {
               </div>
               <div className="div4 center">
                 <br />
-                <br/>
+                <br />
                 {tasks}
               </div>
             </div>
@@ -148,6 +169,11 @@ const ShowUserData = () => {
                 Back to home
               </Button>
             </Link>
+            <br />
+            <br />
+            <Button variant="outlined" color="secondary" onClick={goToAddTask}>
+              Add new Task
+            </Button>
           </Grid>
         </Grid>
 
