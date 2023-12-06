@@ -21,7 +21,8 @@ const DailyTask = ({userData,reloadParent,reload})=>{
     const fetchTask = async()=>{
         try {
             const allTask = await restAPI.get("/protected/daily-task");
-            setDailyTaks(allTask.data.tasks);
+            let tasks = allTask.data.filter((task)=>task.completed==false)
+            setDailyTaks(tasks);
             setLoading(false);
         } catch (error) {
             console.log(error);            
@@ -66,7 +67,7 @@ const DailyTask = ({userData,reloadParent,reload})=>{
       <article>
         {dailyTasks.map((dailyTask) => {
           const { task, reward } = dailyTask;
-          return <Task task={task} reward={reward} />;
+          return <Task task={task} reward={reward} key={dailyTask._id}/>;
         })}
       </article>
       <Link to="/userfeedback" className="links">Feedback</Link>

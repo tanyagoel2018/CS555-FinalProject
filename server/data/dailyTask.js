@@ -7,8 +7,8 @@ const fetchAllTask = async (id)=>{
     await dailyTaskScema.validate({id});
     if (!ObjectId.isValid(id)) throw `Valid ObjectId required for daily tasks`;
     const userCollection = await users();
-    let dailyTask = await userCollection.findOne({ _id: new ObjectId(id) },{ projection: { tasks: 1, _id:0 } });
-    return {tasks: dailyTask.tasks};
+    let dailyTask = await userCollection.findOne({ _id: new ObjectId(id) });
+    return dailyTask.tasks;
 }
 
 export {fetchAllTask};

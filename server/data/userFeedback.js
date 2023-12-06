@@ -10,7 +10,7 @@ const addFeedback = async (feedback) => {
 
   try {
     // await feedbackSchema.validate(feedback);
-    console.log(feedbackCollection);
+    // console.log(feedbackCollection);
     const result = await feedbackCollection.insertOne({ feedback });
 
     return result.ops[0].feedback;

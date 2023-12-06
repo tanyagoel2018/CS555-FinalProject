@@ -11,21 +11,43 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+        # The following line tells setup-node action to look for package-lock.json in the client and server directories
+        cache-files: |
+          ./client/package-lock.json
+          ./server/package-lock.json
+
+    # Install dependencies in the client directory
+    - name: Install Client Dependencies
+      run: npm ci
+      working-directory: ./client
+
+    # Install dependencies in the server directory
+    - name: Install Server Dependencies
+      run: npm ci
+      working-directory: ./server
+      
+    # Build and test steps for client and server, if needed
+    - name: Build and Test Client
+      run: |
+        npm run build
+        npm test
+      working-directory: ./client
+
+    - name: Build and Test Server
+      run: |
+        npm run build
+        npm test
+      working-directory: ./server

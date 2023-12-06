@@ -58,7 +58,7 @@ const ProfilePic = (props) => {
                 props.handleClose();
             })
             .catch((error)=>{
-                
+                console.log(error);
             })
         
         })

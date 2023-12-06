@@ -39,18 +39,17 @@
 
 /* style for link */
 .links {
-  color: #1876D1;  
-	text-decoration: none !important;
+  color: #1876d1;
+  text-decoration: none !important;
 }
 
 .links:visited {
-	color: #1876D1;
-
+  color: #1876d1;
 }
 
 /* center alignment */
 
-.center{
+.center {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,19 +59,30 @@
 
 /* Dailytasks */
 .TaskContainer {
-
   border-radius: 1cm;
   margin-bottom: 1rem;
   box-sizing: "border-box";
   background-color: rgb(231, 242, 255);
   padding: 0.8rem;
   width: 100%;
-  overflow: hidden;  
+  overflow: hidden;
 }
- .TaskContainer .task{
+.TaskContainer .task {
   float: left;
- 
 }
- .TaskContainer .reward{
+.TaskContainer .reward {
   float: right;
 }
+
+.parent {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  }
+  
+  .div1 { grid-area: 1 / 1 / 3 / 3; }
+  .div2 { grid-area: 1 / 3 / 3 / 6; }
+  .div3 { grid-area: 1 / 6 / 3 / 8; }
+  .div4 { grid-area: 3 / 1 / 6 / 8; }
