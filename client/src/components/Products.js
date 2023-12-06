@@ -105,7 +105,6 @@ const Products = (props) => {
     return BackDrop(loader={loader});
   }
 
->>>>>>> 46f56de (websocket implemented)
   return (
     <div className="center">
       <Stack direction={"row"} paddingBlockStart={4} paddingBlockEnd={2}>
