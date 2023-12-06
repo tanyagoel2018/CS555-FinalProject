@@ -85,7 +85,7 @@ const Products = (props) => {
     }
   };
 
-  console.log(outfit);
+
   return (
     <div className="center">
       <h2>Store</h2>
