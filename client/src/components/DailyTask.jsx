@@ -39,8 +39,12 @@ const DailyTask = ({userData,reloadParent,reload, socket})=>{
     useEffect(()=>{
       socket.on("task:update", (e)=>{
         console.log(e);
+<<<<<<< HEAD
         // setTaskReload(taskReload+1);
         fetchTask();
+=======
+        setTaskReload(taskReload+1);
+>>>>>>> 46f56de (websocket implemented)
       });
       
     },[socket]);

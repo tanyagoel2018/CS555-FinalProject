@@ -17,7 +17,11 @@ app.use(express.json());
 let httpServer = createServer(app);
 let io = new Server(httpServer, {cors:corsConfig});
 
+<<<<<<< HEAD
 app.use(cookieParser());  
+=======
+app.use(cookieParser()); 
+>>>>>>> 46f56de (websocket implemented)
 app.use(cors(corsConfig));
 app.use(helmet());
 

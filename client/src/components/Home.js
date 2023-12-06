@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+=======
+import React, { useCallback, useEffect, useMemo } from "react";
+import { useState } from "react";
+import { useFormik } from "formik";
+import DailyTask from "./DailyTask";
+>>>>>>> 46f56de (websocket implemented)
 import { useNavigate, Link } from "react-router-dom";
 import {Grid, Typography, Box} from "@mui/material";
 import { useApi } from "../ContextAPI/APIContext";
@@ -10,8 +17,11 @@ import useSnackbar from "../hooks/useSnackbar";
 import BackDrop from "./Backdrop";
 import { io } from "socket.io-client";
 
+<<<<<<< HEAD
 import NameBanner from "./NameBanner";
 import { CiEdit } from "react-icons/ci";
+=======
+>>>>>>> 46f56de (websocket implemented)
 
 const UserData = () => {
   const navigate = useNavigate();
@@ -42,14 +52,21 @@ const UserData = () => {
         });
     }, [socket]);
 
+<<<<<<< HEAD
     useEffect(()=>{
       socket.on("score:update",(e)=>{
         fetchUserData();
+=======
+
+    useEffect(()=>{
+      socket.on("score:update",(e)=>{
+>>>>>>> 46f56de (websocket implemented)
         setReload(reload+1);
         console.log(e);
       });
 
     },[socket]);
+<<<<<<< HEAD
 
   const fetchUserData = async()=>{
     const url = `/protected/userData`;
@@ -77,6 +94,8 @@ const UserData = () => {
 
       });
   }
+=======
+>>>>>>> 46f56de (websocket implemented)
 
   useEffect(() => {
     let item = localStorage.getItem("Are_you_in");
@@ -91,6 +110,7 @@ const UserData = () => {
     else{
       navigate("/")
     }
+<<<<<<< HEAD
     fetchUserData();
     // const url = `/protected/userData`;
     // restAPI
@@ -116,6 +136,26 @@ const UserData = () => {
     //     }
 
     //   });
+=======
+    const url = `/protected/userData`;
+    restAPI
+      .get(url)
+      .then((response) => {
+        console.log("API call from home");
+        try {
+          setUserdata(response.data);
+          setGif(response.data.pet.recentImage);
+          setLoader(false);
+        } catch (error) {
+          setLoader(true);
+        }
+      })
+      .catch((error) => {
+        if (error && error.response && error.response.data) {
+          snackbar.showError(error.response.data);
+        }
+      });
+>>>>>>> 46f56de (websocket implemented)
   }, [reload, navigate, restAPI]);
   //update the gif
   const updateGif = (img) => {
@@ -159,9 +199,15 @@ const UserData = () => {
           <Grid item xs={3}>
             <NameBanner userName={userData.name} rewards = {userData.rewards}/>
             <DailyTask
+<<<<<<< HEAD
                 userData={userData}
                 reloadParent={setReload}
                 reload={reload}
+=======
+              userData={userData}
+              reloadParent={setReload}
+              reload={reload}
+>>>>>>> 46f56de (websocket implemented)
               socket={socket}
             />
           </Grid>

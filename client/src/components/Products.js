@@ -105,6 +105,37 @@ const Products = (props) => {
     return BackDrop(loader={loader});
   }
 
+<<<<<<< HEAD
+=======
+  const [toggle, setToggle] = useState(true);
+
+  const handleSaveOutfit = async () => {
+    try {
+      let img = undefined;
+      if (
+        props.gif ==
+        "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD"
+      ) {
+        img =
+          "https://drive.google.com/uc?export=download&id=1fyDSj1BJyEnafSYnIZDXVXF1hQv6GjKy";
+      } else {
+        img =
+          "https://drive.google.com/uc?export=download&id=1xHY9h6o7P4UbIk22R7wQJpVTocPzOtnD";
+      }
+
+      setToggle(!toggle);
+      let response = await restAPI.post("/protected/products/myProducts", {
+        img: img,
+      });
+      updateGif(img);
+      snackbar.showSuccess("Outfit updated!");
+    } catch (error) {
+      snackbar.showError("Couldn't update outfit!");
+    }
+  };
+
+
+>>>>>>> 46f56de (websocket implemented)
   return (
     <div className="center">
       <Stack direction={"row"} paddingBlockStart={4} paddingBlockEnd={2}>
