@@ -6,13 +6,12 @@ import {
   Box,
   Grid,
   Typography,
-  TextField,
 } from "@mui/material";
 import { RenderTextField } from "../InputFields";
 
 import { useFormik } from "formik";
 import CustomSnackbar from "../CustomSnackbar";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useApi } from "../../ContextAPI/APIContext";
 
 import useSnackbar from "../../hooks/useSnackbar";
@@ -25,28 +24,23 @@ const EditTask = () => {
   const navigate = useNavigate();
   const { restAPI } = useApi();
   let userId = null;
-  if (state && state.userId) {
-    userId = state.userId;
-  }
   let taskId = null;
-  if (state && state.taskId) {
-    taskId = state.taskId;
-  }
   let task = null;
-  if (state && state.task) {
-    task = state.task;
-  }
   let reward = null;
-  if (state && state.reward) {
-    reward = state.reward;
+
+  if (state) {
+    if (state.userId) userId = state.userId;
+    if (state.taskId) taskId = state.taskId;
+    if (state.task) taskId = state.task;
+    if (state.reward) taskId = state.reward;
   }
+
   const formik = useFormik({
     initialValues: {
       userId: userId,
       task: task,
       reward: reward,
       taskId: taskId,
-      //   userId: userId,
     },
     onSubmit: handleSubmit,
   });
@@ -57,13 +51,10 @@ const EditTask = () => {
       .post("/protected/adminTask/edit", values)
       .then((response) => {
         snackbar.showSuccess("Task edited successfully!");
-
-        // setTaskValue("");
-        // setRewardValue(0);
         navigate("/showUser", { state: { userId: userId } });
       })
       .catch((error) => {
-        if (error && error.response && error.response.data) {
+        if (error.response && error.response.data) {
           snackbar.showError(error.response.data.message);
         }
       })
@@ -87,7 +78,6 @@ const EditTask = () => {
           Edit Task
         </Typography>
         <Box sx={{ mt: 3 }}>
-
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -121,11 +111,16 @@ const EditTask = () => {
             </Grid>
           </form>
           <Box display="flex" justifyContent="center" alignItems="center">
-              <Button onClick={()=>{
-                  navigate("/showUser", { state: { userId: userId } })
-              }}> Cancel</Button>
+            <Button
+              onClick={() => {
+                navigate("/showUser", { state: { userId: userId } });
+              }}
+            >
+              {" "}
+              Cancel
+            </Button>
           </Box>
-         
+
           <CustomSnackbar snackbarProp={snackbar} />
         </Box>
       </Box>

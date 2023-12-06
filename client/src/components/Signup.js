@@ -31,15 +31,13 @@ const Signup = () => {
     let item = localStorage.getItem("Are_you_in");
     if (item) {
       item = JSON.parse(item);
-      let now =new Date();
-      let validSession = now.getTime() < item.expirationTime
-      if(validSession && !item.admin){
-          navigate("/home");
-      }
-      else if(validSession && item.admin){
-        navigate("/adminHome")
-      }
-      else{
+      let now = new Date();
+      let validSession = now.getTime() < item.expirationTime;
+      if (validSession && !item.admin) {
+        navigate("/home");
+      } else if (validSession && item.admin) {
+        navigate("/adminHome");
+      } else {
         localStorage.removeItem("Are_you_in");
       }
     }
@@ -68,11 +66,11 @@ const Signup = () => {
         })
         .catch((error) => {
           setLoader(false);
-          if (error.response.status === 403){
+          if (error.response.status === 403) {
             localStorage.removeItem("Are_you_in");
             navigate("/");
           }
-          if (error && error.response && error.response.data) {
+          if (error.response && error.response.data) {
             snackbar.showError(error.response.data);
           }
         });

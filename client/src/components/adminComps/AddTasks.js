@@ -6,13 +6,12 @@ import {
   Box,
   Grid,
   Typography,
-  TextField,
 } from "@mui/material";
 import { RenderTextField } from "../InputFields";
 
 import { useFormik } from "formik";
 import CustomSnackbar from "../CustomSnackbar";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useApi } from "../../ContextAPI/APIContext";
 
 import useSnackbar from "../../hooks/useSnackbar";
@@ -25,7 +24,7 @@ const AddTask = () => {
   const navigate = useNavigate();
   const { restAPI } = useApi();
   let userId = null;
-  if (state && state.userId) {
+  if (state.userId) {
     userId = state.userId;
   }
   const formik = useFormik({
@@ -43,13 +42,10 @@ const AddTask = () => {
       .post("/protected/adminTask/add", values)
       .then((response) => {
         snackbar.showSuccess("Task added successfully!");
-
-        // setTaskValue("");
-        // setRewardValue(0);
         navigate("/showUser", { state: { userId: userId } });
       })
       .catch((error) => {
-        if (error && error.response && error.response.data) {
+        if (error.response && error.response.data) {
           snackbar.showError(error.response.data.message);
         }
       })
@@ -106,9 +102,14 @@ const AddTask = () => {
             </Grid>
           </form>
           <Box display="flex" justifyContent="center" alignItems="center">
-              <Button onClick={()=>{
-                  navigate("/showUser", { state: { userId: userId } })
-              }}> Cancel</Button>
+            <Button
+              onClick={() => {
+                navigate("/showUser", { state: { userId: userId } });
+              }}
+            >
+              {" "}
+              Cancel
+            </Button>
           </Box>
           <CustomSnackbar snackbarProp={snackbar} />
         </Box>

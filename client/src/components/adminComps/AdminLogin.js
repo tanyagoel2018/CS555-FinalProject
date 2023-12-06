@@ -27,15 +27,13 @@ const AdminLogin = () => {
     let item = localStorage.getItem("Are_you_in");
     if (item) {
       item = JSON.parse(item);
-      let now =new Date();
-      let validSession = now.getTime() < item.expirationTime
-      if(validSession && !item.admin){
-          navigate("/home");
-      }
-      else if(validSession && item.admin){
-        navigate("/adminHome")
-      }
-      else{
+      let now = new Date();
+      let validSession = now.getTime() < item.expirationTime;
+      if (validSession && !item.admin) {
+        navigate("/home");
+      } else if (validSession && item.admin) {
+        navigate("/adminHome");
+      } else {
         localStorage.removeItem("Are_you_in");
       }
     }
@@ -58,20 +56,20 @@ const AdminLogin = () => {
       .then((response) => {
         snackbar.showSuccess("Login successful!");
         let now = new Date();
-        let expirationTime = now.getTime()+720*60*1000 //12 hours
+        let expirationTime = now.getTime() + 720 * 60 * 1000; //12 hours
         let item = {
-          value:'yes',
-          admin:true,
-          expirationTime:expirationTime
+          value: "yes",
+          admin: true,
+          expirationTime: expirationTime,
         };
         localStorage.setItem("Are_you_in", JSON.stringify(item));
         navigate("/adminHome");
       })
       .catch((error) => {
-        if (error && error.response && error.response.data) {
+        if (error.response && error.response.data) {
           snackbar.showError(error.response.data);
-        }  
-      setLoader(false);  
+        }
+        setLoader(false);
       });
   }
 
@@ -130,4 +128,3 @@ const AdminLogin = () => {
 };
 
 export default AdminLogin;
-
