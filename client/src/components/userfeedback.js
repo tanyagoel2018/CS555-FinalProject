@@ -92,6 +92,20 @@ const FeedbackForm = () => {
               Submit Feedback
             </Button>
           </form>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            paddingBottom={3}
+          >
+            <Button
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Cancel
+            </Button>
+          </Box>
           <CustomSnackbar snackbarProp={snackbar} />
           <Feedbacks></Feedbacks>
         </Box>
