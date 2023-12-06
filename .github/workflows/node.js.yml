@@ -12,6 +12,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10 # or a value that suits your build time
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
