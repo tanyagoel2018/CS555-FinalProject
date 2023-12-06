@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import CustomSnackbar from "./CustomSnackbar";
 import useSnackbar from "../hooks/useSnackbar";
 import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
 import { useApi } from "../ContextAPI/APIContext";
 import { RenderTextArea } from "./InputFields";
 import BackDrop from "./Backdrop";
+import CustomSnackbar from "./CustomSnackbar"
 import {
   Button,
   Container,
@@ -47,6 +47,10 @@ const FeedbackForm = () => {
         navigate("/home");
       })
       .catch((error) => {
+          if (error.response.status === 403){
+            localStorage.removeItem("Are_you_in");
+            navigate("/");
+          }
         if (error && error.response && error.response.data) {
           snackbar.showError(error.response.data);
         }

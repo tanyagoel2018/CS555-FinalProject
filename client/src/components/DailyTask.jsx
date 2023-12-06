@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 // import { restAPI } from "../service/api";
 import Task from "./Task";
-import ProfilePic from "../modals/ProfilePic";
 import { useApi } from "../ContextAPI/APIContext";
-import { Avatar,Paper, Stack, Tooltip} from "@mui/material";
+import { Avatar,Paper, Stack, Tooltip, Box} from "@mui/material";
 import Logout from "./Logout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const DailyTask = ({userData,reloadParent,reload, socket})=>{ 
     const [dailyTasks, setDailyTaks] = useState([]);
@@ -13,6 +12,7 @@ const DailyTask = ({userData,reloadParent,reload, socket})=>{
     const [open, setOpen] = useState(false);
     const [taskReload, setTaskReload ] = useState(0);
     const handleOpen = () => setOpen(true);
+    const navigate = useNavigate();
     const handleClose = () => {
       setOpen(false);
       reloadParent(reload+1);
@@ -26,7 +26,10 @@ const DailyTask = ({userData,reloadParent,reload, socket})=>{
             setDailyTaks(tasks);
             setLoading(false);
         } catch (error) {
-            console.log(error);            
+          if (error.response.status === 403){
+            localStorage.removeItem("Are_you_in");
+            navigate("/");
+          }
         }
     }
     useEffect(()=>{
@@ -45,9 +48,9 @@ const DailyTask = ({userData,reloadParent,reload, socket})=>{
     return <h4>loading..</h4>;
   }
   return (
-    <div className="center">
+    <Box className="center">
       <br/>
-      <Paper sx={{bgcolor:"#EEAC02", width:'15em'}} className="center" elevation={10}>
+      {/* <Paper sx={{bgcolor:"#EEAC02", width:'15em'}} className="center" elevation={10}>
         <br/>
         <div style={{width: '100%', height: '100%', overflow: 'hidden'}}>
         <Stack direction='row' sx={{alignItems:'center'}}>
@@ -63,14 +66,14 @@ const DailyTask = ({userData,reloadParent,reload, socket})=>{
         </Stack>
       <h4>Rewards : {userData.rewards}</h4>
       </div>
-      </Paper>
+      </Paper> */}
       
-      <ProfilePic
+      {/* <ProfilePic
       open={open}
       profilePic = {userData.profilePic}
       userName = {userData.name}
       handleClose={handleClose}
-      />
+      /> */}
 
       <h2>Daily Tasks</h2>
       <article>
@@ -80,7 +83,7 @@ const DailyTask = ({userData,reloadParent,reload, socket})=>{
         })}
       </article>
       <Link to="/userfeedback" className="links">Feedback</Link>
-    </div>
+    </Box>
   );
 };
 

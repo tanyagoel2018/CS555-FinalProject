@@ -70,5 +70,17 @@ const updateProfilePic = async(id,url)=>{
   }
 }
 
-export { getUserByName,getAllUsers,getUserByUserID, updateProfilePic,setNewOutfit };
+const getProfilePic = async(id)=>{
+  const userCollection = await users();
+  let profilepic = undefined;
+  try {
+    profilepic = await userCollection.findOne({ _id: new ObjectId(id) },{ projection: { profilePic: 1, _id:0 }})
+    console.log(profilepic);
+  } catch (error) {
+      throw error;
+  }
+  return profilepic;  
+}
+
+export { getUserByUserID, updateProfilePic,setNewOutfit, getProfilePic, getAllUsers, getUserByName };
  

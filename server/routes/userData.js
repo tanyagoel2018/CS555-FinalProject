@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import { getAllUsers, getUserByName, getUserByUserID, updateProfilePic } from "../data/userData.js";
+import { getAllUsers, getUserByName, getUserByUserID, updateProfilePic, getProfilePic } from "../data/userData.js";
 
 // getting all user data route
 router.route("/").get(async (req, res) => {
@@ -14,6 +14,17 @@ router.route("/").get(async (req, res) => {
   }
 });
 
+router.route("/profilePic").get(async(req, res)=>{
+  try {
+    let userId = req.user.id;
+    let profilePic = await getProfilePic(userId);
+    res.status(200).json(profilePic);
+  }
+  catch(error){
+    res.status(400).json(error);
+  }
+});
+ 
 
 router.route("/allUsers").get(async (req, res) => {
   try {

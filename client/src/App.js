@@ -24,10 +24,10 @@ function App() {
           <Route path="/addTasks" element={<AddTasks />} />
           <Route path="/adminLogin" element={<AdminLogin />} />
           <Route path="/showUser" element={<ShowUserData />} />
-        </Routes>
+        </Routes> 
       </div>
     </Router>
   );
 }
-
+ 
 export default App;

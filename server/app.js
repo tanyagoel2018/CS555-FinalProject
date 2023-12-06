@@ -17,7 +17,7 @@ app.use(express.json());
 let httpServer = createServer(app);
 let io = new Server(httpServer, {cors:corsConfig});
 
-app.use(cookieParser()); 
+app.use(cookieParser());  
 app.use(cors(corsConfig));
 app.use(helmet());
 
@@ -51,4 +51,4 @@ const start = async () => {
   };
   start(); 
 
-  export default app;
+  export default app; 

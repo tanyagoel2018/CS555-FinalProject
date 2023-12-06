@@ -36,6 +36,7 @@ const createUser = async (email, password, name, age) => {
       petName: null,
       recentImage: null,
     },
+    products: [],
   };
 
   const insertInfo = await userCollection.insertOne(newUser);
