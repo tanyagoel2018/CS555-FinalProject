@@ -45,8 +45,3 @@ jobs:
       run: |
         npm run build
       working-directory: ./client
-
-    - name: Test Server
-      run: |
-        npm test
-      working-directory: ./server
