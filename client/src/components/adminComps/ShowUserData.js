@@ -109,17 +109,7 @@ const ShowUserData = () => {
                   Rewards: {user.rewards} <FcLike />
                 </h2>
               </div>
-              <div className="div4">
-                <div
-                  style={{
-                    height: "400px",
-                    width: "41rem",
-                    overflowY: "scroll",
-                  }}
-                >
-                  {tasks}
-                </div>
-              </div>
+              <div className="div4 center">{tasks}</div>
             </div>
           </Grid>
           <Grid item xs={0} sm={1} md={2} lg={3}>

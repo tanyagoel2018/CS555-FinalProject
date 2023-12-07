@@ -44,13 +44,11 @@ const AddTask = () => {
       .post("/protected/adminTask/add", values)
       .then((response) => {
         snackbar.showSuccess("Task added successfully!");
-        setTimeout(() => {
-          navigate("/showUser", { state: { userId: userId } });
-        }, 1000);
+        navigate("/showUser", { state: { userId: userId } });
       })
       .catch((error) => {
-        if (error && error.response && error.response.data) {
-          snackbar.showError(error.response.data);
+        if (error.response.data) {
+          snackbar.showError(error.response.data.message);
         }
       })
       .finally(() => {

@@ -52,13 +52,11 @@ const EditTask = () => {
       .post("/protected/adminTask/edit", values)
       .then((response) => {
         snackbar.showSuccess("Task edited successfully!");
-        setTimeout(() => {
-          navigate("/showUser", { state: { userId: userId } });
-        });
+        navigate("/showUser", { state: { userId: userId } });
       })
       .catch((error) => {
         if (error.response.data) {
-          snackbar.showError(error.response.data);
+          snackbar.showError(error.response.data.message);
         }
       })
       .finally(() => {
@@ -123,6 +121,7 @@ const EditTask = () => {
               Cancel
             </Button>
           </Box>
+
           <CustomSnackbar snackbarProp={snackbar} />
         </Box>
       </Box>
