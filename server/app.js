@@ -34,7 +34,8 @@ configRoutes(app);
 
 io.on("connect", (socket) =>{
     const user = getUserIdFromJWT("jwt", socket);
-    socket.join(user.id);
+    if(user)
+    {socket.join(user.id);}
   }
 )
 

@@ -14,11 +14,14 @@ const getCookie = (cName, socket)=> {
 
   const getUserIdFromJWT = (cookie, socket)=>{
     const token = getCookie(cookie,socket)
+    if(token){
     let user= {id:""}
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
        user.id = decoded.id;
     });
-    return user;
+    return user;}else{
+      return
+    }
   }
   
 export default getUserIdFromJWT;
