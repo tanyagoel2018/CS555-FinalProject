@@ -7,11 +7,13 @@ import SendIcon from "@mui/icons-material/Send";
 import { FcLike } from "react-icons/fc";
 import TaskComplete from "../../modals/TaskComplete";
 import { useApi } from "../../ContextAPI/APIContext";
+import useSnackbar from "../../hooks/useSnackbar";
+import CustomSnackbar from "../CustomSnackbar";
 
 const ShowUserData = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-
+  const snackbar = useSnackbar();
   const { restAPI } = useApi();
   const [open, setOpen] = useState(false);
   const [taskId, setTaskId] = useState(null);
@@ -47,6 +49,8 @@ const ShowUserData = () => {
       // console.log(taskId);
       try {
         await restAPI.post("/protected/adminTask/delete", {userId:user._id, taskId:taskId});
+        snackbar.showSuccess('Delete Successfull')
+        
         setReload(reload+1);
       } catch (error) {
           console.log(error);
@@ -128,7 +132,7 @@ const ShowUserData = () => {
           reward={reward}
           handleClose={handleClose}
         />
-        {/* <CustomSnackbar snackbarProp={snackbar} /> */}
+        <CustomSnackbar snackbarProp={snackbar} />
       </>
     );
   }

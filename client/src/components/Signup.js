@@ -66,6 +66,9 @@ const Signup = () => {
         .then((response) => {
           setLoader(false);
           snackbar.showSuccess("Signup successful!");
+          setTimeout(() => {
+            navigate('/');
+          }, 1000);
         })
         .catch((error) => {
           setLoader(false);

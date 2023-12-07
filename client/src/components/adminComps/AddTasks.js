@@ -46,7 +46,10 @@ const AddTask = () => {
 
         // setTaskValue("");
         // setRewardValue(0);
-        navigate("/showUser", { state: { userId: userId } });
+        setTimeout(() => {
+          navigate("/showUser", { state: { userId: userId } });
+        }, 1000);
+        
       })
       .catch((error) => {
         if (error && error.response && error.response.data) {

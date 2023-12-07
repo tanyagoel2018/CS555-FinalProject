@@ -49,7 +49,9 @@ const PetRename = () => {
       .then((response) => {
         setLoading(false);
         snackbar.showSuccess("Pet rename successful!");
-        navigate("/home");
+        setTimeout(() => {
+          navigate("/home");
+        }, 1000);
       })
       .catch((error) => {
         setLoading(false);
