@@ -29,28 +29,29 @@ const createUser = async (email, password, name, age) => {
     password: hash,
     name: name,
     age: age,
-    profilePic:null,
+    profilePic: null,
     rewards: 0,
     tasks: [],
     pet: {
       petName: null,
-      recentImage: null,
+      recentImage:
+        "https://drive.google.com/uc?id=19TaLFV4x1-cffVenWIKIjYK2LMNs1Grf",
     },
-    products: [],
+    products: ["65710e5ff59aab16fe506557"],
   };
 
   const insertInfo = await userCollection.insertOne(newUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId) {
     throw "Error : Could not add user";
   }
-  return 'Registration successful';
+  return "Registration successful";
 };
 
-const createAdmin = async (email, password,name) => {
+const createAdmin = async (email, password, name) => {
   email = email.trim().toLowerCase();
   password = password.trim();
-  name=name.trim();
-  await loginSchema.validate({ email, password});
+  name = name.trim();
+  await loginSchema.validate({ email, password });
 
   let hash = await bcrypt.hash(password, saltRounds);
   const adminCollection = await admin();
@@ -67,14 +68,14 @@ const createAdmin = async (email, password,name) => {
   let newUser = {
     email: email,
     password: hash,
-    name:name
+    name: name,
   };
 
   const insertInfo = await adminCollection.insertOne(newUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId) {
     throw "Error : Could not add admin";
   }
-  return 'Registration successful';
+  return "Registration successful";
 };
 
 const loginByEmailId = async (email, password) => {
@@ -127,4 +128,4 @@ const AdminLoginByEmailId = async (email, password) => {
 
 // Add new code from here
 
-export { createAdmin,AdminLoginByEmailId, createUser, loginByEmailId };
+export { createAdmin, AdminLoginByEmailId, createUser, loginByEmailId };
