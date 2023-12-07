@@ -66,7 +66,7 @@ const Login = () => {
         navigate("/home");
       })
       .catch((error) => {
-        if (error.response && error.response.data) {
+        if (error.response.data) {
           snackbar.showError(error.response.data);
         }
         setLoader(false);

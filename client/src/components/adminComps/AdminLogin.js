@@ -66,7 +66,7 @@ const AdminLogin = () => {
         navigate("/adminHome");
       })
       .catch((error) => {
-        if (error.response && error.response.data) {
+        if (error.response.data) {
           snackbar.showError(error.response.data);
         }
         setLoader(false);

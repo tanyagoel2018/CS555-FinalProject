@@ -70,7 +70,7 @@ const Signup = () => {
             localStorage.removeItem("Are_you_in");
             navigate("/");
           }
-          if (error.response && error.response.data) {
+          if (error.response.data) {
             snackbar.showError(error.response.data);
           }
         });

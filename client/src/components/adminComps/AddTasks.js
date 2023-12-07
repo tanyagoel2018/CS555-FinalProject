@@ -45,7 +45,7 @@ const AddTask = () => {
         navigate("/showUser", { state: { userId: userId } });
       })
       .catch((error) => {
-        if (error.response && error.response.data) {
+        if (error.response.data) {
           snackbar.showError(error.response.data.message);
         }
       })
