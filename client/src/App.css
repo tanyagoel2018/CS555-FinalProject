@@ -64,7 +64,7 @@
   box-sizing: "border-box";
   background-color: rgb(231, 242, 255);
   padding: 0.8rem;
-  width: 100%;
+  width: 90%;
   overflow: hidden;
 }
 .TaskContainer .task {

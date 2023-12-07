@@ -102,8 +102,10 @@ const ShowUserData = () => {
                   Rewards: {user.rewards} <FcLike />
                 </h2>
               </div>
-              <div className="div4 center" >
-                {tasks}
+              <div className="div4" >
+                <div style={{height:'400px',width: '41rem',overflowY:'scroll'}}>
+                  {tasks}
+                </div>
               </div>
             </div>
           </Grid>
@@ -113,13 +115,13 @@ const ShowUserData = () => {
             <br />
             <br />
             <Link to={"/adminHome"}>
-              <Button variant="outlined" color="secondary">
+              <Button variant="outlined" color="primary">
                 Back to home
               </Button>
             </Link>
             <br />
             <br />
-            <Button variant="outlined" color="secondary" onClick={goToAddTask}>
+            <Button variant="outlined" color="primary" onClick={goToAddTask}>
               Add new Task
             </Button>
           </Grid>

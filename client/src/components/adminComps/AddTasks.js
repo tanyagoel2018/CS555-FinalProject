@@ -6,16 +6,16 @@ import {
   Box,
   Grid,
   Typography,
-  TextField,
 } from "@mui/material";
 import { RenderTextField } from "../InputFields";
 
 import { useFormik } from "formik";
 import CustomSnackbar from "../CustomSnackbar";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useApi } from "../../ContextAPI/APIContext";
 
 import useSnackbar from "../../hooks/useSnackbar";
+import { taskSchema } from "../../validations/taskFormValidation";
 
 const AddTask = () => {
   const [loader, setLoader] = useState(false);
@@ -33,7 +33,7 @@ const AddTask = () => {
       task: "",
       reward: null,
       userId: userId,
-    },
+    },validationSchema:taskSchema,
     onSubmit: handleSubmit,
   });
 
@@ -53,7 +53,7 @@ const AddTask = () => {
       })
       .catch((error) => {
         if (error && error.response && error.response.data) {
-          snackbar.showError(error.response.data.message);
+          snackbar.showError(error.response.data);
         }
       })
       .finally(() => {
@@ -99,7 +99,7 @@ const AddTask = () => {
               </Grid>
               <Button
                 fullWidth
-                type="submit"
+                type={loader?"button":"submit"}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 disabled={loader}

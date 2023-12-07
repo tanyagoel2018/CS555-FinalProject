@@ -59,7 +59,7 @@ const TaskComplete = (props) => {
         <div style={{display:'flex',padding:"50px"}}>
         <Button
           variant="outlined"
-          color="secondary"
+          color="primary"
           onClick={markComplete}
           size="small"
           sx={{ marginRight:'50px' }}
@@ -68,7 +68,7 @@ const TaskComplete = (props) => {
         </Button>
         <Button
           variant="outlined"
-          color="secondary"
+          color="primary"
           size="small"
           onClick={()=>props.handleClose()}
           sx={{ marginLeft:'50px'}}

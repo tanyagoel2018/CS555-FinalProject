@@ -6,16 +6,16 @@ import {
   Box,
   Grid,
   Typography,
-  TextField,
 } from "@mui/material";
 import { RenderTextField } from "../InputFields";
 
 import { useFormik } from "formik";
 import CustomSnackbar from "../CustomSnackbar";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useApi } from "../../ContextAPI/APIContext";
 
 import useSnackbar from "../../hooks/useSnackbar";
+import { taskSchema } from "../../validations/taskFormValidation";
 
 const EditTask = () => {
   const [loader, setLoader] = useState(false);
@@ -46,8 +46,8 @@ const EditTask = () => {
       task: task,
       reward: reward,
       taskId: taskId,
-      //   userId: userId,
     },
+    validationSchema:taskSchema,
     onSubmit: handleSubmit,
   });
 
@@ -66,7 +66,7 @@ const EditTask = () => {
       })
       .catch((error) => {
         if (error && error.response && error.response.data) {
-          snackbar.showError(error.response.data.message);
+          snackbar.showError(error.response.data);
         }
       })
       .finally(() => {
