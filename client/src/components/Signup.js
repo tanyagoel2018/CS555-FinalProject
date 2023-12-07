@@ -45,10 +45,6 @@ const Signup = () => {
     }
   }, [navigate]);
 
-  const comparePasswords = () => {
-    return formik.values.retypePassword !== formik.values.password;
-  };
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -60,6 +56,11 @@ const Signup = () => {
     validationSchema: userSchema,
     onSubmit: (values) => {
       setLoader(true);
+      if(values.password!==values.retypePassword){
+        setLoader(false)
+        snackbar.showError("Passwords don't match")
+      }
+      else{
       restAPI
         .post("/sign-up", values)
         .then((response) => {
@@ -75,7 +76,7 @@ const Signup = () => {
           if (error && error.response && error.response.data) {
             snackbar.showError(error.response.data);
           }
-        });
+        });}
     },
   });
 
@@ -133,7 +134,7 @@ const Signup = () => {
               />
             </Grid>
             <Button
-              type={comparePasswords() ? "button" : "submit"}
+              type={ "submit"}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
