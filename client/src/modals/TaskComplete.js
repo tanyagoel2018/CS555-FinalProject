@@ -1,5 +1,5 @@
-import React, {  useState } from "react";
-import { Modal, Box, Button, Avatar,Tooltip } from "@mui/material";
+import React from "react";
+import { Modal, Box, Button } from "@mui/material";
 import { useApi } from "../ContextAPI/APIContext";
 
 const style = {
@@ -9,7 +9,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 500,
   height:250,
-  bgcolor: "#fcc026",
+  bgcolor:"#f4f2f7",
   border: "2px solid #000",
   boxShadow: 24,
   display:'flex',
@@ -25,7 +25,7 @@ const TaskComplete = (props) => {
 
   const markComplete= async()=>{
     try {
-      const respose = await restAPI.post('/protected/adminTask/', {
+      await restAPI.post('/protected/adminTask/', {
         userId:props.userId,
         taskId:props.taskId,
         reward:props.reward});

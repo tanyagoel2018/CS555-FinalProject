@@ -1,4 +1,4 @@
-import { Avatar, Button, Checkbox, Grid } from "@mui/material";
+import { Avatar, Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,7 +12,6 @@ const ShowUserData = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  let userId = null;
   const { restAPI } = useApi();
   const [open, setOpen] = useState(false);
   const [taskId, setTaskId] = useState(null);
@@ -45,9 +44,9 @@ const ShowUserData = () => {
   };
 
   const handleDelete = async(taskId)=>{
-      console.log(taskId);
+      // console.log(taskId);
       try {
-        const response = await restAPI.post("/protected/adminTask/delete", {userId:user._id, taskId:taskId});
+        await restAPI.post("/protected/adminTask/delete", {userId:user._id, taskId:taskId});
         setReload(reload+1);
       } catch (error) {
           console.log(error);
