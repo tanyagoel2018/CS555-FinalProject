@@ -25,20 +25,14 @@ const EditTask = () => {
   const navigate = useNavigate();
   const { restAPI } = useApi();
   let userId = null;
-  if (state && state.userId) {
-    userId = state.userId;
-  }
   let taskId = null;
-  if (state && state.taskId) {
-    taskId = state.taskId;
-  }
   let task = null;
-  if (state && state.task) {
-    task = state.task;
-  }
   let reward = null;
-  if (state && state.reward) {
-    reward = state.reward;
+  if (state) {
+    if (state.userId) userId = state.userId;
+    if (state.taskId) taskId = state.taskId;
+    if (state.task) taskId = state.task;
+    if (state.reward) taskId = state.reward;
   }
   const formik = useFormik({
     initialValues: {
@@ -47,7 +41,7 @@ const EditTask = () => {
       reward: reward,
       taskId: taskId,
     },
-    validationSchema:taskSchema,
+    validationSchema: taskSchema,
     onSubmit: handleSubmit,
   });
 
@@ -57,9 +51,6 @@ const EditTask = () => {
       .post("/protected/adminTask/edit", values)
       .then((response) => {
         snackbar.showSuccess("Task edited successfully!");
-
-        // setTaskValue("");
-        // setRewardValue(0);
         setTimeout(() => {
           navigate("/showUser", { state: { userId: userId } });
         }, 1000);
@@ -89,7 +80,6 @@ const EditTask = () => {
           Edit Task
         </Typography>
         <Box sx={{ mt: 3 }}>
-
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -123,11 +113,15 @@ const EditTask = () => {
             </Grid>
           </form>
           <Box display="flex" justifyContent="center" alignItems="center">
-              <Button onClick={()=>{
-                  navigate("/showUser", { state: { userId: userId } })
-              }}> Cancel</Button>
+            <Button
+              onClick={() => {
+                navigate("/showUser", { state: { userId: userId } });
+              }}
+            >
+              {" "}
+              Cancel
+            </Button>
           </Box>
-         
           <CustomSnackbar snackbarProp={snackbar} />
         </Box>
       </Box>

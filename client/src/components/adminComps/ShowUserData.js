@@ -45,17 +45,18 @@ const ShowUserData = () => {
     });
   };
 
-  const handleDelete = async(taskId)=>{
-      // console.log(taskId);
-      try {
-        await restAPI.post("/protected/adminTask/delete", {userId:user._id, taskId:taskId});
-        snackbar.showSuccess('Delete Successfull')
-        
-        setReload(reload+1);
-      } catch (error) {
-          console.log(error);
-      }
-  }
+  const handleDelete = async (taskId) => {
+    console.log(taskId);
+    try {
+      const response = await restAPI.post("/protected/adminTask/delete", {
+        userId: user._id,
+        taskId: taskId,
+      });
+      setReload(reload + 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (state && state.userId) {
@@ -74,8 +75,14 @@ const ShowUserData = () => {
   let tasks = null;
   if (user && user.tasks) {
     tasks = user.tasks.map((item) => {
-      return <TaskList task = {item} handleOpen={handleOpen} handleDelete = {handleDelete} goToEditTask ={goToEditTask}/>
-
+      return (
+        <TaskList
+          task={item}
+          handleOpen={handleOpen}
+          handleDelete={handleDelete}
+          goToEditTask={goToEditTask}
+        />
+      );
     });
   }
 
@@ -85,7 +92,7 @@ const ShowUserData = () => {
         <Grid container spacing={1}>
           <Grid item xs={0} sm={1} md={2} lg={3}></Grid>
           <Grid item xs={12} sm={10} md={8} lg={6}>
-            <br/>
+            <br />
             <div className="parent">
               <div className="div1 center">
                 <Avatar
@@ -102,8 +109,14 @@ const ShowUserData = () => {
                   Rewards: {user.rewards} <FcLike />
                 </h2>
               </div>
-              <div className="div4" >
-                <div style={{height:'400px',width: '41rem',overflowY:'scroll'}}>
+              <div className="div4">
+                <div
+                  style={{
+                    height: "400px",
+                    width: "41rem",
+                    overflowY: "scroll",
+                  }}
+                >
                   {tasks}
                 </div>
               </div>
@@ -140,13 +153,15 @@ const ShowUserData = () => {
   }
 };
 
-const TaskList = ({task, handleClose, handleDelete, handleOpen, goToEditTask})=>{
+const TaskList = ({
+  task,
+  handleClose,
+  handleDelete,
+  handleOpen,
+  goToEditTask,
+}) => {
   return (
-    <div
-      className="TaskContainer"
-      key={task._id}
-      style={{ height: "50px" }}
-    >
+    <div className="TaskContainer" key={task._id} style={{ height: "50px" }}>
       <div style={{ marginTop: "10px" }}>
         <div className="task" style={{ marginRight: "10px" }}>
           <Button
@@ -183,7 +198,9 @@ const TaskList = ({task, handleClose, handleDelete, handleOpen, goToEditTask})=>
             size="small"
             startIcon={<DeleteIcon />}
             disabled={task.completed}
-            onClick= {()=>{handleDelete(task._id)}}
+            onClick={() => {
+              handleDelete(task._id);
+            }}
           >
             Delete
           </Button>
@@ -219,7 +236,6 @@ const TaskList = ({task, handleClose, handleDelete, handleOpen, goToEditTask})=>
       </div>
     </div>
   );
-
-}
+};
 
 export default ShowUserData;

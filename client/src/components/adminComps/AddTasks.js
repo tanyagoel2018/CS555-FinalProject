@@ -33,7 +33,8 @@ const AddTask = () => {
       task: "",
       reward: null,
       userId: userId,
-    },validationSchema:taskSchema,
+    },
+    validationSchema: taskSchema,
     onSubmit: handleSubmit,
   });
 
@@ -49,7 +50,6 @@ const AddTask = () => {
         setTimeout(() => {
           navigate("/showUser", { state: { userId: userId } });
         }, 1000);
-        
       })
       .catch((error) => {
         if (error && error.response && error.response.data) {
@@ -99,7 +99,7 @@ const AddTask = () => {
               </Grid>
               <Button
                 fullWidth
-                type={loader?"button":"submit"}
+                type={loader ? "button" : "submit"}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 disabled={loader}
@@ -109,9 +109,14 @@ const AddTask = () => {
             </Grid>
           </form>
           <Box display="flex" justifyContent="center" alignItems="center">
-              <Button onClick={()=>{
-                  navigate("/showUser", { state: { userId: userId } })
-              }}> Cancel</Button>
+            <Button
+              onClick={() => {
+                navigate("/showUser", { state: { userId: userId } });
+              }}
+            >
+              {" "}
+              Cancel
+            </Button>
           </Box>
           <CustomSnackbar snackbarProp={snackbar} />
         </Box>
