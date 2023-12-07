@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Container,
@@ -49,7 +49,9 @@ const PetRename = () => {
       .then((response) => {
         setLoading(false);
         snackbar.showSuccess("Pet rename successful!");
-        navigate("/home");
+        setTimeout(() => {
+          navigate("/home");
+        }, 1000);
       })
       .catch((error) => {
         setLoading(false);
@@ -100,9 +102,20 @@ const PetRename = () => {
                 {buttonText}
               </Button>
             </form>
-            {!save &&  <Link to="/home" className="links">
+            {!save &&  <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            paddingBottom={3}
+          >
+            <Button
+              onClick={() => {
+                navigate("/");
+              }}
+            >
               Cancel
-            </Link>}
+            </Button>
+          </Box>}
             <CustomSnackbar snackbarProp={snackbar} />
           </Box>
         </Box>

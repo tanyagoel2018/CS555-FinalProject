@@ -15,6 +15,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useApi } from "../../ContextAPI/APIContext";
 
 import useSnackbar from "../../hooks/useSnackbar";
+import { taskSchema } from "../../validations/taskFormValidation";
 
 const AddTask = () => {
   const [loader, setLoader] = useState(false);
@@ -33,6 +34,7 @@ const AddTask = () => {
       reward: null,
       userId: userId,
     },
+    validationSchema: taskSchema,
     onSubmit: handleSubmit,
   });
 
@@ -92,7 +94,7 @@ const AddTask = () => {
               </Grid>
               <Button
                 fullWidth
-                type="submit"
+                type={loader ? "button" : "submit"}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 disabled={loader}

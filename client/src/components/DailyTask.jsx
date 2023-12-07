@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 // import { restAPI } from "../service/api";
 import Task from "./Task";
 import { useApi } from "../ContextAPI/APIContext";
-import { Avatar,Paper, Stack, Tooltip, Box} from "@mui/material";
+import { Avatar,Paper, Stack, Tooltip, Box, Button} from "@mui/material";
 import Logout from "./Logout";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -38,7 +38,7 @@ const DailyTask = ({userData,reloadParent,reload, socket})=>{
     
     useEffect(()=>{
       socket.on("task:update", (e)=>{
-        console.log(e);
+        // console.log(e);
         fetchTask();
 
         setTaskReload(taskReload+1);
@@ -59,7 +59,21 @@ const DailyTask = ({userData,reloadParent,reload, socket})=>{
           return <Task task={task} reward={reward} key={dailyTask._id}/>;
         })}
       </article>
-      <Link to="/userfeedback" className="links">Feedback</Link>
+      {/* <Link to="/userfeedback" className="links">Feedback</Link> */}
+      <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            paddingBottom={3}
+          >
+            <Button
+              onClick={() => {
+                navigate("/userfeedback");
+              }}
+            >
+              Feedback
+            </Button>
+          </Box>
     </Box>
   );
 };

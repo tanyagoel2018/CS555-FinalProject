@@ -18,7 +18,7 @@ const Animation = (props)=>{
     const [animations, setAnimations] = useState(animationData);
     return (
         <>
-         <Card sx={{ width: "30em", height: "25em" , boxShadow: "none"}}>
+         <Card sx={{ width: "30em", height: "25em" , boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'}}>
             <CardMedia
             component="img"
             image={gif}

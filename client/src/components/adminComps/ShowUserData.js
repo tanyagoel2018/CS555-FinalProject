@@ -1,4 +1,4 @@
-import { Avatar, Button, Checkbox, Grid } from "@mui/material";
+import { Avatar, Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -7,12 +7,13 @@ import SendIcon from "@mui/icons-material/Send";
 import { FcLike } from "react-icons/fc";
 import TaskComplete from "../../modals/TaskComplete";
 import { useApi } from "../../ContextAPI/APIContext";
+import useSnackbar from "../../hooks/useSnackbar";
+import CustomSnackbar from "../CustomSnackbar";
 
 const ShowUserData = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-
-  let userId = null;
+  const snackbar = useSnackbar();
   const { restAPI } = useApi();
   const [open, setOpen] = useState(false);
   const [taskId, setTaskId] = useState(null);
@@ -117,13 +118,13 @@ const ShowUserData = () => {
             <br />
             <br />
             <Link to={"/adminHome"}>
-              <Button variant="outlined" color="secondary">
+              <Button variant="outlined" color="primary">
                 Back to home
               </Button>
             </Link>
             <br />
             <br />
-            <Button variant="outlined" color="secondary" onClick={goToAddTask}>
+            <Button variant="outlined" color="primary" onClick={goToAddTask}>
               Add new Task
             </Button>
           </Grid>
@@ -136,7 +137,7 @@ const ShowUserData = () => {
           reward={reward}
           handleClose={handleClose}
         />
-        {/* <CustomSnackbar snackbarProp={snackbar} /> */}
+        <CustomSnackbar snackbarProp={snackbar} />
       </>
     );
   }

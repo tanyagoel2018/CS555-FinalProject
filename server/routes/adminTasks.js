@@ -49,7 +49,7 @@ router.route("/add").post(async (req, res) => {
 });
 
 router.route("/edit").post(async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     let userId = req.body.userId;
 

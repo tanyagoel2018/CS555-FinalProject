@@ -37,13 +37,13 @@ const Feedbacks = ({userData,reloadParent,reload, socket})=>{
       <br/>
       <h2>Feedbacks (by you) so far:</h2>
       <Box sx={{ overflow: 'auto', maxHeight: '150px' }}>
-      <article>
+      <ul>
         {feedbacks.map((feedback) => {
         return (
-            <Typography variant={"body1"}>{feedback}</Typography>
+            <li><Typography variant={"body1"}>{feedback}</Typography></li>
         );
         })}
-        </article>
+        </ul>
         </Box>
     </Box>
   );

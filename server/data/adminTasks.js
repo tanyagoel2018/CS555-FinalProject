@@ -49,8 +49,16 @@ const addNewTask = async (userId, name, task, reward) => {
 
   const filter = { _id: new ObjectId(userId) };
   const userCollection = await users();
+  let user  = await userCollection.findOne(filter);
+  if(!user){
+    throw 'User not found';
+  }
+  const uncompletedTasks = user.tasks.filter((task) => !task.completed);
+  uncompletedTasks.push(newTask);
+  const completedTasks = user.tasks.filter((task) => task.completed);
+  const reorderedTasks = [...uncompletedTasks, ...completedTasks];
   let res = await userCollection.updateOne(filter, {
-    $push: { tasks: newTask },
+    $set: { tasks: reorderedTasks },
   });
 
   if (res.modifiedCount === 1) {

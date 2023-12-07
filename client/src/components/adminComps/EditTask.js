@@ -15,6 +15,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useApi } from "../../ContextAPI/APIContext";
 
 import useSnackbar from "../../hooks/useSnackbar";
+import { taskSchema } from "../../validations/taskFormValidation";
 
 const EditTask = () => {
   const [loader, setLoader] = useState(false);
@@ -42,6 +43,7 @@ const EditTask = () => {
       reward: reward,
       taskId: taskId,
     },
+    validationSchema: taskSchema,
     onSubmit: handleSubmit,
   });
 
