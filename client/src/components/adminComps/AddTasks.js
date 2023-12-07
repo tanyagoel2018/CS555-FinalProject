@@ -44,9 +44,6 @@ const AddTask = () => {
       .post("/protected/adminTask/add", values)
       .then((response) => {
         snackbar.showSuccess("Task added successfully!");
-
-        // setTaskValue("");
-        // setRewardValue(0);
         setTimeout(() => {
           navigate("/showUser", { state: { userId: userId } });
         }, 1000);

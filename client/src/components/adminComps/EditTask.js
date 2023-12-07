@@ -28,6 +28,7 @@ const EditTask = () => {
   let taskId = null;
   let task = null;
   let reward = null;
+
   if (state) {
     if (state.userId) userId = state.userId;
     if (state.taskId) taskId = state.taskId;
@@ -53,10 +54,10 @@ const EditTask = () => {
         snackbar.showSuccess("Task edited successfully!");
         setTimeout(() => {
           navigate("/showUser", { state: { userId: userId } });
-        }, 1000);
+        });
       })
       .catch((error) => {
-        if (error && error.response && error.response.data) {
+        if (error.response.data) {
           snackbar.showError(error.response.data);
         }
       })

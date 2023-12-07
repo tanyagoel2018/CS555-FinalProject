@@ -197,7 +197,6 @@ const TaskList = ({
             variant="outlined"
             size="small"
             startIcon={<DeleteIcon />}
-            disabled={task.completed}
             onClick={() => {
               handleDelete(task._id);
             }}
