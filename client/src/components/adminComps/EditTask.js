@@ -29,13 +29,18 @@ const EditTask = () => {
   let task = null;
   let reward = null;
 
-  if (state) {
-    if (state.userId) userId = state.userId;
-    if (state.taskId) taskId = state.taskId;
-    if (state.task) taskId = state.task;
-    if (state.reward) taskId = state.reward;
+  if (state && state.userId) {
+    userId = state.userId;
   }
-
+  if (state && state.taskId) {
+    taskId = state.taskId;
+  }
+  if (state && state.task) {
+    task = state.task;
+  }
+  if (state && state.reward) {
+    reward = state.reward;
+  }
   const formik = useFormik({
     initialValues: {
       userId: userId,
